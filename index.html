@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home solar and battery | Get a free quote</title>
+  <meta name="description" content="When the grid goes dark, your home does not have to. See how rooftop solar and a home battery keep the lights on, then get a free quote.">
+  <meta name="theme-color" content="#070b10">
+  <style>
+/* ---------- Tokens ---------- */
+:root {
+  --bg: #070b10;
+  --ink: #f5f2eb;
+  --muted: #b3bcc7;
+  --amber: #f6b24a;
+  --amber-deep: #e2952a;
+  --amber-ink: #1b1204;
+  --line: rgba(245, 242, 235, 0.22);
+  --pad: clamp(20px, 6vw, 88px);
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, p { margin: 0; }
+
+h1, h2 {
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+h1 { font-size: clamp(2.3rem, 6.4vw, 5.6rem); }
+h2 { font-size: clamp(2rem, 5.2vw, 4.4rem); }
+
+/* ---------- Shared section pieces ---------- */
+.panel {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  min-height: 420px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Darkens the bottom-left so the copy stays readable over any frame */
+.scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(7, 11, 16, 0.82) 0%, rgba(7, 11, 16, 0.35) 34%, rgba(7, 11, 16, 0) 60%),
+    linear-gradient(to bottom, rgba(7, 11, 16, 0.45) 0%, rgba(7, 11, 16, 0) 18%);
+}
+
+.index {
+  position: absolute;
+  top: clamp(18px, 3.2vw, 36px);
+  left: var(--pad);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.copy {
+  position: absolute;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: clamp(48px, 9vh, 104px);
+  max-width: 980px;
+  pointer-events: none;
+}
+
+.eyebrow {
+  margin-bottom: clamp(12px, 1.6vw, 20px);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: clamp(18px, 2.4vw, 30px);
+  padding: 9px 16px 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(7, 11, 16, 0.45);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  font-size: 0.875rem;
+  color: var(--ink);
+}
+
+.hint__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 0 0 rgba(246, 178, 74, 0.6);
+  animation: pulse 2s ease-out infinite;
+}
+
+.hint--touch { display: none; }
+
+@media (hover: none) {
+  .hint--mouse { display: none; }
+  .hint--touch { display: inline; }
+}
+
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(246, 178, 74, 0.6); }
+  100% { box-shadow: 0 0 0 12px rgba(246, 178, 74, 0); }
+}
+
+/* Thin progress bar along the bottom of the three video sections */
+.bar {
+  position: absolute;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: clamp(20px, 3.4vh, 36px);
+  height: 2px;
+  background: var(--line);
+  pointer-events: none;
+}
+
+.bar__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--amber);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.bar__knob {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 0 5px rgba(246, 178, 74, 0.22);
+}
+
+/* Shown only if a media file fails to load */
+.load-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 5;
+  transform: translate(-50%, -50%);
+  max-width: min(90%, 520px);
+  padding: 14px 18px;
+  border: 1px solid #ff8a7a;
+  border-radius: 8px;
+  background: rgba(40, 10, 8, 0.92);
+  color: #ffd9d3;
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+/* ---------- 1. Hero ---------- */
+.hero {
+  --x: 50%;
+  --y: 45%;
+  --r: clamp(170px, 30vmax, 540px);
+  cursor: crosshair;
+  touch-action: pan-y;
+}
+
+.hero__reveal {
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  -webkit-mask-image: radial-gradient(circle var(--r) at var(--x) var(--y), #000 0%, #000 42%, transparent 100%);
+  mask-image: radial-gradient(circle var(--r) at var(--x) var(--y), #000 0%, #000 42%, transparent 100%);
+}
+
+.hero.is-lit .hero__reveal { opacity: 1; }
+
+/* ---------- 3. Scroll scrub ---------- */
+.scrub {
+  position: relative;
+  height: 350vh;
+  background: var(--bg);
+}
+
+.scrub__stage {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  min-height: 420px;
+  overflow: hidden;
+}
+
+/* ---------- 4. Mouse scrub ---------- */
+.mouse {
+  cursor: ew-resize;
+  touch-action: pan-y;
+}
+
+/* ---------- 5. Call to action ---------- */
+.cta {
+  display: grid;
+  place-items: center;
+  padding: var(--pad);
+  text-align: center;
+  background:
+    radial-gradient(60% 55% at 50% 58%, rgba(246, 178, 74, 0.22) 0%, rgba(246, 178, 74, 0) 70%),
+    linear-gradient(rgba(7, 11, 16, 0.78), rgba(7, 11, 16, 0.9)),
+    url("assets/hero-reveal.jpg") center / cover no-repeat,
+    var(--bg);
+}
+
+.cta__inner { max-width: 900px; }
+
+.button {
+  display: inline-block;
+  margin-top: clamp(28px, 4vw, 48px);
+  padding: 18px 34px;
+  border-radius: 999px;
+  background: var(--amber);
+  color: var(--amber-ink);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  box-shadow: 0 10px 40px rgba(246, 178, 74, 0.28);
+  transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.button:hover {
+  background: #ffc163;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 48px rgba(246, 178, 74, 0.4);
+}
+
+.button:active {
+  background: var(--amber-deep);
+  transform: translateY(0);
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.note {
+  margin-top: 16px;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+/* ---------- Motion preferences ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hint__dot { animation: none; }
+  .hero__reveal,
+  .button { transition: none; }
+}
+
+/* ---------- Continuous flow ---------- */
+.index,.nav,.bar,.eyebrow{display:none !important;}
+.panel,.scrub,.scrub__stage{margin:0;border:0;min-height:0;}
+main>section+section{
+  margin-top:-40vh;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 40vh);
+  mask-image:linear-gradient(to bottom,transparent 0,#000 40vh);
+}
+main>section+section .scrim{background:linear-gradient(to top,rgba(7,11,16,.75) 0%,rgba(7,11,16,0) 45%);}
+main>section .copy{bottom:clamp(64px,14vh,140px);}
+.cta{background:
+    radial-gradient(60% 55% at 50% 58%, rgba(246,178,74,.18) 0%, rgba(246,178,74,0) 70%),
+    linear-gradient(rgba(7,11,16,.55), rgba(7,11,16,.85)),
+    url("assets/hero-reveal.jpg") center / cover no-repeat, var(--bg);}
+.site-header,.site-footer{display:none !important;}
+.agent{background:rgba(7,11,16,.35);border-color:rgba(245,242,235,.14);backdrop-filter:blur(10px);}
+html{scroll-behavior:smooth;}
+body{overflow-x:hidden;}
+.copy,.index,.bar,.cta__inner{z-index:2;}
+.cta{height:auto;min-height:100svh;}
+/* ---------- Header ---------- */
+.site-header{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+  padding:14px var(--pad);pointer-events:none;}
+.site-header>*{pointer-events:auto;}
+.brand{display:flex;gap:10px;align-items:center;color:var(--ink);text-decoration:none;}
+.brand__mark{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:var(--amber);color:var(--amber-ink);font-weight:800;font-size:.75rem;}
+.brand b{display:block;font-size:.95rem;line-height:1}.brand small{display:block;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);}
+.nav{display:flex;gap:4px;padding:5px;border:1px solid var(--line);border-radius:999px;background:rgba(7,11,16,.55);backdrop-filter:blur(8px);}
+.nav a{padding:7px 12px;border-radius:999px;color:var(--ink);font-size:.8rem;text-decoration:none;}
+.nav a:hover,.nav a:focus-visible{background:var(--amber);color:var(--amber-ink);}
+@media (max-width:760px){.nav{display:none;}}
+/* ---------- Horace contact ---------- */
+.agent{margin:clamp(36px,5vw,64px) auto 0;max-width:640px;text-align:left;padding:24px;border:1px solid var(--line);border-radius:16px;background:rgba(7,11,16,.6);}
+.agent__role{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);font-weight:600;}
+.agent h3{margin:4px 0 10px;font-size:1.35rem;}
+.agent q{display:block;color:var(--muted);font-size:.95rem;quotes:"“" "”";}
+.agent__links{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+.agent__links a{padding:11px 18px;border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;font-size:.9rem;font-weight:600;}
+.agent__links a:hover,.agent__links a:focus-visible{border-color:var(--amber);color:var(--amber);}
+.site-footer{display:flex;justify-content:space-between;gap:16px;padding:24px var(--pad);font-size:.8rem;color:var(--muted);background:var(--bg);}
+.site-footer a{color:var(--muted);}
+
+</style>
+<style>
+main{position:relative;height:700vh;}
+main>section,main>section+section{position:fixed!important;inset:0;height:100vh!important;min-height:0!important;margin:0!important;-webkit-mask-image:none!important;mask-image:none!important;will-change:opacity,transform;opacity:0;}
+#hero{opacity:1;z-index:1}#film-section{z-index:2}#scroll-section{z-index:3}#mouse-section{z-index:4}#quote{z-index:5;overflow-y:auto;display:grid;place-items:center;}
+.scrub__stage{position:absolute!important;inset:0;height:100%!important;}
+.copy,.cta__inner{will-change:opacity,transform;}
+.load-error{display:none!important;}
+main>section .cover,main>section .scrim{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover;}
+.copy{position:absolute!important;left:var(--pad,32px);right:var(--pad,32px);bottom:clamp(64px,14vh,140px);}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="https://www.sunrun.com/" target="_blank" rel="noopener"><span class="brand__mark">SR</span><span><b>sunrun</b><small>PowerGenie</small></span></a>
+    <nav class="nav" aria-label="Sections"><a href="#hero">Reveal</a><a href="#film-section">Film</a><a href="#scroll-section">24h flow</a><a href="#mouse-section">Battery</a><a href="#quote">Get a quote</a></nav>
+  </header>
+  <main>
+
+    <!-- 1. Hero: cursor reveals the lit house -->
+    <section id="hero" class="panel hero" aria-label="When the grid goes dark">
+      <img class="cover hero__front" src="assets/hero-front.jpg" alt="A two-storey house standing dark under storm clouds at dusk" data-required="assets/hero-front.jpg">
+      <img class="cover hero__reveal" src="assets/hero-reveal.jpg" alt="" aria-hidden="true" data-required="assets/hero-reveal.jpg">
+      <div class="scrim" aria-hidden="true"></div>
+      <p class="index" aria-hidden="true">01 / 05</p>
+      <div class="copy">
+        <p class="eyebrow">Home solar + battery</p>
+        <h1>The storm takes the grid.<br>Not your lights.</h1>
+        <p class="hint">
+          <span class="hint__dot" aria-hidden="true"></span>
+          <span class="hint--mouse">Move your cursor over the house</span>
+          <span class="hint--touch">Touch and drag over the house</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. Film: one scroll plays it through to the end -->
+    <section id="film-section" class="panel film" aria-label="Short film">
+      <video id="film" class="cover" src="assets/film.mp4" muted playsinline preload="auto" data-required="assets/film.mp4"></video>
+      <div class="scrim" aria-hidden="true"></div>
+      <p class="index" aria-hidden="true">02 / 05</p>
+      <div class="copy">
+        <p class="eyebrow">The short film</p>
+        <h2>Sun on the roof.<br>Power in the wall.</h2>
+      </div>
+      <div class="bar" aria-hidden="true"><span class="bar__fill" id="film-bar"></span></div>
+    </section>
+
+    <!-- 3. Scroll scrub: scrolling moves the video forward and back -->
+    <section id="scroll-section" class="scrub" aria-label="Scroll to bring the house back to life">
+      <div class="scrub__stage">
+        <video id="scroll-video" class="cover" src="assets/scroll-scrub.mp4" muted playsinline preload="auto" data-required="assets/scroll-scrub.mp4"></video>
+        <div class="scrim" aria-hidden="true"></div>
+        <p class="index" aria-hidden="true">03 / 05</p>
+        <div class="copy">
+          <p class="eyebrow">Scroll</p>
+          <h2>Bring the house<br>back to life.</h2>
+          <p class="hint">
+            <span class="hint__dot" aria-hidden="true"></span>
+            <span>Scroll down to move forward, up to go back</span>
+          </p>
+        </div>
+        <div class="bar" aria-hidden="true"><span class="bar__fill" id="scroll-bar"></span></div>
+      </div>
+    </section>
+
+    <!-- 4. Mouse scrub: moving left and right moves the video -->
+    <section id="mouse-section" class="panel mouse" aria-label="Follow the energy">
+      <video id="mouse-video" class="cover" src="assets/mouse-scrub.mp4" muted playsinline preload="auto" data-required="assets/mouse-scrub.mp4"></video>
+      <div class="scrim" aria-hidden="true"></div>
+      <p class="index" aria-hidden="true">04 / 05</p>
+      <div class="copy">
+        <p class="eyebrow">Look closer</p>
+        <h2>Follow the energy.</h2>
+        <p class="hint">
+          <span class="hint__dot" aria-hidden="true"></span>
+          <span class="hint--mouse">Move your mouse left and right</span>
+          <span class="hint--touch">Drag left and right</span>
+        </p>
+      </div>
+      <div class="bar bar--knob" aria-hidden="true"><span class="bar__knob" id="mouse-knob"></span></div>
+    </section>
+
+    <!-- 5. Call to action -->
+    <section id="quote" class="panel cta" aria-label="Get a free quote">
+      <p class="index" aria-hidden="true">05 / 05</p>
+      <div class="cta__inner">
+        <p class="eyebrow">Your turn</p>
+        <h2>See what your roof can do.</h2>
+        <a class="button" id="quote-link" href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" target="_blank" rel="noopener">Get my free quote</a>
+        <p class="note">Opens the quote form in a new tab.</p>
+        <div class="agent">
+          <p class="agent__role">The Block Sales Expert Team Lead</p>
+          <h3>Horace Lawrence · PowerGenie</h3>
+          <q>I’m dedicated to making the process of going solar as easy as possible. Solar lets you lock in a rate to avoid rising utility costs, gives you a more reliable source of energy, and with a battery can protect you during blackouts. I’d love to chat with you or your friends about how Sunrun could improve your life!</q>
+          <div class="agent__links"><a href="tel:5102417007">Call 510-241-7007</a><a href="mailto:horace.lawrence@sunrun.com?subject=Sunrun%20Solar%20%2B%20Battery%20Consultation">Email Horace</a></div>
+        </div>
+      
+      </div>
+    </section>
+
+  </main>
+  <footer class="site-footer"><span>© Sunrun. All rights reserved.</span><a href="https://www.sunrun.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a></footer>
+  <script>
+(function(){'use strict';
+var clamp=function(v,a,b){return Math.min(b,Math.max(a,v));};
+var vh=function(){return window.innerHeight;};
+var L=[['hero',0,1],['film-section',1,2],['scroll-section',2,4],['mouse-section',4,5],['quote',5,6]].map(function(d){return{el:document.getElementById(d[0]),s:d[1],e:d[2]};});
+var FADE=0.6,p=0,active=null;
+var film=document.getElementById('film'),sv=document.getElementById('scroll-video'),mv=document.getElementById('mouse-video'),hero=document.getElementById('hero');
+function scrub(v){var t=0,c=0;(function tick(){var d=v.duration;if(d&&isFinite(d)){var g=t*Math.max(0,d-.05);c+=(g-c)*.2;if(!v.seeking&&Math.abs(v.currentTime-c)>.012)v.currentTime=c;}requestAnimationFrame(tick);})();return function(x){t=clamp(x,0,1);};}
+var setScroll=sv?scrub(sv):function(){},setMouse=mv?scrub(mv):function(){};
+function render(){p=window.scrollY/vh();active=null;
+ L.forEach(function(l,i){if(!l.el)return;
+  var o=i===0?1:clamp((p-l.s)/FADE+1,0,1);
+  l.el.style.opacity=o;l.el.style.transform='scale('+(1.06-0.06*o)+')';
+  var c=l.el.querySelector('.copy,.cta__inner');
+  if(c){var out=i===L.length-1?0:clamp((p-l.e+FADE+0.2)/FADE,0,1),inn=i===0?1:clamp((p-l.s+0.25)/0.35,0,1);
+   c.style.opacity=Math.min(inn,1-out);c.style.transform='translateY('+((1-inn)*40-out*40)+'px)';}
+  if(o>0.5)active=l;});
+ L.forEach(function(l){if(l.el)l.el.style.pointerEvents=l===active?'auto':'none';});
+ setScroll((p-2)/2);
+ if(film){if(p>0.7&&p<2.4){if(film.paused&&!film.ended)film.play().catch(function(){});}
+  else{if(!film.paused)film.pause();if(p<0.4||p>2.6)film.currentTime=0;}}
+}
+window.addEventListener('scroll',render,{passive:true});window.addEventListener('resize',render);render();
+window.addEventListener('pointermove',function(e){
+ if(active&&active.el===hero){hero.style.setProperty('--x',e.clientX+'px');hero.style.setProperty('--y',e.clientY+'px');hero.classList.add('is-lit');}
+ if(active&&active.el&&active.el.id==='mouse-section')setMouse(e.clientX/window.innerWidth);});
+document.addEventListener('pointerleave',function(){hero&&hero.classList.remove('is-lit');});
+var woken=false;window.addEventListener('touchstart',function(){if(woken)return;woken=true;[sv,mv].forEach(function(v){v&&v.play().then(function(){v.pause();}).catch(function(){});});},{passive:true});
+})();
+</script>
+</body>
+</html>
