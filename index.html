@@ -347,7 +347,19 @@ main>section,main>section+section{position:fixed!important;inset:0;height:100vh!
 .load-error{display:none!important;}
 main>section .cover,main>section .scrim{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover;}
 .copy{position:absolute!important;left:var(--pad,32px);right:var(--pad,32px);bottom:clamp(64px,14vh,140px);}
+@supports (height:100dvh){main>section,main>section+section{height:100dvh!important;}}
+@media (max-width:760px){
+  :root{--pad:20px;}
+  .copy{bottom:clamp(48px,10dvh,96px);max-width:none;}
+  .copy h1,.copy h2{font-size:clamp(1.9rem,8.5vw,2.6rem)!important;line-height:1.1;}
+  .copy p{font-size:1rem!important;}
+  .site-header{padding:12px 20px;}
+  #quote{padding:80px 20px 32px;align-items:start;}
+}
 </style>
+<script>
+document.addEventListener('touchstart',function prime(){document.querySelectorAll('video').forEach(function(v){var p=v.play();if(p&&p.then)p.then(function(){if(v.id!=='film')v.pause();}).catch(function(){});});},{once:true,passive:true});
+</script>
 </head>
 <body>
   <header class="site-header">
