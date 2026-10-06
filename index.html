@@ -358,6 +358,7 @@ main>section .cover,main>section .scrim{position:absolute!important;inset:0!impo
 }
 </style>
 <script>
+if(window.matchMedia('(max-width:900px),(hover:none)').matches){document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('video[src$=".mp4"]').forEach(function(v){v.src=v.getAttribute('src').replace(/\.mp4$/,'-m.mp4');v.load();});});}
 document.addEventListener('touchstart',function prime(){document.querySelectorAll('video').forEach(function(v){var p=v.play();if(p&&p.then)p.then(function(){if(v.id!=='film')v.pause();}).catch(function(){});});},{once:true,passive:true});
 </script>
 </head>
