@@ -1,0 +1,62 @@
+/* Lead form for pages that don't carry index.html's inline styles (e.g. atoms-combined.html).
+   Same markup and ids as index.html, so assets/form.js drives both. Scoped under .lead-card. */
+[hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.lead-card {
+  --navy: #05193d; --blue: #0031ff; --text: #05193d; --muted: #4a5670; --border: #d5d9e3;
+  --error: #c70039; --ok: #0a7a4b; --r-sm: 10px;
+  background: #fff; color: var(--text); border-radius: 24px; padding: 28px;
+  box-shadow: 0 25px 60px rgba(15,23,42,.14), 0 0 0 1px rgba(15,23,42,.06);
+  font-size: 16px; line-height: 1.5;
+}
+.lead-card svg.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.lead-card h2 { margin: 0 0 4px; font-size: 23px; font-weight: 700; letter-spacing: -.01em; color: var(--navy); }
+.lead-card .sub { margin: 0 0 18px; color: var(--muted); font-size: 14.5px; }
+.lead-card a { color: var(--blue); text-decoration: underline; text-underline-offset: 2px; }
+
+.lead-card .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 5px; background: #eef1f8; border-radius: 14px; border: 0; margin: 0 0 18px; position: relative; }
+.lead-card .seg input { position: absolute; opacity: 0; pointer-events: none; }
+.lead-card .seg label { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 6px 10px; border-radius: 10px; font-weight: 700; font-size: 14px; color: var(--muted); cursor: pointer; text-align: center; transition: background-color .2s ease, color .2s ease, box-shadow .2s ease; }
+.lead-card .seg input:checked + label { background: #fff; color: var(--blue); box-shadow: 0 4px 12px rgba(5,25,61,.15); }
+.lead-card .seg input:focus-visible + label { outline: 3px solid var(--blue); outline-offset: 1px; }
+
+.lead-card .grid2 { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; margin-bottom: 12px; }
+.lead-card .grid2.addr { grid-template-columns: minmax(0,2fr) minmax(0,1fr); }
+.lead-card .field { display: grid; gap: 5px; margin-bottom: 12px; align-content: start; }
+.lead-card .grid2 .field { margin-bottom: 0; }
+.lead-card .field label { font-size: 13.5px; font-weight: 700; color: var(--navy); }
+.lead-card .field input { width: 100%; min-height: 46px; padding: 0 14px; font: inherit; font-size: 16px; color: var(--text); background: #fff; border: 1.5px solid var(--border); border-radius: var(--r-sm); transition: border-color .15s ease, box-shadow .15s ease; }
+.lead-card .field input:hover { border-color: #929fb8; }
+.lead-card .field input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(0,49,255,.15); }
+.lead-card .field[data-invalid] input { border-color: var(--error); background: #fff8f8; }
+.lead-card .err { display: none; font-size: 12.5px; color: var(--error); font-weight: 500; }
+.lead-card .field[data-invalid] .err { display: block; }
+
+.lead-card fieldset.group { border: 0; padding: 0; margin: 0; min-width: 0; }
+.lead-card .legend { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 4px 0 10px; padding: 0; }
+.lead-card .check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; margin: 0 0 6px; cursor: pointer; min-height: 40px; padding-top: 6px; color: var(--navy); font-weight: 500; }
+.lead-card .check input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--blue); flex: none; }
+.lead-card .reveal { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .25s ease; }
+.lead-card .reveal > div { overflow: hidden; }
+.lead-card .reveal.open { grid-template-rows: 1fr; }
+.lead-card .reveal.open > div { padding-top: 4px; }
+
+.lead-card .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; font-weight: 700; line-height: 1; cursor: pointer; border: 0; }
+.lead-card .btn-primary { color: #fff; background: var(--blue); width: 100%; min-height: 54px; font-size: 16px; border-radius: var(--r-sm); margin-top: 10px; box-shadow: 0 6px 20px rgba(0,49,255,.3); transition: background-color .2s ease, box-shadow .2s ease; }
+.lead-card .btn-primary:hover { background: #0027cc; box-shadow: 0 10px 25px rgba(0,49,255,.45); }
+.lead-card .btn-primary:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+.lead-card .btn-primary[disabled] { opacity: .7; cursor: progress; }
+.lead-card .consent { font-size: 12px; line-height: 1.45; color: var(--muted); margin: 12px 0 0; }
+
+.lead-card .success { text-align: center; padding: 24px 8px; }
+.lead-card .success:focus { outline: none; }
+.lead-card .success .badge { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 16px; display: grid; place-items: center; background: #e5f5ee; color: var(--ok); }
+.lead-card .success .badge svg.i { width: 30px; height: 30px; }
+
+@media (max-width: 480px) {
+  .lead-card { padding: 20px; border-radius: 20px; }
+  .lead-card .grid2, .lead-card .grid2.addr { grid-template-columns: minmax(0,1fr); }
+  .lead-card .seg label svg { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .lead-card * { transition: none !important; } }

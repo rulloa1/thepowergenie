@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Go solar with Horace Lawrence | Sunrun (3D Interactive Experience)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<!-- Three.js is loaded by assets/scene.js on desktop only -->
+<script src="assets/scene.js" defer></script>
+<link rel="stylesheet" href="assets/reveal-scrub.css"><script src="assets/reveal-scrub.js" defer></script><script src="assets/video-modules.js" defer></script>
+
+<style>
+  :root {
+    --navy: #05193d; --navy-2: #0b2554; --blue: #0031ff; --blue-hover: #0027cc;
+    --sun: #ffb81c; --bg: #070e20; --card: rgba(255, 255, 255, 0.95); --text: #05193d; --muted: #4a5670;
+    --border: #d5d9e3; --error: #c70039; --ok: #0a7a4b;
+    --r-sm: 10px; --r-md: 16px; --r-lg: 24px;
+    --shadow-3d: 0 20px 50px rgba(0, 0, 0, 0.35), 0 0 30px rgba(0, 49, 255, 0.15);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body { margin: 0; font: 400 16px/1.55 "DM Sans", system-ui, sans-serif; color: #fff; background: var(--navy); overflow-x: hidden; }
+  img { max-width: 100%; display: block; }
+  a { color: var(--sun); }
+  :focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; border-radius: 6px; }
+  .wrap { width: min(1200px, 100% - 40px); margin-inline: auto; position: relative; z-index: 2; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  [hidden] { display: none !important; }
+
+  .concept { background: linear-gradient(90deg, #ffb81c, #ffd56b, #ffb81c); color: var(--navy); font-size: 13px; text-align: center; padding: 7px 12px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; box-shadow: 0 2px 10px rgba(255,184,28,.4); z-index: 20; position: relative; }
+
+  header.top { position: sticky; top: 0; z-index: 100; background: rgba(5, 25, 61, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+  header.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  header.top img { height: 26px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 22px; border-radius: 999px; font-family: inherit; font-weight: 700; font-size: 15px; line-height: 1; text-decoration: none; cursor: pointer; border: 0; transition: all .25s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
+  .btn-ghost { color: #fff; background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.3); backdrop-filter: blur(4px); }
+  .btn-ghost:hover { background: var(--sun); color: var(--navy); border-color: var(--sun); transform: translateY(-3px) translateZ(10px); box-shadow: 0 8px 20px rgba(255,184,28,0.4); }
+  .btn-primary { color: #fff; background: linear-gradient(135deg, var(--blue) 0%, #3b62ff 100%); width: 100%; min-height: 54px; font-size: 16px; border-radius: var(--r-sm); box-shadow: 0 6px 20px rgba(0,49,255,0.4); }
+  .btn-primary:hover { background: linear-gradient(135deg, #0026cf 0%, #2950f5 100%); transform: translateY(-2px) translateZ(15px); box-shadow: 0 10px 25px rgba(0,49,255,0.6); }
+  .btn-primary:active { transform: translateY(1px); }
+  .btn-primary[disabled] { opacity: .7; cursor: progress; }
+  svg.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Hero & 3D Stage */
+  .hero { position: relative; min-height: max(780px, calc(100vh - 102px)); overflow: hidden; background: radial-gradient(circle at 30% 20%, #0d2b6b 0%, #04122c 65%, #020919 100%); display: flex; }
+
+  /* Full-bleed 3D stage behind the content; drag empty space to turn the house */
+  #canvas-container { position: absolute; inset: 0; z-index: 1; }
+  #canvas-container canvas { display: block; cursor: grab; touch-action: pan-y; }
+  .hero.dragging, .hero.dragging canvas { cursor: grabbing; }
+  .hero::after { content: ""; position: absolute; inset: 0 0 auto 0; height: 46%; z-index: 2; pointer-events: none; background: linear-gradient(180deg, rgba(2,9,25,.55), transparent); }
+
+  .scene-controls {
+    display: flex; flex-wrap: wrap; gap: 8px; padding: 6px; align-self: flex-start;
+    background: rgba(5, 25, 61, 0.7); backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 999px; box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+  }
+  .scene-btn {
+    background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-family: inherit;
+    min-height: 36px; padding: 0 14px; border-radius: 999px; font-size: 13px; font-weight: 500; cursor: pointer;
+    display: flex; align-items: center; gap: 6px; transition: background-color .2s ease, color .2s ease;
+  }
+  .scene-btn svg.i { width: 16px; height: 16px; }
+  .scene-btn:hover { background: rgba(255,255,255,0.16); }
+  .scene-btn[aria-pressed="true"] { background: var(--sun); color: var(--navy); border-color: var(--sun); font-weight: 700; }
+
+  .hero-grid { position: relative; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,440px); gap: 48px; padding: 48px 0 32px; align-items: stretch; z-index: 5; pointer-events: none; }
+  .hero-grid > .card { pointer-events: auto; align-self: start; }
+
+  /* Left column: headline on top, the 3D house fills the space below */
+  .hero-left { display: flex; flex-direction: column; min-width: 0; }
+  .hero-copy { pointer-events: auto; max-width: 620px; text-shadow: 0 2px 16px rgba(2,9,25,.6); }
+  #house-anchor { flex: 1; min-height: 320px; }
+  .drag-hint { align-self: center; padding: 0 10px 0 4px; font-size: 12.5px; color: #b4c7f7; }
+  .hero-left .scene-controls { pointer-events: auto; }
+  .hero:not(.has-3d) #house-anchor, .hero:not(.has-3d) .scene-controls { display: none; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--sun); letter-spacing: .08em; text-transform: uppercase; background: rgba(255, 184, 28, 0.12); padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 184, 28, 0.3); }
+  .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--sun); box-shadow: 0 0 10px var(--sun); }
+  h1 { font-size: clamp(34px, 4.2vw, 48px); line-height: 1.1; letter-spacing: -.02em; margin: 16px 0 16px; font-weight: 700; text-wrap: balance; color: #fff; text-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+  h1 em { font-style: normal; color: var(--sun); background: linear-gradient(135deg, #ffcf56, #ffb81c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .lede { font-size: 17px; color: #d0dcfa; max-width: 50ch; margin: 0 0 24px; line-height: 1.6; }
+
+  /* Horace 3D Badge */
+  .rep { display: flex; gap: 16px; align-items: center; padding: 16px; border-radius: var(--r-md); background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); max-width: 480px; backdrop-filter: blur(8px); transform-style: preserve-3d; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .rep:hover { transform: translateZ(15px) scale(1.02); background: rgba(255,255,255,0.14); border-color: rgba(255,184,28,0.5); }
+  .avatar { width: 60px; height: 60px; border-radius: 50%; flex: none; display: grid; place-items: center; font-weight: 700; font-size: 20px; color: var(--navy); background: linear-gradient(135deg, var(--sun), #ffd77a); box-shadow: 0 0 20px rgba(255,184,28,0.5); }
+  .rep b { display: block; font-size: 17px; color: #fff; }
+  .rep span { display: block; font-size: 13.5px; color: #b4c7f7; }
+  .rep-links { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 6px; }
+  .rep-links a { color: #fff; font-size: 13.5px; display: inline-flex; align-items: center; gap: 6px; min-height: 30px; text-decoration: none; font-weight: 500; }
+  .rep-links a:hover { color: var(--sun); text-decoration: underline; }
+  .rep-links svg.i { width: 15px; height: 15px; }
+
+  .benefit-strip { background: #04122c; border-top: 1px solid rgba(255,255,255,0.1); padding: 28px 0; position: relative; z-index: 5; }
+  .benefits { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; }
+  .benefits li { display: flex; gap: 12px; align-items: flex-start; color: #e6ecfb; font-size: 14.5px; }
+  .benefits li > div { min-width: 0; }
+  .benefits .ico { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: rgba(255,184,28,.2); color: var(--sun); flex: none; border: 1px solid rgba(255,184,28,0.4); }
+  .benefits b { color: #fff; font-weight: 700; display: block; }
+
+  /* Interactive 3D Form Card */
+  .card {
+    background: var(--card); color: var(--text); border-radius: var(--r-lg);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,184,28,0.35), 0 0 40px rgba(0,49,255,0.25); padding: 28px;
+    position: relative;
+  }
+  .card h2 { margin: 0 0 4px; font-size: 23px; letter-spacing: -.01em; color: var(--navy); }
+  .card .sub { margin: 0 0 18px; color: var(--muted); font-size: 14.5px; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 5px; background: #eef1f8; border-radius: 14px; border: 0; margin: 0 0 18px; position: relative; }
+  .seg input { position: absolute; opacity: 0; pointer-events: none; }
+  .seg label { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 6px 10px; border-radius: 10px; font-weight: 700; font-size: 14px; color: var(--muted); cursor: pointer; text-align: center; transition: all .2s ease; }
+  .seg input:checked + label { background: #fff; color: var(--blue); box-shadow: 0 4px 12px rgba(5,25,61,.15); transform: translateZ(5px); }
+  .seg input:focus-visible + label { outline: 3px solid var(--blue); outline-offset: 1px; }
+  .grid2 { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; margin-bottom: 12px; }
+  .grid2.addr { grid-template-columns: minmax(0,2fr) minmax(0,1fr); }
+  .field { display: grid; gap: 5px; margin-bottom: 12px; align-content: start; }
+  .grid2 .field { margin-bottom: 0; }
+  .field label { font-size: 13.5px; font-weight: 700; color: var(--navy); }
+  .field input { width: 100%; min-height: 46px; padding: 0 14px; font: inherit; font-size: 15px; color: var(--text); background: #fff; border: 1.5px solid var(--border); border-radius: var(--r-sm); transition: all .15s ease; }
+  .field input:hover { border-color: #929fb8; }
+  .field input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(0,49,255,.15); }
+  .field[data-invalid] input { border-color: var(--error); background: #fff8f8; }
+  .err { display: none; font-size: 12.5px; color: var(--error); font-weight: 500; }
+  .field[data-invalid] .err { display: block; }
+  fieldset.group { border: 0; padding: 0; margin: 0; min-width: 0; }
+  .legend { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 4px 0 10px; padding: 0; }
+  .check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; margin: 0 0 6px; cursor: pointer; min-height: 40px; padding-top: 6px; color: var(--navy); font-weight: 500; }
+  .check input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--blue); flex: none; }
+  .reveal { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .25s ease; }
+  .reveal > div { overflow: hidden; }
+  .reveal.open { grid-template-rows: 1fr; }
+  .reveal.open > div { padding-top: 4px; }
+  #lead .btn-primary { margin-top: 10px; }
+  .consent { font-size: 12px; line-height: 1.45; color: var(--muted); margin: 12px 0 0; }
+  .success { text-align: center; padding: 24px 8px; }
+  .success:focus { outline: none; }
+  .success .badge { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 16px; display: grid; place-items: center; background: #e5f5ee; color: var(--ok); box-shadow: 0 0 20px rgba(10,122,75,0.3); }
+  .success .badge svg.i { width: 30px; height: 30px; }
+
+  /* 3D Solar Interactive Simulator Bar */
+  .simulator-bar {
+    background: linear-gradient(135deg, rgba(11,37,84,0.9), rgba(5,25,61,0.95));
+    border-top: 1px solid rgba(255,255,255,0.15); border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding: 30px 0; position: relative; z-index: 10; box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+  }
+  .sim-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; align-items: center; }
+  .sim-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); padding: 20px; border-radius: var(--r-md); backdrop-filter: blur(8px); transform-style: preserve-3d; transition: transform 0.3s ease; }
+  .sim-card:hover { transform: translateY(-4px) translateZ(10px); border-color: var(--sun); }
+  .sim-title { margin: 0 0 18px; font-size: 22px; letter-spacing: -.01em; }
+  .sim-card h3 { margin: 0 0 8px; font-size: 15px; color: var(--sun); display: flex; align-items: center; gap: 8px; }
+  .sim-val { font-size: 28px; font-weight: 700; color: #fff; margin: 4px 0; font-variant-numeric: tabular-nums; }
+  .sim-sub { font-size: 13px; color: #b4c7f7; }
+  .sim-disclaimer { margin: 16px 0 0; font-size: 12.5px; color: #8fa3cf; }
+  .sim-slider { width: 100%; accent-color: var(--sun); cursor: pointer; margin-top: 8px; }
+
+  /* 3D Steps Section */
+  .steps { padding: 80px 0; background: radial-gradient(circle at 50% 0%, #0c2049, #05193d); position: relative; z-index: 5; }
+  .steps h2 { font-size: clamp(28px, 3.4vw, 38px); letter-spacing: -.015em; margin: 0 0 8px; text-align: center; text-wrap: balance; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.4); }
+  .steps .intro { text-align: center; color: #b4c7f7; margin: 0 auto 48px; max-width: 56ch; font-size: 17px; }
+  .steps ol { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 28px; counter-reset: s; }
+  .steps li {
+    background: rgba(255, 255, 255, 0.05); border-radius: var(--r-md); padding: 32px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.12); counter-increment: s; transform-style: preserve-3d;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(10px); position: relative; overflow: hidden;
+  }
+  .steps li::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--sun), transparent); opacity: 0; transition: opacity 0.3s ease;
+  }
+  .steps li:hover {
+    transform: translateY(-8px) rotateX(4deg) translateZ(15px); background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 184, 28, 0.5); box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(255,184,28,0.2);
+  }
+  .steps li:hover::after { opacity: 1; }
+  .steps li::before { content: counter(s); display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--sun), #ffcf56); color: var(--navy); font-weight: 700; font-size: 18px; margin-bottom: 18px; box-shadow: 0 0 15px rgba(255,184,28,0.4); }
+  .steps h3 { margin: 0 0 8px; font-size: 20px; color: #fff; }
+  .steps li p { margin: 0; color: #c0d1f7; font-size: 15px; line-height: 1.6; }
+
+  footer { background: #020919; color: #a4b9e6; padding: 44px 0; font-size: 14px; border-top: 1px solid rgba(255,255,255,0.1); position: relative; z-index: 5; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 20px 32px; align-items: center; justify-content: space-between; }
+  footer img { height: 28px; width: auto; }
+  footer nav { display: flex; flex-wrap: wrap; gap: 0 24px; }
+  footer a { color: #fff; text-decoration: none; display: inline-flex; min-height: 44px; align-items: center; font-weight: 500; transition: color 0.2s ease; }
+  footer a:hover { color: var(--sun); }
+
+  @media (max-width: 960px) {
+    .hero { min-height: auto; }
+    .hero-grid { grid-template-columns: minmax(0,1fr); gap: 28px; padding: 28px 0 40px; }
+    .benefits { grid-template-columns: minmax(0,1fr); gap: 14px; }
+    .steps ol { grid-template-columns: minmax(0,1fr); }
+    .steps { padding: 48px 0; }
+  }
+  @media (max-width: 480px) {
+    .card { padding: 20px; border-radius: 20px; }
+    .grid2, .grid2.addr { grid-template-columns: minmax(0,1fr); }
+    header.top .btn-ghost span { display: none; }
+    header.top .btn-ghost { padding: 0 12px; width: 44px; }
+    .lede { font-size: 16px; margin-bottom: 18px; }
+    .rep { padding: 12px; }
+    .seg label svg { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="concept" role="note">Design concept preview &bull; This form does not submit anything</div>
+
+<header class="top">
+  <div class="wrap">
+    <a href="https://www.sunrun.com" aria-label="Sunrun home"><img src="assets/SunrunLogo_White_PNG.png" alt="Sunrun" width="137" height="26"></a>
+    <a class="btn btn-ghost" href="tel:+15102417007" aria-label="Call Horace at 510-241-7007">
+      <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+      <span>510-241-7007</span>
+    </a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <!-- Full-bleed 3D stage (desktop only, see assets/scene.js) -->
+    <div id="canvas-container" aria-hidden="true"></div>
+
+    <div class="wrap hero-grid">
+      <div class="hero-left">
+      <div class="hero-copy">
+        <span class="eyebrow">Your local Sunrun expert</span>
+        <h1>Lock in your energy rate with <em>Horace</em>.</h1>
+        <p class="lede">I make going solar as easy as possible: one conversation, no pressure, and a plan custom built for your roof and home battery.</p>
+
+        <div class="rep">
+          <div class="avatar" aria-hidden="true">HL</div>
+          <div>
+            <b>Horace Lawrence</b>
+            <span>The Block Sales Expert, Team Lead</span>
+            <div class="rep-links">
+              <a href="mailto:horace.lawrence@sunrun.com"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>Email me</a>
+              <a href="tel:+15102417007"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>510-241-7007</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="house-anchor"></div>
+      <div class="scene-controls" role="group" aria-label="3D scene">
+        <button type="button" class="scene-btn" data-scene="day" aria-pressed="true">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2"/></svg>Day cycle
+        </button>
+        <button type="button" class="scene-btn" data-scene="spin" aria-pressed="false">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>Spin house
+        </button>
+        <button type="button" class="scene-btn" data-scene="energy" aria-pressed="true">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Energy flow
+        </button>
+        <span class="drag-hint" aria-hidden="true">or drag the house</span>
+      </div>
+      </div>
+
+      <!-- Form Card -->
+      <div class="card" id="form-card">
+        <div id="form-view">
+          <h2>Let's talk solar</h2>
+          <p class="sub">Takes about a minute. Horace will reach out personally.</p>
+
+          <form id="lead" novalidate>
+            <fieldset class="seg">
+              <legend class="sr-only">Who is this for?</legend>
+              <input type="radio" name="mode" id="m-me" value="me" checked>
+              <label for="m-me"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>It's for me</label>
+              <input type="radio" name="mode" id="m-ref" value="ref">
+              <label for="m-ref"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M19 8v6M16 11h6"/></svg>Refer a friend</label>
+            </fieldset>
+
+            <!-- Referral mode -->
+            <div id="friend-first" hidden>
+              <fieldset class="group">
+                <legend class="legend">Who are you referring?</legend>
+                <div class="grid2">
+                  <div class="field"><label for="f-first">First name</label><input id="f-first" name="f_first" autocomplete="off" required><span class="err">Enter their first name</span></div>
+                  <div class="field"><label for="f-last">Last name</label><input id="f-last" name="f_last" autocomplete="off" required><span class="err">Enter their last name</span></div>
+                </div>
+                <div class="grid2">
+                  <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="f_phone" type="tel" inputmode="tel" autocomplete="off" required><span class="err">Enter a 10-digit phone number</span></div>
+                  <div class="field"><label for="f-email">Email</label><input id="f-email" name="f_email" type="email" autocomplete="off" required><span class="err">Enter a valid email</span></div>
+                </div>
+                <div class="field"><label for="f-how">How do you know each other?</label><input id="f-how" name="f_how" required><span class="err">Tell us how you know them</span></div>
+              </fieldset>
+              <p class="legend">About you</p>
+            </div>
+
+            <div class="grid2">
+              <div class="field"><label for="first">First name</label><input id="first" name="first" autocomplete="given-name" required><span class="err">Enter your first name</span></div>
+              <div class="field"><label for="last">Last name</label><input id="last" name="last" autocomplete="family-name" required><span class="err">Enter your last name</span></div>
+            </div>
+            <div class="grid2">
+              <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" required><span class="err">Enter a 10-digit phone number</span></div>
+              <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required><span class="err">Enter a valid email</span></div>
+            </div>
+            <div class="grid2 addr">
+              <div class="field"><label for="addr">Home address</label><input id="addr" name="addr" autocomplete="address-line1" required><span class="err">Enter your street address</span></div>
+              <div class="field"><label for="zip">ZIP</label><input id="zip" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" required><span class="err">Enter 5 digits</span></div>
+            </div>
+
+            <div id="me-extras">
+              <label class="check"><input type="checkbox" id="also-ref"> I also know someone who'd benefit from solar</label>
+              <div class="reveal" id="extra-friend"><div>
+                <fieldset class="group">
+                  <legend class="legend">Their details</legend>
+                  <div class="grid2">
+                    <div class="field"><label for="x-first">First name</label><input id="x-first" name="x_first" autocomplete="off" data-cond required><span class="err">Enter their first name</span></div>
+                    <div class="field"><label for="x-phone">Phone</label><input id="x-phone" name="x_phone" type="tel" inputmode="tel" autocomplete="off" data-cond required><span class="err">Enter a 10-digit phone number</span></div>
+                  </div>
+                </fieldset>
+              </div></div>
+              <label class="check"><input type="checkbox" name="community"> A community organization referred me to Sunrun</label>
+            </div>
+
+            <button class="btn btn-primary" type="submit" id="submit">Get my free solar plan</button>
+            <p class="consent" id="consent-me">By clicking above, I authorize Sunrun to call me and send pre-recorded messages and text messages to me about Sunrun products and services at the telephone number I entered above, using an autodialer, even if I am on a national or state "Do Not Call" list. Message and data rates may apply. I understand that consent here is not a condition of purchase. <a href="https://www.sunrun.com/privacy-policy">Privacy Policy</a></p>
+            <p class="consent" id="consent-ref" hidden>By submitting this information, you confirm that your referral has consented to receive calls/texts from Sunrun at the phone number entered above, with an autodialer, about product/service offers, even if the number is on a federal or state "Do Not Call" list. This consent is not conditioned on a purchase. <a href="https://www.sunrun.com/privacy-policy">Privacy Policy</a></p>
+          </form>
+        </div>
+
+        <div class="success" id="success" hidden tabindex="-1">
+          <div class="badge"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <h2 id="success-title">You're all set</h2>
+          <p class="sub" id="success-msg">Horace will reach out within one business day. Want to talk sooner? <a href="tel:+15102417007">Call 510-241-7007</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="benefit-strip" aria-label="Why go solar">
+    <div class="wrap">
+      <ul class="benefits">
+          <li><span class="ico"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><div><b>Lock in a rate</b>Protect yourself from rising utility costs.</div></li>
+          <li><span class="ico"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span><div><b>More reliable energy</b>Make your own power, right from your roof.</div></li>
+          <li><span class="ico"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="18" height="12" rx="2"/><path d="M22 11v4M7 13h2l-1 3 3-4H9l1-3"/></svg></span><div><b>Blackout protection</b>Add a battery and keep the lights on.</div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Solar simulator: drives the 3D house on desktop, works as plain numbers on phones -->
+  <section class="simulator-bar" aria-labelledby="sim-h">
+    <div class="wrap">
+      <h2 class="sim-title" id="sim-h">See how a day of solar works</h2>
+      <div class="sim-grid">
+        <div class="sim-card">
+          <h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2"/></svg>Time of day</h3>
+          <div class="sim-val" id="val-sun-time" aria-live="off">12:00 PM</div>
+          <input type="range" class="sim-slider" id="slider-sun" min="6" max="18" step="0.1" value="12" aria-label="Time of day">
+        </div>
+        <div class="sim-card">
+          <h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Solar panels</h3>
+          <div class="sim-val" id="val-panels">16 panels</div>
+          <div class="sim-sub" id="val-size">About a 6.4 kW system</div>
+          <input type="range" class="sim-slider" id="slider-panels" min="8" max="32" step="2" value="16" aria-label="Number of solar panels">
+        </div>
+        <div class="sim-card">
+          <h3><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Producing now</h3>
+          <div class="sim-val" id="val-output" style="color: var(--sun)">5.1 kW</div>
+          <div class="sim-sub" id="val-note">Powering the home, with extra charging the battery</div>
+        </div>
+      </div>
+      <p class="sim-disclaimer">Illustration only, assuming 400 W panels. Your real system size and output depend on your roof, location and usage.</p>
+    </div>
+  </section>
+
+  <section class="steps" aria-labelledby="steps-h">
+    <div class="wrap">
+      <h2 id="steps-h">How going solar with Horace works</h2>
+      <p class="intro">Clear steps and one point of contact from the first call to the day your system turns on.</p>
+      <ol>
+        <li><h3>Quick conversation</h3><p>Horace reviews your energy bill and goals with you. No pressure, no obligation.</p></li>
+        <li><h3>Custom design</h3><p>Sunrun designs a system for your roof, plus a battery if you want backup power.</p></li>
+        <li><h3>Install and save</h3><p>Sunrun handles permits and installation, and you start powering your home with the sun.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Interactive story: reveal -> scroll-triggered video -> scroll scrub -> mouse scrub -> finale (assets/reveal-scrub.js, assets/video-modules.js) -->
+  <section class="reveal-hero" id="reveal" aria-labelledby="reveal-h">
+    <img class="reveal-img" src="assets/powered-reveal.jpg" alt="The same home with solar panels on the roof and every window lit" width="2752" height="1536" loading="lazy" decoding="async">
+    <img class="reveal-img reveal-front" src="assets/blackout-front.jpg" alt="A dark two-story home under storm clouds during a power outage" width="2752" height="1536" loading="lazy" decoding="async">
+    <div class="reveal-copy">
+      <span class="eyebrow">Blackout protection</span>
+      <h2 id="reveal-h">When the grid goes dark, your home doesn't.</h2>
+      <p><span class="hint-fine">Move your cursor over the house</span><span class="hint-touch">Tap or drag on the house</span> to turn the power back on.</p>
+    </div>
+  </section>
+  <section class="push" id="push" aria-labelledby="push-h">
+    <video class="push-video" src="assets/battery-push-in.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+    <h2 class="sr-only" id="push-h">Your home battery, 100% self-powered</h2>
+    <p class="push-hint" aria-hidden="true">Scroll to step closer</p>
+    <p class="push-cap"><b>100% self-powered</b>Your battery shows exactly how much of your home runs on your own sun.</p>
+  </section>
+  <section class="scrub" id="scrub" aria-labelledby="scrub-h">
+    <div class="scrub-stage">
+      <video class="scrub-video" src="assets/day-night-timelapse.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+      <h2 class="sr-only" id="scrub-h">A day on solar, from storm to sunset</h2>
+      <p class="scrub-cap" data-from="0" data-to="0.3"><b>Morning</b>Even after a stormy night, your panels start producing as the sky clears.</p>
+      <p class="scrub-cap" data-from="0.3" data-to="0.66"><b>Midday</b>Extra sunshine charges your home battery.</p>
+      <p class="scrub-cap" data-from="0.66" data-to="1.01"><b>Evening</b>After sunset, the battery keeps the lights on.</p>
+      <div class="scrub-bar" aria-hidden="true"><span></span></div>
+    </div>
+  </section>
+  <section class="flow" id="flow" aria-labelledby="flow-h" tabindex="0">
+    <video class="flow-video" src="assets/battery-energy-flow.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+    <div class="flow-copy"><h2 id="flow-h">Follow the energy</h2><p><span class="hint-fine">Move your cursor left to right</span><span class="hint-touch">Drag left to right</span>: sun to battery to home.</p></div>
+    <ol class="flow-steps" aria-label="How the energy moves"><li>Solar panels</li><li>Battery stores it</li><li>Inverter</li><li>Powers your home</li></ol>
+  </section>
+</main>
+<div class="finale-spacer" aria-hidden="true"></div><!-- scroll room for the curtain: the story slides up off the fixed footer -->
+
+<footer class="finale" id="finale" aria-labelledby="finale-h">
+  <div class="wrap finale-main">
+    <span class="eyebrow">Free consultation</span>
+    <h2 id="finale-h">Keep your lights on. <em>Talk to Horace.</em></h2>
+    <p class="finale-lede">One conversation, no pressure: a solar and battery plan built for your roof, your bill and the next blackout.</p>
+    <div class="finale-cta">
+      <a class="btn btn-sun" href="tel:+15102417007"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>Call 510-241-7007</a>
+      <a class="btn btn-ghost" href="mailto:horace.lawrence@sunrun.com"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>horace.lawrence@sunrun.com</a>
+    </div>
+    <a class="finale-form" href="#form-card">Or request your free plan online</a>
+  </div>
+  <div class="wrap finale-base">
+    <img src="assets/SunrunLogo_White_PNG.png" alt="Sunrun" width="137" height="26">
+    <nav aria-label="Footer">
+      <a href="https://www.sunrun.com/privacy-policy">Privacy Policy</a>
+      <a href="https://www.instagram.com/sunrun/">Instagram</a>
+      <a href="https://www.linkedin.com/company/sunrun">LinkedIn</a>
+      <a href="https://www.facebook.com/sunrunhome">Facebook</a>
+      <a href="https://www.youtube.com/user/SunrunHome">YouTube</a>
+    </nav>
+    <span>&copy; <span id="yr">2026</span> Sunrun. All rights reserved.</span>
+  </div>
+</footer>
+
+<script src="assets/form.js"></script>
+</body>
+</html>

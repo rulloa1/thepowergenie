@@ -1,0 +1,111 @@
+/* Interactive story sections: reveal + scroll scrub (reveal-scrub.js), scroll-triggered + mouse scrub (video-modules.js) */
+@property --reveal-r { syntax: "<length>"; inherits: true; initial-value: 0px; }
+
+/* Image reveal: REVEAL (solar) underneath, FRONT (bare roof) on top with a soft hole cut at the cursor */
+.reveal-hero {
+  --reveal-x: 50%; --reveal-y: 50%; --reveal-r: 0px;
+  position: relative; height: 100vh; min-height: 520px; overflow: hidden; background: #04122c;
+  cursor: crosshair; touch-action: pan-y; transition: --reveal-r .45s cubic-bezier(.2, .7, .2, 1);
+}
+.reveal-hero.is-revealing { --reveal-r: clamp(150px, 19vw, 280px); }
+.reveal-img {
+  position: absolute; inset: 0; width: 100%; height: 100%; max-width: none;
+  object-fit: cover; /* object-fit: contain; to letterbox the whole frame instead of cropping */
+  object-position: 50% 60%; user-select: none; -webkit-user-drag: none;
+}
+.reveal-front {
+  -webkit-mask-image: radial-gradient(circle var(--reveal-r) at var(--reveal-x) var(--reveal-y), transparent 0, transparent 55%, #000 100%);
+          mask-image: radial-gradient(circle var(--reveal-r) at var(--reveal-x) var(--reveal-y), transparent 0, transparent 55%, #000 100%);
+}
+.reveal-hero::after { content: ""; position: absolute; inset: 0 0 auto; height: 55%; pointer-events: none; background: linear-gradient(180deg, rgba(2,9,25,.82) 0%, rgba(2,9,25,.5) 45%, transparent); }
+.reveal-copy { position: absolute; z-index: 2; top: calc(68px + clamp(20px, 5vh, 48px)); /* clears the sticky header */ left: 50%; transform: translateX(-50%); width: min(1200px, 100% - 40px); pointer-events: none; text-shadow: 0 2px 16px rgba(2,9,25,.7); }
+.reveal-copy h2 { font-size: clamp(28px, 3.6vw, 44px); line-height: 1.1; letter-spacing: -.02em; margin: 14px 0 8px; max-width: 18ch; color: #fff; }
+.reveal-copy p { margin: 0; color: #e6ecfb; font-size: 16px; font-weight: 500; }
+.hint-touch { display: none; }
+@media (hover: none) { .hint-fine { display: none; } .hint-touch { display: inline; } }
+@media (prefers-reduced-motion: reduce) {
+  .reveal-hero { cursor: default; }
+  .reveal-hero .reveal-front { -webkit-mask-image: none; mask-image: none; }
+  .reveal-copy p { display: none; }
+}
+
+/* Scroll scrub: tall track, sticky full-screen video */
+.scrub { position: relative; height: 350vh; background: #04122c; }
+.scrub-stage { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+.scrub-video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; /* object-fit: contain; to show the full frame with letterboxing */
+  background: #04122c;
+}
+.scrub-cap {
+  position: absolute; left: 50%; bottom: 12vh; transform: translate(-50%, 12px); width: min(560px, 100% - 32px); margin: 0;
+  padding: 16px 20px; border-radius: 16px; text-align: center; color: #e6ecfb; font-size: 16px;
+  background: rgba(5, 25, 61, .72); border: 1px solid rgba(255,255,255,.16); backdrop-filter: blur(10px);
+  opacity: 0; transition: opacity .35s ease, transform .35s ease; pointer-events: none;
+}
+.scrub-cap.on { opacity: 1; transform: translate(-50%, 0); }
+.scrub-cap b { display: block; color: var(--sun); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+.scrub-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255,255,255,.1); }
+.scrub-bar span { display: block; height: 100%; width: 100%; transform-origin: left; transform: scaleX(0); background: var(--sun); }
+@media (max-width: 960px) { .scrub { height: 250vh; } .scrub-cap { bottom: 8vh; font-size: 15px; } }
+
+/* Reduced motion: no scroll-driven animation. One screen, a fixed frame, every caption readable. */
+@media (prefers-reduced-motion: reduce) {
+  .scrub { height: auto; }
+  .scrub-stage { position: relative; height: auto; min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; padding: 0 16px 8vh; }
+  .scrub-cap { position: relative; left: auto; bottom: auto; transform: none; margin: 0 auto; opacity: 1; }
+  .scrub-bar { display: none; }
+}
+
+/* Scroll-triggered video: full screen, starts on frame one, plays once per downward pass */
+.push { position: relative; height: 100vh; min-height: 520px; overflow: hidden; background: #04122c; }
+.push-video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; /* object-fit: contain; to show the full frame with letterboxing */
+}
+.push-hint, .push-cap { position: absolute; left: 50%; margin: 0; transform: translateX(-50%); text-align: center; pointer-events: none; transition: opacity .5s ease; }
+.push-hint { bottom: 7vh; padding: 10px 18px; border-radius: 999px; font-size: 14px; font-weight: 700; color: var(--navy); background: var(--sun); }
+.push[data-state="playing"] .push-hint, .push[data-state="done"] .push-hint { opacity: 0; }
+.push-cap {
+  bottom: 10vh; width: min(520px, 100% - 32px); padding: 16px 20px; border-radius: 16px; color: #e6ecfb; font-size: 16px;
+  background: rgba(5, 25, 61, .78); border: 1px solid rgba(255,255,255,.16); backdrop-filter: blur(10px); opacity: 0;
+}
+.push-cap b { display: block; color: var(--sun); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+.push[data-state="done"] .push-cap { opacity: 1; }
+
+/* Mouse scrub: pointer X across the window picks the frame */
+.flow { position: relative; height: 100vh; min-height: 520px; overflow: hidden; background: #e9edf2; cursor: ew-resize; touch-action: pan-y; }
+.flow:focus-visible { outline-offset: -6px; }
+.flow-video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; /* object-fit: contain; to show the full frame with letterboxing */
+}
+.flow-copy { position: absolute; top: calc(68px + clamp(16px, 4vh, 40px)); left: max(16px, calc(50% - 600px)); max-width: min(460px, 100% - 32px); padding: 16px 20px; border-radius: 16px; background: rgba(255,255,255,.8); border: 1px solid rgba(5,25,61,.1); backdrop-filter: blur(8px); pointer-events: none; }
+.flow-copy h2 { margin: 0 0 6px; font-size: clamp(28px, 3.4vw, 42px); letter-spacing: -.02em; color: var(--navy); }
+.flow-copy p { margin: 0; color: #2b3954; font-size: 16px; font-weight: 500; }
+.flow-steps { position: absolute; left: 50%; bottom: 6vh; transform: translateX(-50%); width: min(1200px, 100% - 32px); margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; pointer-events: none; }
+.flow-steps li { padding: 10px 12px; border-radius: 12px; text-align: center; font-size: 14px; font-weight: 700; color: #4a5670; background: rgba(255,255,255,.72); border: 1px solid rgba(5,25,61,.12); backdrop-filter: blur(6px); transition: background-color .25s ease, color .25s ease; }
+.flow-steps li.on { color: var(--navy); background: var(--sun); border-color: var(--sun); }
+@media (max-width: 640px) { .flow-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } .flow-steps li { font-size: 13px; padding: 8px; } }
+
+/* Finale curtain: the real footer is a fixed full-viewport layer under <main>; the empty spacer after <main>
+   gives it a viewport of scroll room, so the last story section slides up to uncover it. */
+main { position: relative; z-index: 1; }
+.finale-spacer { height: 100vh; height: 100svh; }
+.finale {
+  position: fixed; inset: 0; z-index: 0; overflow-y: auto; display: flex; flex-direction: column; justify-content: center;
+  padding: calc(68px + 4vh) 0 0; border-top: 0;
+  background: radial-gradient(circle at 70% 25%, #0d2b6b 0%, #04122c 60%, #020919 100%);
+}
+.finale:not(.is-live) { visibility: hidden; } /* also keeps it out of tab order and the a11y tree while covered */
+.finale .finale-main { display: flex; flex: 1; flex-direction: column; justify-content: center; align-items: flex-start; gap: 0; padding-bottom: 32px; }
+.finale h2 { margin: 16px 0 14px; font-size: clamp(34px, 5vw, 64px); line-height: 1.05; letter-spacing: -.025em; color: #fff; text-wrap: balance; }
+.finale h2 em { display: block; font-style: normal; color: var(--sun); }
+.finale-lede { margin: 0 0 28px; max-width: 52ch; font-size: 18px; color: #d0dcfa; }
+.finale-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.finale .btn { min-height: 54px; padding: 0 26px; font-size: 16px; font-weight: 700; }
+.btn-sun { color: var(--navy) !important; background: var(--sun); box-shadow: 0 8px 24px rgba(255,184,28,.35); }
+.btn-sun:hover { background: #ffc94a; transform: translateY(-2px); }
+.finale .finale-form { margin-top: 18px; color: #b4c7f7; text-decoration: underline; text-underline-offset: 3px; font-weight: 500; }
+.finale .finale-base { padding: 24px 0 28px; border-top: 1px solid rgba(255,255,255,.1); }
+@media (max-width: 480px) { .finale .btn { width: 100%; } .finale-lede { font-size: 16px; } }
