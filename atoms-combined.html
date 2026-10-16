@@ -350,81 +350,37 @@
         </div>
       </div>
 
-      <div class="lead-card lg:col-span-6" id="form-card">
+      <div class="lead-card lg:col-span-6" id="form-card" style="padding: 36px; border-radius: 20px; background: #ffffff; box-shadow: 0 20px 45px rgba(0,0,0,0.06); border: 1px solid #e2e8f0;">
           <div id="form-view">
-            <h2>Let's talk solar</h2>
-            <p class="sub">Takes about a minute. Horace will reach out personally.</p>
+            <span style="display:inline-block; font-size:0.75rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#0047BB; margin-bottom:8px;">Direct Sunrun Connection</span>
+            <h2 style="font-size:1.8rem; font-weight:800; color:#0f172a; margin-bottom:12px;">Get Your Free Solar Plan</h2>
+            <p class="sub" style="color:#64748b; font-size:1rem; line-height:1.6; margin-bottom:24px;">Takes about a minute on Sunrun's official portal. Horace Lawrence and the Sunrun team will personally analyze your roof and current utility bill.</p>
 
-            <form id="lead" novalidate>
-              <fieldset class="seg">
-                <legend class="sr-only">Who is this for?</legend>
-                <input type="radio" name="mode" id="m-me" value="me" checked>
-                <label for="m-me"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>It's for me</label>
-                <input type="radio" name="mode" id="m-ref" value="ref">
-                <label for="m-ref"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M19 8v6M16 11h6"/></svg>Refer a friend</label>
-              </fieldset>
-
-              <!-- Referral mode -->
-              <div id="friend-first" hidden>
-                <fieldset class="group">
-                  <legend class="legend">Who are you referring?</legend>
-                  <div class="grid2">
-                    <div class="field"><label for="f-first">First name</label><input id="f-first" name="f_first" autocomplete="off" required><span class="err">Enter their first name</span></div>
-                    <div class="field"><label for="f-last">Last name</label><input id="f-last" name="f_last" autocomplete="off" required><span class="err">Enter their last name</span></div>
-                  </div>
-                  <div class="grid2">
-                    <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="f_phone" type="tel" inputmode="tel" autocomplete="off" required><span class="err">Enter a 10-digit phone number</span></div>
-                    <div class="field"><label for="f-email">Email</label><input id="f-email" name="f_email" type="email" autocomplete="off" required><span class="err">Enter a valid email</span></div>
-                  </div>
-                  <div class="field"><label for="f-how">How do you know each other?</label><input id="f-how" name="f_how" required><span class="err">Tell us how you know them</span></div>
-                </fieldset>
-                <p class="legend">About you</p>
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <a class="btn btn-primary solar-cta" id="submit" data-solar-cta href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" target="_blank" rel="noopener noreferrer" style="display:flex; justify-content:center; align-items:center; gap:10px; width:100%; padding:16px 28px; border-radius:999px; background:#0047BB; color:#ffffff; font-weight:700; font-size:1.05rem; text-decoration:none; box-shadow:0 10px 25px rgba(0,71,187,0.3);">
+                Explore Solar Options on Sunrun
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+              <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                <a href="tel:+15102417007" style="flex:1; min-width:160px; text-align:center; padding:12px 18px; border-radius:999px; border:1px solid #cbd5e1; color:#0f172a; font-weight:600; text-decoration:none; font-size:0.9rem;">
+                  Call 510-241-7007
+                </a>
+                <a href="mailto:horace.lawrence@sunrun.com?subject=Power%20Genie%20Solar%20Consultation" style="flex:1; min-width:160px; text-align:center; padding:12px 18px; border-radius:999px; border:1px solid #cbd5e1; color:#0f172a; font-weight:600; text-decoration:none; font-size:0.9rem;">
+                  Email Horace
+                </a>
               </div>
+            </div>
 
-              <div class="grid2">
-                <div class="field"><label for="first">First name</label><input id="first" name="first" autocomplete="given-name" required><span class="err">Enter your first name</span></div>
-                <div class="field"><label for="last">Last name</label><input id="last" name="last" autocomplete="family-name" required><span class="err">Enter your last name</span></div>
-              </div>
-              <div class="grid2">
-                <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" required><span class="err">Enter a 10-digit phone number</span></div>
-                <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required><span class="err">Enter a valid email</span></div>
-              </div>
-              <div class="grid2 addr">
-                <div class="field"><label for="addr">Home address</label><input id="addr" name="addr" autocomplete="address-line1" required><span class="err">Enter your street address</span></div>
-                <div class="field"><label for="zip">ZIP</label><input id="zip" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" required><span class="err">Enter 5 digits</span></div>
-              </div>
-
-              <div id="me-extras">
-                <label class="check"><input type="checkbox" id="also-ref"> I also know someone who'd benefit from solar</label>
-                <div class="reveal" id="extra-friend"><div>
-                  <fieldset class="group">
-                    <legend class="legend">Their details</legend>
-                    <div class="grid2">
-                      <div class="field"><label for="x-first">First name</label><input id="x-first" name="x_first" autocomplete="off" data-cond required><span class="err">Enter their first name</span></div>
-                      <div class="field"><label for="x-phone">Phone</label><input id="x-phone" name="x_phone" type="tel" inputmode="tel" autocomplete="off" data-cond required><span class="err">Enter a 10-digit phone number</span></div>
-                    </div>
-                  </fieldset>
-                </div></div>
-                <label class="check"><input type="checkbox" name="community"> A community organization referred me to Sunrun</label>
-              </div>
-
-              <button class="btn btn-primary" type="submit" id="submit">Get my free solar plan</button>
-              <p class="consent" id="consent-me">By clicking above, I authorize Sunrun to call me and send pre-recorded messages and text messages to me about Sunrun products and services at the telephone number I entered above, using an autodialer, even if I am on a national or state "Do Not Call" list. Message and data rates may apply. I understand that consent here is not a condition of purchase. <a href="https://www.sunrun.com/privacy-policy">Privacy Policy</a></p>
-              <p class="consent" id="consent-ref" hidden>By submitting this information, you confirm that your referral has consented to receive calls/texts from Sunrun at the phone number entered above, with an autodialer, about product/service offers, even if the number is on a federal or state "Do Not Call" list. This consent is not conditioned on a purchase. <a href="https://www.sunrun.com/privacy-policy">Privacy Policy</a></p>
-            </form>
-          </div>
-
-          <div class="success" id="success" hidden tabindex="-1">
-            <div class="badge"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
-            <h2 id="success-title">You're all set</h2>
-            <p class="sub" id="success-msg">Horace will reach out within one business day. Want to talk sooner? <a href="tel:+15102417007">Call 510-241-7007</a>.</p>
+            <p style="margin-top:24px; font-size:0.8rem; color:#94a3b8; line-height:1.5;">
+              Opens Sunrun's official Salesforce portal (<code>srep=/powergenie</code>). Sensitive lead and utility information is collected exclusively on Sunrun's compliant form.
+            </p>
           </div>
       </div>
     </div>
 
     <div class="mx-auto flex w-full max-w-7xl items-center justify-between text-xs text-slate-400">
-      <span>© <span id="yr">2026</span> Sunrun. All rights reserved. Design concept: this form does not submit anything.</span>
-      <a href="https://www.sunrun.com/privacy-policy" target="_blank" rel="noopener" class="hover:text-slate-600">Privacy Policy</a>
+      <span>© <span id="yr">2026</span> Power Genie. Solar fulfillment provided by authorized Sunrun representative Horace Lawrence.</span>
+      <a href="https://www.sunrun.com/privacy-policy" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600">Privacy Policy</a>
     </div>
   </footer>
 

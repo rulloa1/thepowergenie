@@ -366,8 +366,8 @@ document.addEventListener('touchstart',function prime(){document.querySelectorAl
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="https://www.sunrun.com/" target="_blank" rel="noopener"><img class="brand__logo" src="assets/sunrun-logo-white.png" alt="Sunrun" width="127" height="24"></a>
-    <nav class="nav" aria-label="Sections"><a href="#hero">Reveal</a><a href="#film-section">Film</a><a href="#scroll-section">24h flow</a><a href="#mouse-section">Battery</a><a href="#quote">Get a quote</a></nav>
+    <a class="brand" href="../index.html" aria-label="Power Genie Hub"><span style="font-weight:800; font-family:sans-serif; color:var(--amber); letter-spacing:0.04em;">POWER GENIE</span></a>
+    <nav class="nav" aria-label="Sections"><a href="../index.html">← Hub</a><a href="#hero">Reveal</a><a href="#film-section">Film</a><a href="#scroll-section">24h flow</a><a href="#mouse-section">Battery</a><a href="#quote">Get a quote</a></nav>
   </header>
   <main>
 
@@ -441,8 +441,8 @@ document.addEventListener('touchstart',function prime(){document.querySelectorAl
       <div class="cta__inner">
         <p class="eyebrow">Your turn</p>
         <h2>See what your roof can do.</h2>
-        <a class="button" id="quote-link" href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" target="_blank" rel="noopener">Get my free quote</a>
-        <p class="note">Opens the quote form in a new tab.</p>
+        <a class="button solar-cta" id="quote-link" data-solar-cta href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" target="_blank" rel="noopener noreferrer">Get my free quote</a>
+        <p class="note">Opens Horace's official Sunrun quote portal in a new tab.</p>
         <div class="agent">
           <p class="agent__role">The Block Sales Expert Team Lead</p>
           <h3>Horace Lawrence</h3>
@@ -454,7 +454,10 @@ document.addEventListener('touchstart',function prime(){document.querySelectorAl
     </section>
 
   </main>
-  <footer class="site-footer"><span>© Sunrun. All rights reserved.</span><a href="https://www.sunrun.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a></footer>
+  <footer class="site-footer">
+    <span>© 2026 Power Genie. Solar fulfillment provided by authorized Sunrun representative Horace Lawrence.</span>
+    <a href="https://www.sunrun.com/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+  </footer>
   <script>
 (function(){'use strict';
 var clamp=function(v,a,b){return Math.min(b,Math.max(a,v));};
