@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Hip-Hop Solar — Power the Culture. Own Your Energy.</title>
+  <meta name="description" content="Hip-Hop Solar brings decentralized clean power, studio blackout protection, and generational home equity to the culture. Powered by Sunrun.">
+  <meta name="theme-color" content="#0a0b0e">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎧</text></svg>">
+
+  <!-- Fonts & Styles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/powergenie.css">
+
+  <style>
+    :root {
+      --culture-gold: #ffb703;
+      --culture-amber: #fb8500;
+      --culture-dark: #0a0b0e;
+    }
+    body {
+      background-color: var(--culture-dark);
+    }
+    .page-bg-glow {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255, 183, 3, 0.16) 0%, transparent 60%),
+        radial-gradient(circle at 10% 40%, rgba(251, 133, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 90% 70%, rgba(56, 189, 248, 0.06) 0%, transparent 40%);
+    }
+    .culture-hero-media {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(255, 183, 3, 0.35);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), 0 0 40px rgba(255, 183, 3, 0.15);
+      aspect-ratio: 16 / 9;
+    }
+    .culture-hero-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .culture-banner {
+      background: linear-gradient(135deg, rgba(255, 183, 3, 0.12) 0%, rgba(251, 133, 0, 0.08) 50%, rgba(10, 11, 14, 0.95) 100%);
+      border: 1px solid rgba(255, 183, 3, 0.3);
+      border-radius: var(--radius-lg);
+      padding: clamp(32px, 5vw, 56px);
+      margin-top: 48px;
+    }
+  </style>
+
+  <!-- Centralized Configuration & Interactive Logic -->
+  <script type="module" src="assets/config.js"></script>
+  <script type="module" src="assets/powergenie.js"></script>
+</head>
+<body>
+  <div class="page-bg-glow" aria-hidden="true"></div>
+
+  <div class="content-layer">
+    <!-- SITE HEADER -->
+    <header class="site-header" style="border-bottom-color: rgba(255, 183, 3, 0.18);">
+      <div class="container header-inner">
+        <div class="brand-group">
+          <a href="index.html" class="brand-logo">
+            <span class="brand-icon" style="background: linear-gradient(135deg, #ffb703, #fb8500); color:#0a0b0e;">
+              <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </span>
+            <span>HIP-HOP SOLAR</span>
+          </a>
+          <span class="ecosystem-badge" style="background: rgba(255, 183, 3, 0.14); color: #ffb703; border-color: rgba(255, 183, 3, 0.35);">Culture & Independence</span>
+        </div>
+
+        <nav class="nav-links" aria-label="Main Navigation">
+          <a href="index.html" class="nav-link">⚡ Power Genie Hub</a>
+          <a href="celebrity-solar.html" class="nav-link">💎 Celebrity Solar</a>
+          <a href="hip-hop-solar.html" class="nav-link active">🎧 Hip-Hop Solar</a>
+          <a href="gas-genie.html" class="nav-link">🔥 Gas-Genie (Pilot)</a>
+        </nav>
+
+        <div class="header-cta-group">
+          <!-- Centralized Solar Lead CTA -->
+          <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-culture btn-sm solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+            Get Started
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero-section">
+        <div class="container">
+          <div style="text-align: center; max-width: 860px; margin: 0 auto clamp(40px, 6vw, 64px);">
+            <span class="hero-tag" style="background: rgba(255, 183, 3, 0.12); color: #ffb703; border-color: rgba(255, 183, 3, 0.35);">
+              <span class="dot" style="background: #ffb703; box-shadow: 0 0 10px #ffb703;"></span>
+              Decentralized Power for the Community
+            </span>
+            <h1 class="hero-title" style="font-size: clamp(2.6rem, 5.2vw, 4.8rem); font-family: var(--font-display);">
+              Power the Culture.<br>
+              <span style="background: linear-gradient(135deg, #ffffff 10%, #ffb703 60%, #fb8500 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Own Your Energy.</span>
+            </h1>
+            <p class="hero-subtitle" style="font-size: 1.2rem; max-width: 720px; margin: 0 auto 36px;">
+              From home studios to community residences: don't let utility monopolies control your creative flow or drain your pocketbook. Generate your own power, protect the studio during blackouts, and turn sunshine into equity.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+              <!-- Centralized Solar Lead CTA -->
+              <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-culture btn-lg solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+                Get Started Now
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+              <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-secondary btn-lg solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+                Refer Someone for Solar
+              </a>
+            </div>
+          </div>
+
+          <!-- FEATURED CREATIVE COMPOUND IMAGE -->
+          <div class="culture-hero-media">
+            <img src="assets/hiphop-solar-studio.jpg" alt="Urban music creative studio compound with rooftop solar arrays at dusk" loading="eager">
+          </div>
+        </div>
+      </section>
+
+      <!-- CULTURE PILLARS -->
+      <section class="section" style="padding-top: 20px;">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-eyebrow" style="color: #ffb703;">Energy Independence</span>
+            <h2 class="section-title">Built on Ownership & Resilience.</h2>
+            <p class="section-desc">Why keep renting your electricity month after month when your own roof can power your entire home?</p>
+          </div>
+
+          <div class="pillars-grid">
+            <div class="pillar-card" style="border-color: rgba(255, 183, 3, 0.22);">
+              <div class="pillar-icon-box" style="background: rgba(255, 183, 3, 0.12); color: #ffb703; border-color: rgba(255, 183, 3, 0.3);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+              </div>
+              <h3>Studio & Sound Resilience</h3>
+              <p>Keep your monitors, converters, synthesizers, and lighting on when the storm hits. With intelligent battery storage, your creative sessions don't stop just because the city grid went dark.</p>
+            </div>
+
+            <div class="pillar-card" style="border-color: rgba(255, 183, 3, 0.22);">
+              <div class="pillar-icon-box" style="background: rgba(255, 183, 3, 0.12); color: #ffb703; border-color: rgba(255, 183, 3, 0.3);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+              </div>
+              <h3>Building Real Equity</h3>
+              <p>Every dollar paid to an electric monopoly is money that never comes back. Putting solar on your roof adds intrinsic value to your property and locks in stable costs for decades to come.</p>
+            </div>
+
+            <div class="pillar-card" style="border-color: rgba(255, 183, 3, 0.22);">
+              <div class="pillar-icon-box" style="background: rgba(255, 183, 3, 0.12); color: #ffb703; border-color: rgba(255, 183, 3, 0.3);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <h3>Empower the Neighborhood</h3>
+              <p>Connect with Horace Lawrence, Team Lead at Sunrun. Spread the knowledge to your family and neighbors to help everyone break free from utility rate inflation.</p>
+            </div>
+          </div>
+
+          <!-- BANNER CALLOUT -->
+          <div class="culture-banner">
+            <div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap; justify-content: space-between;">
+              <div style="max-width: 680px;">
+                <span style="font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: #ffb703; font-weight: 700; display: block; margin-bottom: 8px;">Direct Sunrun Connection</span>
+                <h3 style="font-family: var(--font-display); font-size: 1.8rem; color: #ffffff; margin-bottom: 10px;">Check your roof's solar potential in 60 seconds.</h3>
+                <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.6;">Your info goes straight into Sunrun's official portal for Horace Lawrence to review. Zero middlemen, zero games.</p>
+              </div>
+              <div>
+                <!-- Centralized Solar Lead CTA -->
+                <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-culture btn-lg solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+                  See If Solar Is Right for You
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-disclaimer-box">
+          <strong>Creative Direction & Attribution Notice:</strong> Hip-Hop Solar is a culture-inspired clean energy initiative by Power Genie. No unlicensed artist likenesses, logos, or musical works are used or endorsed. All solar system design, engineering, financing, battery hardware, and installations are fulfilled by authorized representatives of Sunrun Inc. (Sales Representative: Horace Lawrence).
+        </div>
+        <div class="footer-bottom">
+          <span>&copy; 2026 Power Genie · Hip-Hop Solar Initiative.</span>
+          <div style="display: flex; gap: 20px;">
+            <a href="index.html" style="color: var(--text-dim);">Power Genie Hub</a>
+            <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer" style="color: #ffb703;">Sunrun Lead Portal</a>
+            <a href="https://www.sunrun.com/privacy-policy" target="_blank" rel="noopener noreferrer" style="color: var(--text-dim);">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

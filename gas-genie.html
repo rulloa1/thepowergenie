@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Gas-Genie — Clean Thermal & Natural Gas Optimization (Pilot Program)</title>
+  <meta name="description" content="Gas-Genie is an independent pilot concept exploring natural gas efficiency, hybrid thermal management, and home utility tariff optimization.">
+  <meta name="theme-color" content="#070e1c">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
+
+  <!-- Fonts & Styles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/powergenie.css">
+
+  <style>
+    :root {
+      --gas-blue: #0ea5e9;
+      --gas-cyan: #38bdf8;
+      --gas-dark: #070e1c;
+      --gas-surface: #0c182e;
+    }
+    body {
+      background-color: var(--gas-dark);
+    }
+    .page-bg-glow {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.16) 0%, transparent 60%),
+        radial-gradient(circle at 80% 40%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.08) 0%, transparent 40%);
+    }
+    .gas-hero-media {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(14, 165, 233, 0.35);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), 0 0 40px rgba(14, 165, 233, 0.15);
+      aspect-ratio: 16 / 9;
+    }
+    .gas-hero-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .status-alert-box {
+      background: rgba(14, 165, 233, 0.08);
+      border: 1px solid rgba(14, 165, 233, 0.3);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin: 32px 0;
+      color: #e0f2fe;
+    }
+  </style>
+
+  <!-- Centralized Configuration & Interactive Logic -->
+  <script type="module" src="assets/config.js"></script>
+  <script type="module" src="assets/powergenie.js"></script>
+</head>
+<body>
+  <div class="page-bg-glow" aria-hidden="true"></div>
+
+  <div class="content-layer">
+    <!-- SITE HEADER -->
+    <header class="site-header" style="border-bottom-color: rgba(14, 165, 233, 0.2);">
+      <div class="container header-inner">
+        <div class="brand-group">
+          <a href="index.html" class="brand-logo">
+            <span class="brand-icon" style="background: linear-gradient(135deg, #0ea5e9, #2563eb); color:#ffffff;">
+              <svg viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+            </span>
+            <span>GAS-GENIE</span>
+          </a>
+          <span class="ecosystem-badge" style="background: rgba(14, 165, 233, 0.14); color: #38bdf8; border-color: rgba(14, 165, 233, 0.35);">Separate Pilot Program</span>
+        </div>
+
+        <nav class="nav-links" aria-label="Main Navigation">
+          <a href="index.html" class="nav-link">⚡ Power Genie Hub</a>
+          <a href="celebrity-solar.html" class="nav-link">💎 Celebrity Solar</a>
+          <a href="hip-hop-solar.html" class="nav-link">🎧 Hip-Hop Solar</a>
+          <a href="gas-genie.html" class="nav-link active">🔥 Gas-Genie (Pilot)</a>
+        </nav>
+
+        <div class="header-cta-group">
+          <!-- Direct link back to Solar Hub -->
+          <a href="index.html" class="btn btn-secondary btn-sm">
+            ← Solar Hub
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero-section">
+        <div class="container">
+          <div style="text-align: center; max-width: 860px; margin: 0 auto clamp(36px, 6vw, 60px);">
+            <span class="hero-tag" style="background: rgba(14, 165, 233, 0.12); color: #38bdf8; border-color: rgba(14, 165, 233, 0.35);">
+              <span class="dot" style="background: #38bdf8; box-shadow: 0 0 10px #38bdf8;"></span>
+              Pilot Development · Not Integrated with Solar Form
+            </span>
+            <h1 class="hero-title" style="font-size: clamp(2.4rem, 4.8vw, 4.2rem);">
+              Intelligent Thermal &<br>
+              <span style="background: linear-gradient(135deg, #ffffff 20%, #38bdf8 70%, #0ea5e9 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Natural Gas Utility Optimization.</span>
+            </h1>
+            <p class="hero-subtitle" style="font-size: 1.15rem; max-width: 720px; margin: 0 auto 28px;">
+              Gas-Genie is a distinct research and pilot initiative focused on residential natural gas efficiency, heat management, and utility billing reconciliation.
+            </p>
+
+            <!-- MANDATORY SEPARATION NOTICE -->
+            <div class="status-alert-box" style="text-align: left; max-width: 760px; margin: 0 auto 36px;">
+              <div style="display: flex; gap: 14px; align-items: flex-start;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <div>
+                  <h4 style="color: #ffffff; font-size: 1.05rem; margin-bottom: 6px;">Strict Separation & Status Disclosure</h4>
+                  <p style="font-size: 0.92rem; color: #bae6fd; line-height: 1.6; margin: 0;">
+                    Gas-Genie is completely separate from Sunrun's solar lead system. In compliance with project guidelines:
+                    <br>• <strong>No gas leads are routed to Sunrun.</strong>
+                    <br>• Gas services, utility partnerships, and automated quote systems are currently in partner evaluation.
+                    <br>• We do not invent gas pricing, unconfirmed providers, or simulated quote submissions.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+              <a href="#pilot-details" class="btn btn-secondary btn-lg" style="border-color: rgba(14, 165, 233, 0.4); color: #38bdf8;">
+                View Architecture Foundation
+              </a>
+              <a href="index.html" class="btn btn-primary btn-lg">
+                Explore Solar Hub Instead →
+              </a>
+            </div>
+          </div>
+
+          <!-- SHOWCASE IMAGE -->
+          <div class="gas-hero-media">
+            <img src="assets/gas-genie-concept.jpg" alt="Smart home eco-thermal management interface and gas optimization telemetry concept" loading="eager">
+          </div>
+        </div>
+      </section>
+
+      <!-- STRUCTURAL FOUNDATION & UNFINISHED DETAILS IDENTIFICATION -->
+      <section class="section" id="pilot-details" style="padding-top: 20px;">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-eyebrow" style="color: #38bdf8;">Planned Architecture</span>
+            <h2 class="section-title">Visual & Structural Foundation</h2>
+            <p class="section-desc">Here is the technical blueprint planned for Gas-Genie pending partner confirmation and regulatory verification.</p>
+          </div>
+
+          <div class="pillars-grid">
+            <div class="pillar-card" style="border-color: rgba(14, 165, 233, 0.2);">
+              <div class="pillar-icon-box" style="background: rgba(14, 165, 233, 0.12); color: #38bdf8; border-color: rgba(14, 165, 233, 0.3);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </div>
+              <h3>1. Tariff & Bill Auditing</h3>
+              <p>Planned analytics framework to evaluate seasonal natural gas baseline surcharges, winter peak therm tiers, and distributor commodity delivery fees.</p>
+              <span style="display:inline-block; margin-top:12px; font-size:0.75rem; color:#7dd3fc; background:rgba(14,165,233,0.1); padding:3px 8px; border-radius:6px;">Status: Algorithmic Scoping</span>
+            </div>
+
+            <div class="pillar-card" style="border-color: rgba(14, 165, 233, 0.2);">
+              <div class="pillar-icon-box" style="background: rgba(14, 165, 233, 0.12); color: #38bdf8; border-color: rgba(14, 165, 233, 0.3);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+              <h3>2. Hybrid Heating Strategy</h3>
+              <p>Designing workflows that coordinate heat pump electrical loads with existing gas hydronic boilers and water heaters to minimize total winter energy expenses.</p>
+              <span style="display:inline-block; margin-top:12px; font-size:0.75rem; color:#7dd3fc; background:rgba(14,165,233,0.1); padding:3px 8px; border-radius:6px;">Status: Partner Integration Pending</span>
+            </div>
+
+            <div class="pillar-card" style="border-color: rgba(14, 165, 233, 0.2);">
+              <div class="pillar-icon-box" style="background: rgba(14, 165, 233, 0.12); color: #38bdf8; border-color: rgba(14, 165, 233, 0.3);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              </div>
+              <h3>3. Verified Lead Flow</h3>
+              <p>Until certified gas efficiency partners and an authorized submission system are finalized, no leads will be captured or routed into third-party CRMs.</p>
+              <span style="display:inline-block; margin-top:12px; font-size:0.75rem; color:#7dd3fc; background:rgba(14,165,233,0.1); padding:3px 8px; border-radius:6px;">Status: Lead Pipeline Isolated</span>
+            </div>
+          </div>
+
+          <!-- CLIENT NOTIFY PLACEHOLDER (NO CRM INVENTED) -->
+          <div style="background: var(--bg-surface); border: 1px solid rgba(14, 165, 233, 0.25); border-radius: var(--radius-lg); padding: clamp(32px, 5vw, 48px); margin-top: 48px; text-align: center;">
+            <h3 style="font-family: var(--font-display); font-size: 1.6rem; color: #ffffff; margin-bottom: 10px;">Register for Pilot Updates</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 600px; margin: 0 auto 24px;">
+              Enter your email below to be notified when Gas-Genie confirms certified regional partners and launches beta enrollment.
+            </p>
+            <form class="gas-genie-notify-form" style="display: flex; gap: 10px; max-width: 480px; margin: 0 auto; flex-wrap: wrap;">
+              <input type="email" placeholder="Enter your email address" required style="flex: 1; min-width: 240px; padding: 12px 18px; border-radius: 999px; background: rgba(5,8,17,0.7); border: 1px solid var(--border-subtle); color: #fff; font-size: 0.95rem;">
+              <button type="submit" class="btn btn-secondary" style="border-color: rgba(14, 165, 233, 0.5); color: #38bdf8;">
+                Notify Me
+              </button>
+            </form>
+            <div class="gas-genie-success" style="display: none; margin-top: 16px;"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-disclaimer-box">
+          <strong>Gas-Genie Project Notice:</strong> Gas-Genie is an independent, non-operational exploratory concept developed under Power Genie. It is not affiliated with, endorsed by, or integrated into Sunrun Inc. No gas services or pricing are offered at this time. All solar-related inquiries should be conducted via the main Power Genie solar portal.
+        </div>
+        <div class="footer-bottom">
+          <span>&copy; 2026 Power Genie · Gas-Genie Pilot Research.</span>
+          <div style="display: flex; gap: 20px;">
+            <a href="index.html" style="color: var(--solar-gold); font-weight: 600;">Power Genie Solar Hub</a>
+            <a href="celebrity-solar.html" style="color: var(--text-dim);">Celebrity Solar</a>
+            <a href="hip-hop-solar.html" style="color: var(--text-dim);">Hip-Hop Solar</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
