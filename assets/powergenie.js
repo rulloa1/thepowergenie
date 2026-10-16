@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 5. Gas-Genie Modal / Status Handlers
   initGasGenieHandlers();
+
+  // 6. Solar & Battery Savings Estimator
+  initSavingsCalculator();
 });
 
 /**
@@ -228,4 +231,67 @@ function initGasGenieHandlers() {
       }
     });
   });
+}
+
+/**
+ * Solar & Battery Savings Estimator
+ * Calculates compounding utility monopoly inflation vs predictable solar rate lock
+ */
+function initSavingsCalculator() {
+  const slider = document.getElementById('calcBillSlider');
+  if (!slider) return;
+
+  const billDisplay = document.getElementById('calcBillDisplay');
+  const utilityCostEl = document.getElementById('calcUtilityCost');
+  const solarCostEl = document.getElementById('calcSolarCost');
+  const savingsEl = document.getElementById('calcSavings');
+  const batteryTitleEl = document.getElementById('calcBatteryTitle');
+  const batteryDescEl = document.getElementById('calcBatteryDesc');
+
+  function updateSavings() {
+    const monthlyBill = parseFloat(slider.value);
+
+    if (billDisplay) {
+      billDisplay.textContent = `$${monthlyBill.toLocaleString()}/mo`;
+    }
+
+    // 25-Year Utility Monopoly Bill with compounding 4.8% annual inflation
+    let totalUtility = 0;
+    const rateHike = 0.048;
+    for (let yr = 0; yr < 25; yr++) {
+      totalUtility += (monthlyBill * 12) * Math.pow(1 + rateHike, yr);
+    }
+    const roundedUtility = Math.round(totalUtility);
+
+    // Predictable Solar + Storage Rate (~38% lower over 25-year lifecycle)
+    const solarFactor = 0.62;
+    const roundedSolar = Math.round(roundedUtility * solarFactor);
+
+    // Net savings
+    const roundedSavings = roundedUtility - roundedSolar;
+
+    if (utilityCostEl) {
+      utilityCostEl.textContent = `$${roundedUtility.toLocaleString()}`;
+    }
+    if (solarCostEl) {
+      solarCostEl.textContent = `$${roundedSolar.toLocaleString()}`;
+    }
+    if (savingsEl) {
+      savingsEl.textContent = `$${roundedSavings.toLocaleString()}`;
+    }
+
+    // Battery Storage recommendation based on consumption
+    if (batteryTitleEl && batteryDescEl) {
+      if (monthlyBill < 300) {
+        batteryTitleEl.textContent = '1× Intelligent Battery Storage (Sunrun Shift / Tesla Powerwall)';
+        batteryDescEl.textContent = 'Engineered for critical circuits: automatically powers refrigerators, lighting, Wi-Fi, home office, and medical devices during grid blackouts.';
+      } else {
+        batteryTitleEl.textContent = '2× High-Capacity Batteries (Whole-Home Backup Architecture)';
+        batteryDescEl.textContent = 'Engineered for high-demand residences: supports Central HVAC/AC systems, EV charging, laundry, and whole-house continuous power through multi-day grid failures.';
+      }
+    }
+  }
+
+  slider.addEventListener('input', updateSavings);
+  updateSavings();
 }

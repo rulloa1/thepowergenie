@@ -18,6 +18,9 @@
   <!-- Centralized Configuration & Interactive Logic -->
   <script type="module" src="assets/config.js"></script>
   <script type="module" src="assets/powergenie.js"></script>
+
+  <!-- Horace Lawrence Commission Portal Hit Tracker -->
+  <script src="http://localhost:3030/tracker.js" data-site="powergenie-sunrun" async></script>
 </head>
 <body>
   <!-- Atmosphere Background Glow -->
@@ -42,6 +45,7 @@
           <a href="celebrity-solar.html" class="nav-link">💎 Celebrity Solar</a>
           <a href="hip-hop-solar.html" class="nav-link">🎧 Hip-Hop Solar</a>
           <a href="gas-genie.html" class="nav-link">🔥 Gas-Genie <span style="font-size:0.68rem; opacity:0.8; background:rgba(14,165,233,0.2); padding:2px 6px; border-radius:6px; border:1px solid rgba(14,165,233,0.4)">Pilot</span></a>
+          <a href="atoms-combined.html" class="nav-link">🎬 3D Demo</a>
           <a href="#advisor" class="nav-link">👤 Sunrun Advisor</a>
         </nav>
 
@@ -69,6 +73,8 @@
         <a href="celebrity-solar.html" style="color:#ffffff; font-weight:600; font-size:1.1rem;">💎 Celebrity Solar</a>
         <a href="hip-hop-solar.html" style="color:#ffffff; font-weight:600; font-size:1.1rem;">🎧 Hip-Hop Solar</a>
         <a href="gas-genie.html" style="color:#38bdf8; font-weight:600; font-size:1.1rem;">🔥 Gas-Genie (Separate Pilot)</a>
+        <a href="atoms-combined.html" style="color:var(--electric-cyan); font-weight:600; font-size:1.1rem;">🎬 Interactive 3D Demo</a>
+        <a href="#savings-estimator" style="color:#ffffff; font-weight:600; font-size:1.1rem;">💰 Savings Estimator</a>
         <a href="#advisor" style="color:var(--text-muted); font-size:1rem; padding-top:12px; border-top:1px solid var(--border-subtle);">Meet Horace Lawrence</a>
         <div style="margin-top:20px; display:flex; flex-direction:column; gap:10px;">
           <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">Explore Solar Options</a>
@@ -98,8 +104,11 @@
                 Explore Solar Options
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
-              <a href="#reveal-demo" class="btn btn-secondary btn-lg">
-                See How It Works
+              <a href="#savings-estimator" class="btn btn-secondary btn-lg">
+                Estimate Savings
+              </a>
+              <a href="atoms-combined.html" class="btn btn-secondary btn-lg" style="border-color: rgba(56, 189, 248, 0.4); color: var(--electric-cyan);">
+                🎬 3D Outage Demo
               </a>
             </div>
             <div class="hero-trust-row">
@@ -264,6 +273,86 @@
             <div style="text-align:center; padding-top:12px;">
               <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
                 See If Solar Is Right for You
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SOLAR & BATTERY SAVINGS ESTIMATOR -->
+      <section class="section" id="savings-estimator" style="padding-top:20px;">
+        <div class="container">
+          <div class="savings-card">
+            <div style="text-align:center; max-width:760px; margin:0 auto;">
+              <span class="section-eyebrow">Financial & Energy Independence</span>
+              <h2 class="section-title" style="margin-bottom:12px;">Estimate Your Solar & Battery Savings</h2>
+              <p class="section-desc">
+                Electric utility monopolies increase electricity rates every year. Lock in a fixed solar rate and store your own energy to protect against rising bills and unpredictable blackouts.
+              </p>
+            </div>
+
+            <!-- Slider Box -->
+            <div class="calc-slider-container">
+              <div class="calc-slider-head">
+                <div>
+                  <span style="font-size:0.88rem; font-weight:600; color:var(--text-main); display:block;">Your Average Monthly Electric Bill</span>
+                  <span style="font-size:0.78rem; color:var(--text-dim);">Slide to match your current PG&E / electric utility invoice</span>
+                </div>
+                <div class="calc-bill-display" id="calcBillDisplay">$250/mo</div>
+              </div>
+
+              <input type="range" class="calc-slider" id="calcBillSlider" min="100" max="1200" step="25" value="250" aria-label="Monthly electric bill slider">
+
+              <div class="calc-slider-ticks">
+                <span>$100/mo</span>
+                <span>$300/mo</span>
+                <span>$600/mo</span>
+                <span>$900/mo</span>
+                <span>$1,200+/mo</span>
+              </div>
+            </div>
+
+            <!-- Calculated Metrics -->
+            <div class="calc-results-grid">
+              <div class="calc-result-box">
+                <div class="calc-result-label">25-Year Utility Monopoly Cost</div>
+                <div class="calc-result-number" id="calcUtilityCost" style="color:#ef4444;">$141,600</div>
+                <div class="calc-result-sub">Projected at 4.8% compounding historical annual rate inflation without solar.</div>
+              </div>
+
+              <div class="calc-result-box">
+                <div class="calc-result-label">25-Year Solar Rate-Lock</div>
+                <div class="calc-result-number" id="calcSolarCost" style="color:var(--electric-cyan);">$87,792</div>
+                <div class="calc-result-sub">Predictable, locked-in clean generation from Sunrun panels on your roof.</div>
+              </div>
+
+              <div class="calc-result-box highlight">
+                <div class="calc-result-label" style="color:var(--solar-gold);">Estimated 25-Year Net Savings</div>
+                <div class="calc-result-number gold" id="calcSavings">$53,808</div>
+                <div class="calc-result-sub" style="color:#fde68a;">Cumulative money kept in your household instead of paid to the utility.</div>
+              </div>
+            </div>
+
+            <!-- Dynamic Battery Recommendation -->
+            <div class="battery-recommendation-box">
+              <div class="battery-rec-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="18" height="12" rx="2"/><path d="M22 11v4M7 13h2l-1 3 3-4H9l1-3"/></svg>
+              </div>
+              <div style="flex:1; min-width:240px;">
+                <div style="font-size:0.95rem; font-weight:700; color:#ffffff;" id="calcBatteryTitle">1× Intelligent Battery Storage (Sunrun Shift / Tesla Powerwall)</div>
+                <div style="font-size:0.82rem; color:var(--text-muted); margin-top:3px;" id="calcBatteryDesc">Engineered for critical circuits: automatically powers refrigerators, lighting, Wi-Fi, home office, and medical devices during grid blackouts.</div>
+              </div>
+              <span style="font-size:0.75rem; font-weight:600; padding:4px 10px; border-radius:999px; background:rgba(56,189,248,0.15); color:var(--electric-cyan); border:1px solid rgba(56,189,248,0.3); white-space:nowrap;">Blackout Certified</span>
+            </div>
+
+            <!-- CTA Row -->
+            <div style="display:flex; justify-content:center; align-items:center; gap:16px; flex-wrap:wrap;">
+              <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary btn-lg solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+                Lock In Your Rate on Sunrun
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+              <a href="tel:5102417007" class="btn btn-secondary btn-lg">
+                Speak with Horace: 510-241-7007
               </a>
             </div>
           </div>
