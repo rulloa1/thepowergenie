@@ -1124,3 +1124,133 @@ button {
     opacity: 0.5;
   }
 }
+
+/* ==========================================================================
+   Hero Visual Showcase & View Mode Switcher
+   ========================================================================== */
+.hero-visual-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.hero-view-nav {
+  display: inline-flex;
+  align-self: flex-start;
+  background: rgba(11, 17, 34, 0.85);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  gap: 4px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.view-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.2s var(--ease-smooth);
+}
+
+.view-tab-btn:hover {
+  color: var(--text-main);
+}
+
+.view-tab-btn.active {
+  background: rgba(246, 178, 74, 0.16);
+  color: var(--solar-gold);
+  border: 1px solid rgba(246, 178, 74, 0.35);
+  box-shadow: 0 4px 12px rgba(246, 178, 74, 0.12);
+}
+
+.hero-photo-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: #040915;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  aspect-ratio: 16 / 9;
+  transition: transform 0.35s var(--ease-spring), border-color 0.35s ease;
+}
+
+.hero-photo-card:hover {
+  border-color: rgba(246, 178, 74, 0.3);
+  transform: translateY(-2px);
+}
+
+.hero-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-photo-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 65%, rgba(4, 9, 21, 0.85) 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 20px;
+}
+
+.photo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(5, 8, 17, 0.7);
+  border: 1px solid rgba(246, 178, 74, 0.4);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--solar-gold);
+  backdrop-filter: blur(8px);
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--solar-gold);
+  box-shadow: 0 0 10px var(--solar-gold);
+}
+
+.photo-caption {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+
+/* Advisor Consultation Media */
+.rep-consultation-media {
+  margin-top: 24px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  aspect-ratio: 16 / 9;
+  max-height: 340px;
+  background: #0b1122;
+}
+
+.rep-consultation-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.rep-consultation-media:hover img {
+  transform: scale(1.02);
+}
+

@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Centralized Solar CTA Initialization
   initSolarLeadButtons();
 
+  // 1b. Hero View Mode Switcher
+  initHeroViewSwitch();
+
   // 2. Interactive House Reveal
   initInteractiveReveal();
 
@@ -22,6 +25,39 @@ document.addEventListener('DOMContentLoaded', () => {
   // 5. Gas-Genie Modal / Status Handlers
   initGasGenieHandlers();
 });
+
+/**
+ * Hero View Mode Switcher
+ * Switches between Architectural Solar Photo and Outage Simulator
+ */
+function initHeroViewSwitch() {
+  const tabPhoto = document.getElementById('tabPhoto');
+  const tabReveal = document.getElementById('tabReveal');
+  const photoCard = document.getElementById('photoCard');
+  const houseRevealCard = document.getElementById('houseRevealCard');
+
+  if (!tabPhoto || !tabReveal || !photoCard || !houseRevealCard) return;
+
+  tabPhoto.addEventListener('click', () => {
+    tabPhoto.classList.add('active');
+    tabPhoto.setAttribute('aria-selected', 'true');
+    tabReveal.classList.remove('active');
+    tabReveal.setAttribute('aria-selected', 'false');
+
+    photoCard.style.display = 'block';
+    houseRevealCard.style.display = 'none';
+  });
+
+  tabReveal.addEventListener('click', () => {
+    tabReveal.classList.add('active');
+    tabReveal.setAttribute('aria-selected', 'true');
+    tabPhoto.classList.remove('active');
+    tabPhoto.setAttribute('aria-selected', 'false');
+
+    houseRevealCard.style.display = 'block';
+    photoCard.style.display = 'none';
+  });
+}
 
 /**
  * Interactive House Reveal
