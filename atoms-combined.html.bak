@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <link rel="stylesheet" href="assets/lead-form.css" />
+  <title>Go solar with Horace Lawrence | Sunrun (concept)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- GSAP & ScrollToPlugin CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+  <style>
+    :root {
+      --reveal-x: -9999px;
+      --reveal-y: -9999px;
+      --reveal-radius: 0px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: auto; /* Handled cleanly to prevent document jump */
+      background-color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      overflow-x: hidden;
+      color: #0f172a;
+      background-color: #f8fafc;
+    }
+
+    /* Lock scroll during Scroll-Triggered Video playback */
+    body.scroll-locked {
+      overflow: hidden !important;
+      touch-action: none !important;
+    }
+
+    /* Shared Media Layer Rule: object-fit: cover with commented contain option per spec */
+    .media-cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* object-fit: contain; */ /* Commented contain option per Atoms skill specs */
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* MODULE 1: Image Reveal Hero */
+    .reveal-hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      cursor: crosshair;
+      z-index: 20;
+      background: #0f172a;
+    }
+
+    .hero-layer {
+      position: absolute;
+      inset: 0;
+      will-change: mask-image, -webkit-mask-image;
+    }
+
+    .hero-reveal {
+      z-index: 1;
+    }
+
+    .hero-front {
+      z-index: 2;
+      -webkit-mask-image: radial-gradient(
+        circle var(--reveal-radius) at var(--reveal-x) var(--reveal-y),
+        transparent 0%,
+        transparent 55%,
+        rgba(0, 0, 0, 0.35) 78%,
+        rgba(0, 0, 0, 1) 100%
+      );
+      mask-image: radial-gradient(
+        circle var(--reveal-radius) at var(--reveal-x) var(--reveal-y),
+        transparent 0%,
+        transparent 55%,
+        rgba(0, 0, 0, 0.35) 78%,
+        rgba(0, 0, 0, 1) 100%
+      );
+    }
+
+    .cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 44px;
+      height: 44px;
+      margin-left: -22px;
+      margin-top: -22px;
+      border-radius: 9999px;
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
+      background: rgba(255, 204, 0, 0.14);
+      backdrop-filter: blur(4px);
+      pointer-events: none;
+      z-index: 60;
+      opacity: 0;
+      transform: translate3d(-9999px, -9999px, 0);
+      transition: opacity 0.2s ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-front {
+        -webkit-mask-image: none !important;
+        mask-image: none !important;
+      }
+      .cursor-ring {
+        display: none !important;
+      }
+    }
+
+    /* Above-Finale Wrapper: slides up to reveal the fixed Finale Layer */
+    .experience-stack {
+      position: relative;
+      z-index: 20;
+      background-color: #f8fafc;
+    }
+
+    /* MODULE 5: Finale Fixed Reveal Layer */
+    .finale-reveal-layer {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      z-index: 10;
+      background: linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%);
+      display: flex;
+       flex-direction: column;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    /* Touch: vertical swipes scroll the page, sideways drags drive the reveal and the scrub */
+    #section-hero, #section-mouse-scrub { touch-action: pan-y; }
+  </style>
+</head>
+<body>
+
+  <!-- FIXED TOP HEADER + FORWARD/REVERSE MODULE NAVIGATION -->
+  <header class="fixed top-0 inset-x-0 z-50 mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-8">
+    <div class="flex items-center gap-3 rounded-2xl bg-white/85 px-4 py-2.5 shadow-sm ring-1 ring-slate-200/80 backdrop-blur-xl">
+      <a href="https://www.sunrun.com/" target="_blank" rel="noopener" class="flex items-center" aria-label="Sunrun home">
+        <img src="assets/SunrunLogo_HeroBlue_PNG.png" alt="Sunrun" width="106" height="20" class="h-5 w-auto" />
+      </a>
+    </div>
+
+    <!-- Forward & Reverse Section Navigation Pill -->
+    <nav aria-label="Page sections" class="flex items-center gap-1 rounded-2xl bg-white/85 p-1.5 shadow-sm ring-1 ring-slate-200/80 backdrop-blur-xl">
+      <button data-nav-step="-1" type="button" title="Previous Section" class="rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition">
+        ↑ Prev
+      </button>
+      <button data-target="#section-hero" type="button" class="nav-pill hidden md:inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold bg-[#0047BB] text-white transition">
+        Blackout
+      </button>
+      <button data-target="#section-scroll-video" type="button" class="nav-pill hidden md:inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
+        Battery
+      </button>
+      <button data-target="#section-scroll-scrub" type="button" class="nav-pill hidden md:inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
+        Day &amp; night
+      </button>
+      <button data-target="#section-mouse-scrub" type="button" class="nav-pill hidden md:inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
+        Energy flow
+      </button>
+      <button data-target="finale" type="button" class="nav-pill hidden md:inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
+        Talk to Horace
+      </button>
+      <button data-nav-step="1" type="button" title="Next Section" class="rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition">
+        Next ↓
+      </button>
+    </nav>
+  </header>
+
+
+  <!-- ========================================================================= -->
+  <!-- STACKED MODULES 1–4 (Slides up at the end to reveal Fixed Finale Section) -->
+  <!-- ========================================================================= -->
+  <main class="experience-stack">
+
+    <!-- ======================================================================= -->
+    <!-- MODULE 1: IMAGE REVEAL HERO (01-image-reveal.prompt.md)                 -->
+    <!-- ======================================================================= -->
+    <section id="section-hero" class="reveal-hero" aria-label="Blackout protection">
+      <!-- Bottom Layer: REVEAL (image2.png → assets/powered-reveal.jpg) -->
+      <img
+        id="heroRevealImg"
+        src="assets/powered-reveal.jpg"
+        alt="The same home with solar panels on the roof and every window lit"
+        class="hero-layer hero-reveal media-cover"
+      />
+      <!-- Top Layer: FRONT (image1.jpeg → assets/blackout-front.jpg) -->
+      <img
+        id="heroFrontImg"
+        src="assets/blackout-front.jpg"
+        alt="A two-story home at dusk during a neighborhood power outage, every window dark"
+        class="hero-layer hero-front media-cover"
+      />
+
+      <!-- Subtle Light Gradient Overlay -->
+      <div class="pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-slate-950/50 via-transparent to-slate-950/70"></div>
+
+      <!-- Hero Content Overlay -->
+      <div class="pointer-events-none absolute inset-x-0 bottom-0 z-20 mx-auto flex max-w-7xl flex-col justify-between gap-6 px-6 pb-8 lg:flex-row lg:items-end lg:px-10 lg:pb-12">
+        <div class="pointer-events-auto max-w-xl rounded-3xl bg-white/90 p-6 shadow-xl ring-1 ring-slate-200/80 backdrop-blur-xl sm:p-8">
+          <div class="mb-3 inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-[#0047BB] ring-1 ring-blue-200/60">
+            <span class="h-2 w-2 rounded-full bg-[#0047BB]"></span>
+            Move your cursor over the house (or drag on a phone)
+          </div>
+          <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+            Take control of your power with Sunrun.
+          </h1>
+          <p class="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+            Lock in predictable energy rates to avoid rising utility costs and keep your home illuminated during blackouts with solar + battery storage.
+          </p>
+        </div>
+
+        <div class="pointer-events-auto w-full max-w-sm rounded-3xl bg-white/90 p-6 shadow-xl ring-1 ring-slate-200/80 backdrop-blur-xl">
+          <p class="text-[11px] font-bold uppercase tracking-wider text-[#0047BB]">The Block Sales Expert Team Lead</p>
+          <h2 class="mt-1 text-lg font-bold text-slate-900">Horace Lawrence</h2>
+          <p class="mt-2 text-xs leading-relaxed text-slate-600">
+            Scroll to see how solar and a home battery keep the lights on, then tell Horace about your home.
+          </p>
+          <div class="mt-4 flex items-center gap-2.5">
+            <a href="tel:+15102417007" class="flex-1 rounded-xl bg-[#0047BB] px-4 py-2.5 text-center text-xs font-semibold text-white hover:bg-[#003894] transition">
+              Call 510-241-7007
+            </a>
+            <a href="mailto:horace.lawrence@sunrun.com" class="flex-1 rounded-xl bg-slate-100 px-4 py-2.5 text-center text-xs font-semibold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-200/70 transition">
+              Email Horace
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom Cursor Ring -->
+      <div id="cursorRing" class="cursor-ring"></div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- MODULE 2: SCROLL-TRIGGERED VIDEO (02-scroll-video.prompt.md)            -->
+    <!-- ======================================================================= -->
+    <section id="section-scroll-video" class="relative h-screen w-full overflow-hidden bg-slate-950" aria-label="Home battery">
+      <video
+        id="scrollTriggeredVideo"
+        src="assets/Vid1.mp4"
+        muted
+        playsinline
+        preload="auto"
+        class="media-cover"
+      ></video>
+
+      <!-- Clean Glassmorphic Status Card -->
+      <div class="pointer-events-none absolute inset-x-0 bottom-0 z-20 mx-auto flex max-w-7xl items-end justify-between px-6 pb-10 lg:px-10">
+        <div class="pointer-events-auto max-w-lg rounded-3xl bg-white/90 p-6 shadow-xl ring-1 ring-slate-200/80 backdrop-blur-xl">
+          <div class="mb-2 flex items-center justify-between gap-3">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-[#0047BB]">
+              Home battery
+            </span>
+            <span id="scrollVideoBadge" class="rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-semibold text-amber-800">
+              Scroll to play
+            </span>
+          </div>
+          <h2 class="text-2xl font-bold tracking-tight text-slate-900">
+            Ready before the outage
+          </h2>
+          <p class="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
+            A home battery stores the energy your panels make during the day, so your essentials keep running when the grid goes down.
+          </p>
+          <p class="mt-3 text-[11px] text-slate-500">Illustration only. Your equipment depends on your system design.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- MODULE 3 (IN FLOW): SCROLL-CONTROLLED VIDEO SCRUB (04-scroll-scrub.prompt.md) -->
+    <!-- ======================================================================= -->
+    <section id="section-scroll-scrub" class="relative h-[350vh] w-full bg-slate-900" aria-label="Day to night">
+      <div class="sticky top-0 h-screen w-full overflow-hidden">
+        <video
+          id="scrollScrubVideo"
+          src="assets/Vid2.mp4"
+          muted
+          playsinline
+          preload="auto"
+          class="media-cover"
+        ></video>
+
+        <!-- HUD Overlay for Continuous Scroll Scrub -->
+        <div class="pointer-events-none absolute inset-x-0 bottom-0 z-20 mx-auto flex max-w-7xl flex-col justify-between gap-4 px-6 pb-10 sm:flex-row sm:items-end lg:px-10">
+          <div class="pointer-events-auto max-w-lg rounded-3xl bg-white/90 p-6 shadow-xl ring-1 ring-slate-200/80 backdrop-blur-xl">
+            <div class="mb-2 flex items-center justify-between">
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-[#0047BB]">
+                Day to night
+              </span>
+            </div>
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">
+              From storm to sunset
+            </h2>
+            <p class="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
+              Scroll to move through the day. As the sky clears your panels start producing and charge the battery, and after sunset the battery keeps the lights on.
+            </p>
+            <!-- Progress Bar -->
+            <div class="mt-4 h-2 w-full overflow-hidden rounded-full bg-slate-200">
+              <div id="scrollScrubBar" class="h-full w-0 bg-[#0047BB] transition-none"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- MODULE 4 (IN FLOW): MOUSE-CONTROLLED VIDEO SCRUB (03-mouse-scrub.prompt.md) -->
+    <!-- ======================================================================= -->
+    <section id="section-mouse-scrub" class="relative h-screen w-full overflow-hidden bg-slate-950 cursor-ew-resize" aria-label="Energy flow">
+      <video
+        id="mouseScrubVideo"
+        src="assets/Vid4.mp4"
+        muted
+        playsinline
+        preload="auto"
+        class="media-cover"
+      ></video>
+
+      <!-- Horizontal Scrub Guide Overlay -->
+      <div class="pointer-events-none absolute inset-x-0 bottom-0 z-20 mx-auto flex max-w-7xl flex-col justify-between gap-4 px-6 pb-10 sm:flex-row sm:items-end lg:px-10">
+        <div class="pointer-events-auto max-w-lg rounded-3xl bg-white/90 p-6 shadow-xl ring-1 ring-slate-200/80 backdrop-blur-xl">
+          <div class="mb-2 flex items-center justify-between">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-[#0047BB]">
+              Energy flow
+            </span>
+          </div>
+          <h2 class="text-2xl font-bold tracking-tight text-slate-900">
+            Follow the energy
+          </h2>
+          <p class="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
+            Move your cursor left and right (or drag on a phone) to follow power from the panels, through the battery and into your home.
+          </p>
+          <!-- Horizontal Mouse Position Bar -->
+          <div class="mt-4 h-2 w-full overflow-hidden rounded-full bg-slate-200">
+            <div id="mouseScrubBar" class="h-full w-0 bg-emerald-600 transition-none"></div>
+          </div>
+          <p class="mt-3 text-[11px] text-slate-500">Illustration only. Your equipment depends on your system design.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- MODULE 5: FINALE FIXED FULL-VIEWPORT REVEAL LAYER (05-combined-build)     -->
+  <!-- ========================================================================= -->
+  <footer id="section-finale" class="finale-reveal-layer px-6 pt-24 pb-10 lg:px-10" aria-label="Talk to Horace">
+    <div class="mx-auto my-auto grid w-full max-w-6xl gap-10 lg:grid-cols-12 lg:items-start">
+      <div class="lg:col-span-6 lg:pt-6">
+        <span class="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3.5 py-1 text-xs font-semibold text-[#0047BB] ring-1 ring-blue-200/60">
+          Free consultation
+        </span>
+        <h2 class="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          Ready to lock in your solar rate with Horace?
+        </h2>
+        <div class="mt-6 flex items-center gap-4">
+          <div class="flex h-14 w-14 flex-none items-center justify-center rounded-full bg-gradient-to-br from-amber-300 to-amber-400 text-lg font-bold text-slate-900" aria-hidden="true">HL</div>
+          <div>
+            <p class="text-base font-bold text-slate-900">Horace Lawrence</p>
+            <p class="text-xs font-semibold uppercase tracking-wider text-[#0047BB]">The Block Sales Expert, Team Lead</p>
+          </div>
+        </div>
+        <p class="mt-5 text-sm leading-relaxed text-slate-600 sm:text-base">
+          “I’m dedicated to making the process of going solar as easy as possible. Why solar? Because it lets you lock in a rate to avoid rising utility costs, gives you a more reliable source of energy, and (with a battery) can protect you during blackouts. I’d love to chat with you or your friends about how Sunrun could improve your life!”
+        </p>
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+          <a href="tel:+15102417007" class="rounded-2xl bg-slate-900 px-6 py-3.5 text-sm font-semibold text-white hover:bg-slate-800 transition">
+            Call 510-241-7007
+          </a>
+          <a href="mailto:horace.lawrence@sunrun.com?subject=Sunrun%20Solar%20%2B%20Battery%20Consultation" class="rounded-2xl bg-white px-6 py-3.5 text-sm font-semibold text-slate-900 ring-1 ring-slate-200 hover:bg-slate-50 transition">
+            Email Horace
+          </a>
+          <button type="button" data-target="#section-hero" class="rounded-2xl px-4 py-3.5 text-xs font-semibold text-slate-500 hover:text-slate-900 transition">
+            ↑ Back to top
+          </button>
+        </div>
+      </div>
+
+      <div class="lead-card lg:col-span-6" id="form-card">
+          <div id="form-view">
+            <h2>Let's talk solar</h2>
+            <p class="sub">Takes about a minute. Horace will reach out personally.</p>
+
+            <form id="lead" novalidate>
+              <fieldset class="seg">
+                <legend class="sr-only">Who is this for?</legend>
+                <input type="radio" name="mode" id="m-me" value="me" checked>
+                <label for="m-me"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>It's for me</label>
+                <input type="radio" name="mode" id="m-ref" value="ref">
+                <label for="m-ref"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M19 8v6M16 11h6"/></svg>Refer a friend</label>
+              </fieldset>
+
+              <!-- Referral mode -->
+              <div id="friend-first" hidden>
+                <fieldset class="group">
+                  <legend class="legend">Who are you referring?</legend>
+                  <div class="grid2">
+                    <div class="field"><label for="f-first">First name</label><input id="f-first" name="f_first" autocomplete="off" required><span class="err">Enter their first name</span></div>
+                    <div class="field"><label for="f-last">Last name</label><input id="f-last" name="f_last" autocomplete="off" required><span class="err">Enter their last name</span></div>
+                  </div>
+                  <div class="grid2">
+                    <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="f_phone" type="tel" inputmode="tel" autocomplete="off" required><span class="err">Enter a 10-digit phone number</span></div>
+                    <div class="field"><label for="f-email">Email</label><input id="f-email" name="f_email" type="email" autocomplete="off" required><span class="err">Enter a valid email</span></div>
+                  </div>
+                  <div class="field"><label for="f-how">How do you know each other?</label><input id="f-how" name="f_how" required><span class="err">Tell us how you know them</span></div>
+                </fieldset>
+                <p class="legend">About you</p>
+              </div>
+
+              <div class="grid2">
+                <div class="field"><label for="first">First name</label><input id="first" name="first" autocomplete="given-name" required><span class="err">Enter your first name</span></div>
+                <div class="field"><label for="last">Last name</label><input id="last" name="last" autocomplete="family-name" required><span class="err">Enter your last name</span></div>
+              </div>
+              <div class="grid2">
+                <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" required><span class="err">Enter a 10-digit phone number</span></div>
+                <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required><span class="err">Enter a valid email</span></div>
+              </div>
+              <div class="grid2 addr">
+                <div class="field"><label for="addr">Home address</label><input id="addr" name="addr" autocomplete="address-line1" required><span class="err">Enter your street address</span></div>
+                <div class="field"><label for="zip">ZIP</label><input id="zip" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" required><span class="err">Enter 5 digits</span></div>
+              </div>
+
+              <div id="me-extras">
+                <label class="check"><input type="checkbox" id="also-ref"> I also know someone who'd benefit from solar</label>
+                <div class="reveal" id="extra-friend"><div>
+                  <fieldset class="group">
+                    <legend class="legend">Their details</legend>
+                    <div class="grid2">
+                      <div class="field"><label for="x-first">First name</label><input id="x-first" name="x_first" autocomplete="off" data-cond required><span class="err">Enter their first name</span></div>
+                      <div class="field"><label for="x-phone">Phone</label><input id="x-phone" name="x_phone" type="tel" inputmode="tel" autocomplete="off" data-cond required><span class="err">Enter a 10-digit phone number</span></div>
+                    </div>
+                  </fieldset>
+                </div></div>
+                <label class="check"><input type="checkbox" name="community"> A community organization referred me to Sunrun</label>
+              </div>
+
+              <button class="btn btn-primary" type="submit" id="submit">Get my free solar plan</button>
+              <p class="consent" id="consent-me">By clicking above, I authorize Sunrun to call me and send pre-recorded messages and text messages to me about Sunrun products and services at the telephone number I entered above, using an autodialer, even if I am on a national or state "Do Not Call" list. Message and data rates may apply. I understand that consent here is not a condition of purchase. <a href="https://www.sunrun.com/privacy-policy">Privacy Policy</a></p>
+              <p class="consent" id="consent-ref" hidden>By submitting this information, you confirm that your referral has consented to receive calls/texts from Sunrun at the phone number entered above, with an autodialer, about product/service offers, even if the number is on a federal or state "Do Not Call" list. This consent is not conditioned on a purchase. <a href="https://www.sunrun.com/privacy-policy">Privacy Policy</a></p>
+            </form>
+          </div>
+
+          <div class="success" id="success" hidden tabindex="-1">
+            <div class="badge"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
+            <h2 id="success-title">You're all set</h2>
+            <p class="sub" id="success-msg">Horace will reach out within one business day. Want to talk sooner? <a href="tel:+15102417007">Call 510-241-7007</a>.</p>
+          </div>
+      </div>
+    </div>
+
+    <div class="mx-auto flex w-full max-w-7xl items-center justify-between text-xs text-slate-400">
+      <span>© <span id="yr">2026</span> Sunrun. All rights reserved. Design concept: this form does not submit anything.</span>
+      <a href="https://www.sunrun.com/privacy-policy" target="_blank" rel="noopener" class="hover:text-slate-600">Privacy Policy</a>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- COMBINED INTERACTION CONTROLLER (Plain ES6+ JS, Single-rAF Loops)         -->
+  <!-- ========================================================================= -->
+  <script>
+    (() => {
+      const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      /* -----------------------------------------------------------------------
+       * 0. MEDIA ELEMENTS
+       * --------------------------------------------------------------------- */
+      const heroFrontImg = document.getElementById('heroFrontImg');
+      const heroRevealImg = document.getElementById('heroRevealImg');
+      const scrollTriggeredVideo = document.getElementById('scrollTriggeredVideo');
+      const scrollScrubVideo = document.getElementById('scrollScrubVideo');
+      const mouseScrubVideo = document.getElementById('mouseScrubVideo');
+
+      /* -----------------------------------------------------------------------
+       * 1. MODULE 1: IMAGE REVEAL HERO (01-image-reveal.prompt.md)
+       * --------------------------------------------------------------------- */
+      const heroSection = document.getElementById('section-hero');
+      const cursorRing = document.getElementById('cursorRing');
+      let heroPointerX = -9999;
+      let heroPointerY = -9999;
+      let heroInside = false;
+      let heroRafId = null;
+
+      function renderHeroMask() {
+        heroRafId = null;
+        if (prefersReducedMotion.matches) return;
+
+        if (heroInside) {
+          heroSection.style.setProperty('--reveal-x', `${heroPointerX}px`);
+          heroSection.style.setProperty('--reveal-y', `${heroPointerY}px`);
+          heroSection.style.setProperty('--reveal-radius', '240px');
+          cursorRing.style.opacity = '1';
+          cursorRing.style.transform = `translate3d(${heroPointerX}px, ${heroPointerY}px, 0)`;
+        } else {
+          heroSection.style.setProperty('--reveal-x', '-9999px');
+          heroSection.style.setProperty('--reveal-y', '-9999px');
+          heroSection.style.setProperty('--reveal-radius', '0px');
+          cursorRing.style.opacity = '0';
+        }
+      }
+
+      heroSection.addEventListener('pointermove', (e) => {
+        if (prefersReducedMotion.matches) return;
+        const rect = heroSection.getBoundingClientRect();
+        heroPointerX = e.clientX - rect.left;
+        heroPointerY = e.clientY - rect.top;
+        heroInside = true;
+        if (!heroRafId) heroRafId = requestAnimationFrame(renderHeroMask);
+      });
+
+      heroSection.addEventListener('pointerleave', () => {
+        heroInside = false;
+        if (!heroRafId) heroRafId = requestAnimationFrame(renderHeroMask);
+      });
+
+      /* -----------------------------------------------------------------------
+       * 2. MODULE 2: SCROLL-TRIGGERED VIDEO (02-scroll-video.prompt.md)
+       *    - Starts paused on frame 1.
+       *    - Single downward scroll/wheel/touch gesture plays full video.
+       *    - Locks additional input during playback so gestures never scrub/skip.
+       *    - Freezes on final frame when ended.
+       * --------------------------------------------------------------------- */
+      const scrollVideoSection = document.getElementById('section-scroll-video');
+      const scrollVideoBadge = document.getElementById('scrollVideoBadge');
+
+      let scrollVideoState = 'idle'; // 'idle' | 'playing' | 'ended'
+      let touchStartY = null;
+
+      function lockScrollInput() {
+        document.body.classList.add('scroll-locked');
+      }
+
+      function unlockScrollInput() {
+        document.body.classList.remove('scroll-locked');
+      }
+
+      function preventLockedInput(e) {
+        if (scrollVideoState === 'playing') {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }
+      }
+
+      // Jump to the last frame and release the page (Esc, and reduced motion).
+      function finishScrollVideo() {
+        scrollTriggeredVideo.pause();
+        if (Number.isFinite(scrollTriggeredVideo.duration)) scrollTriggeredVideo.currentTime = scrollTriggeredVideo.duration;
+        scrollVideoState = 'ended';
+        unlockScrollInput();
+        scrollVideoBadge.textContent = 'Keep scrolling';
+        scrollVideoBadge.className = 'rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-800';
+      }
+
+      function triggerFullVideoPlayback() {
+        if (scrollVideoState !== 'idle') return;
+        if (prefersReducedMotion.matches) { finishScrollVideo(); return; }
+        scrollVideoState = 'playing';
+        scrollVideoSection.scrollIntoView({ behavior: 'instant' });
+        lockScrollInput();
+
+        scrollVideoBadge.textContent = 'Playing… press Esc to skip';
+        scrollVideoBadge.className = 'rounded-full bg-blue-100 px-2.5 py-0.5 text-[11px] font-semibold text-[#0047BB]';
+
+        scrollTriggeredVideo.playbackRate = 1.6; // the 10s clip plays in about 6s so the page isn't held long
+        scrollTriggeredVideo.play().catch(() => {
+          // If asset isn't present yet, unlock safely
+          scrollVideoState = 'ended';
+          unlockScrollInput();
+        });
+      }
+
+      scrollTriggeredVideo.addEventListener('ended', () => {
+        scrollTriggeredVideo.pause();
+        if (Number.isFinite(scrollTriggeredVideo.duration) && scrollTriggeredVideo.duration > 0) {
+          scrollTriggeredVideo.currentTime = scrollTriggeredVideo.duration;
+        }
+        scrollVideoState = 'ended';
+        unlockScrollInput();
+        scrollVideoBadge.textContent = 'Keep scrolling';
+        scrollVideoBadge.className = 'rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-800';
+      });
+
+      function isScrollVideoSectionActive() {
+        const rect = scrollVideoSection.getBoundingClientRect();
+        return rect.top <= window.innerHeight * 0.35 && rect.bottom >= window.innerHeight * 0.65;
+      }
+
+      window.addEventListener('wheel', (e) => {
+        if (scrollVideoState === 'playing') {
+          preventLockedInput(e);
+          return;
+        }
+        if (scrollVideoState === 'idle' && e.deltaY > 6 && isScrollVideoSectionActive()) {
+          e.preventDefault();
+          triggerFullVideoPlayback();
+        }
+      }, { passive: false });
+
+      window.addEventListener('touchstart', (e) => {
+        if (e.touches.length > 0) touchStartY = e.touches[0].clientY;
+      }, { passive: true });
+
+      window.addEventListener('touchmove', (e) => {
+        if (scrollVideoState === 'playing') {
+          preventLockedInput(e);
+          return;
+        }
+        if (scrollVideoState === 'idle' && touchStartY !== null && e.touches.length > 0) {
+          const deltaY = touchStartY - e.touches[0].clientY;
+          if (deltaY > 12 && isScrollVideoSectionActive()) {
+            e.preventDefault();
+            triggerFullVideoPlayback();
+          }
+        }
+      }, { passive: false });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && scrollVideoState === 'playing') { finishScrollVideo(); return; }
+        const downKeys = ['ArrowDown', 'PageDown', ' '];
+        if (scrollVideoState === 'playing' && downKeys.includes(e.key)) {
+          preventLockedInput(e);
+          return;
+        }
+        if (scrollVideoState === 'idle' && downKeys.includes(e.key) && isScrollVideoSectionActive()) {
+          e.preventDefault();
+          triggerFullVideoPlayback();
+        }
+      }, { passive: false });
+
+      /* -----------------------------------------------------------------------
+       * 3. MODULE 3 (IN FLOW): SCROLL-CONTROLLED VIDEO SCRUB (04-scroll-scrub)
+       *    - Continuous scroll progress mapped to targetTime.
+       *    - Single rAF loop eases displayedTime toward targetTime.
+       *    - Video remains strictly paused.
+       * --------------------------------------------------------------------- */
+      const scrollScrubSection = document.getElementById('section-scroll-scrub');
+      const scrollScrubBar = document.getElementById('scrollScrubBar');
+
+      let scrollScrubDuration = 0;
+      let scrollTargetTime = 0;
+      let scrollDisplayedTime = 0;
+      let scrollScrubRafId = null;
+
+      scrollScrubVideo.addEventListener('loadedmetadata', () => {
+        scrollScrubVideo.pause();
+        scrollScrubDuration = scrollScrubVideo.duration || 0;
+      });
+
+      function updateScrollScrubFrame() {
+        if (!scrollScrubDuration) {
+          scrollScrubRafId = null;
+          return;
+        }
+        const diff = scrollTargetTime - scrollDisplayedTime;
+        if (Math.abs(diff) > 0.008) {
+          scrollDisplayedTime += diff * 0.14;
+          // Write video.currentTime at most once per rAF frame
+          if (!scrollScrubVideo.seeking) {
+            scrollScrubVideo.currentTime = clamp(scrollDisplayedTime, 0, scrollScrubDuration);
+          }
+          scrollScrubRafId = requestAnimationFrame(updateScrollScrubFrame);
+        } else {
+          scrollDisplayedTime = scrollTargetTime;
+          if (!scrollScrubVideo.seeking) {
+            scrollScrubVideo.currentTime = clamp(scrollDisplayedTime, 0, scrollScrubDuration);
+          }
+          scrollScrubRafId = null;
+        }
+      }
+
+      window.addEventListener('scroll', () => {
+        const rect = scrollScrubSection.getBoundingClientRect();
+        const scrollableDistance = scrollScrubSection.offsetHeight - window.innerHeight;
+        if (scrollableDistance <= 0) return;
+
+        const progress = clamp(-rect.top / scrollableDistance, 0, 1);
+        scrollScrubBar.style.width = `${(progress * 100).toFixed(1)}%`;
+
+        if (scrollScrubDuration > 0) {
+          scrollTargetTime = progress * scrollScrubDuration;
+          if (!scrollScrubRafId) {
+            scrollScrubRafId = requestAnimationFrame(updateScrollScrubFrame);
+          }
+        }
+      }, { passive: true });
+
+      /* -----------------------------------------------------------------------
+       * 4. MODULE 4 (IN FLOW): MOUSE-CONTROLLED VIDEO SCRUB (03-mouse-scrub)
+       *    - ratio = clamp(mouseX / window.innerWidth, 0, 1)
+       *    - targetTime = ratio * video.duration
+       *    - Single rAF loop eases displayedTime toward targetTime; stays paused.
+       * --------------------------------------------------------------------- */
+      const mouseScrubSection = document.getElementById('section-mouse-scrub');
+      const mouseScrubBar = document.getElementById('mouseScrubBar');
+
+      let mouseScrubDuration = 0;
+      let mouseTargetTime = 0;
+      let mouseDisplayedTime = 0;
+      let mouseScrubRafId = null;
+
+      mouseScrubVideo.addEventListener('loadedmetadata', () => {
+        mouseScrubVideo.pause();
+        mouseScrubDuration = mouseScrubVideo.duration || 0;
+      });
+
+      function updateMouseScrubFrame() {
+        if (!mouseScrubDuration) {
+          mouseScrubRafId = null;
+          return;
+        }
+        const diff = mouseTargetTime - mouseDisplayedTime;
+        if (Math.abs(diff) > 0.008) {
+          mouseDisplayedTime += diff * 0.15;
+          // Write video.currentTime at most once per frame
+          if (!mouseScrubVideo.seeking) {
+            mouseScrubVideo.currentTime = clamp(mouseDisplayedTime, 0, mouseScrubDuration);
+          }
+          mouseScrubRafId = requestAnimationFrame(updateMouseScrubFrame);
+        } else {
+          mouseDisplayedTime = mouseTargetTime;
+          if (!mouseScrubVideo.seeking) {
+            mouseScrubVideo.currentTime = clamp(mouseDisplayedTime, 0, mouseScrubDuration);
+          }
+          mouseScrubRafId = null;
+        }
+      }
+
+      mouseScrubSection.addEventListener('pointermove', (e) => {
+        const ratio = clamp(e.clientX / window.innerWidth, 0, 1);
+        mouseScrubBar.style.width = `${(ratio * 100).toFixed(1)}%`;
+
+        if (mouseScrubDuration > 0) {
+          mouseTargetTime = ratio * mouseScrubDuration;
+          if (!mouseScrubRafId) {
+            mouseScrubRafId = requestAnimationFrame(updateMouseScrubFrame);
+          }
+        }
+      });
+
+      /* -----------------------------------------------------------------------
+       * 5. FORWARD & REVERSE NAVIGATION WITHOUT DOCUMENT JUMP (05-combined-build)
+       * --------------------------------------------------------------------- */
+      const sectionOrder = [
+        '#section-hero',
+        '#section-scroll-video',
+        '#section-scroll-scrub',
+        '#section-mouse-scrub',
+        'finale'
+      ];
+      let currentSectionIdx = 0;
+
+      function getTargetScrollY(targetSelector) {
+        if (targetSelector === 'finale') {
+          return document.getElementById('section-finale').offsetTop;
+        }
+        const el = document.querySelector(targetSelector);
+        return el ? el.offsetTop : 0;
+      }
+
+      function navigateToSection(targetSelector) {
+        if (scrollVideoState === 'playing') return; // Respect playback lock
+        const targetY = getTargetScrollY(targetSelector);
+        const idx = sectionOrder.indexOf(targetSelector);
+        if (idx !== -1) currentSectionIdx = idx;
+
+        if (window.gsap && window.ScrollToPlugin) {
+          gsap.to(window, {
+            scrollTo: { y: targetY, autoKill: false },
+            duration: 0.85,
+            ease: 'power3.inOut'
+          });
+        } else {
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
+      }
+
+      document.querySelectorAll('[data-target]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          navigateToSection(btn.getAttribute('data-target'));
+        });
+      });
+
+      document.querySelectorAll('[data-nav-step]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const step = parseInt(btn.getAttribute('data-nav-step'), 10);
+          const nextIdx = clamp(currentSectionIdx + step, 0, sectionOrder.length - 1);
+          navigateToSection(sectionOrder[nextIdx]);
+        });
+      });
+
+      // Highlight active navigation pill on scroll
+      const navPills = document.querySelectorAll('header .nav-pill');
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        if (scrollY >= document.getElementById('section-finale').offsetTop - window.innerHeight * 0.4) {
+          currentSectionIdx = 4;
+        } else if (scrollY >= document.getElementById('section-mouse-scrub').offsetTop - window.innerHeight * 0.4) {
+          currentSectionIdx = 3;
+        } else if (scrollY >= document.getElementById('section-scroll-scrub').offsetTop - window.innerHeight * 0.4) {
+          currentSectionIdx = 2;
+        } else if (scrollY >= document.getElementById('section-scroll-video').offsetTop - window.innerHeight * 0.4) {
+          currentSectionIdx = 1;
+        } else {
+          currentSectionIdx = 0;
+        }
+
+        navPills.forEach((pill, i) => {
+          if (i === currentSectionIdx) {
+            pill.className = 'nav-pill hidden md:inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold bg-[#0047BB] text-white transition';
+          } else {
+            pill.className = 'nav-pill hidden md:inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition';
+          }
+        });
+      }, { passive: true });
+    })();
+  </script>
+  <script src="assets/form.js" defer></script>
+</body>
+</html>

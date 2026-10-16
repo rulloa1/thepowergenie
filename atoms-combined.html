@@ -166,9 +166,6 @@
       <button data-target="#section-scroll-video" type="button" class="nav-pill hidden md:inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
         Battery
       </button>
-      <button data-target="#section-scroll-scrub" type="button" class="nav-pill hidden md:inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
-        Day &amp; night
-      </button>
       <button data-target="#section-mouse-scrub" type="button" class="nav-pill hidden md:inline-flex rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
         Energy flow
       </button>
@@ -281,44 +278,7 @@
     </section>
 
     <!-- ======================================================================= -->
-    <!-- MODULE 3 (IN FLOW): SCROLL-CONTROLLED VIDEO SCRUB (04-scroll-scrub.prompt.md) -->
-    <!-- ======================================================================= -->
-    <section id="section-scroll-scrub" class="relative h-[350vh] w-full bg-slate-900" aria-label="Day to night">
-      <div class="sticky top-0 h-screen w-full overflow-hidden">
-        <video
-          id="scrollScrubVideo"
-          src="assets/Vid2.mp4"
-          muted
-          playsinline
-          preload="auto"
-          class="media-cover"
-        ></video>
-
-        <!-- HUD Overlay for Continuous Scroll Scrub -->
-        <div class="pointer-events-none absolute inset-x-0 bottom-0 z-20 mx-auto flex max-w-7xl flex-col justify-between gap-4 px-6 pb-10 sm:flex-row sm:items-end lg:px-10">
-          <div class="pointer-events-auto max-w-lg rounded-3xl bg-white/90 p-6 shadow-xl ring-1 ring-slate-200/80 backdrop-blur-xl">
-            <div class="mb-2 flex items-center justify-between">
-              <span class="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-[#0047BB]">
-                Day to night
-              </span>
-            </div>
-            <h2 class="text-2xl font-bold tracking-tight text-slate-900">
-              From storm to sunset
-            </h2>
-            <p class="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
-              Scroll to move through the day. As the sky clears your panels start producing and charge the battery, and after sunset the battery keeps the lights on.
-            </p>
-            <!-- Progress Bar -->
-            <div class="mt-4 h-2 w-full overflow-hidden rounded-full bg-slate-200">
-              <div id="scrollScrubBar" class="h-full w-0 bg-[#0047BB] transition-none"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================================================================= -->
-    <!-- MODULE 4 (IN FLOW): MOUSE-CONTROLLED VIDEO SCRUB (03-mouse-scrub.prompt.md) -->
+    <!-- MODULE 3: MOUSE-CONTROLLED VIDEO SCRUB (03-mouse-scrub.prompt.md)         -->
     <!-- ======================================================================= -->
     <section id="section-mouse-scrub" class="relative h-screen w-full overflow-hidden bg-slate-950 cursor-ew-resize" aria-label="Energy flow">
       <video
@@ -482,7 +442,6 @@
       const heroFrontImg = document.getElementById('heroFrontImg');
       const heroRevealImg = document.getElementById('heroRevealImg');
       const scrollTriggeredVideo = document.getElementById('scrollTriggeredVideo');
-      const scrollScrubVideo = document.getElementById('scrollScrubVideo');
       const mouseScrubVideo = document.getElementById('mouseScrubVideo');
 
       /* -----------------------------------------------------------------------
@@ -643,64 +602,7 @@
       }, { passive: false });
 
       /* -----------------------------------------------------------------------
-       * 3. MODULE 3 (IN FLOW): SCROLL-CONTROLLED VIDEO SCRUB (04-scroll-scrub)
-       *    - Continuous scroll progress mapped to targetTime.
-       *    - Single rAF loop eases displayedTime toward targetTime.
-       *    - Video remains strictly paused.
-       * --------------------------------------------------------------------- */
-      const scrollScrubSection = document.getElementById('section-scroll-scrub');
-      const scrollScrubBar = document.getElementById('scrollScrubBar');
-
-      let scrollScrubDuration = 0;
-      let scrollTargetTime = 0;
-      let scrollDisplayedTime = 0;
-      let scrollScrubRafId = null;
-
-      scrollScrubVideo.addEventListener('loadedmetadata', () => {
-        scrollScrubVideo.pause();
-        scrollScrubDuration = scrollScrubVideo.duration || 0;
-      });
-
-      function updateScrollScrubFrame() {
-        if (!scrollScrubDuration) {
-          scrollScrubRafId = null;
-          return;
-        }
-        const diff = scrollTargetTime - scrollDisplayedTime;
-        if (Math.abs(diff) > 0.008) {
-          scrollDisplayedTime += diff * 0.14;
-          // Write video.currentTime at most once per rAF frame
-          if (!scrollScrubVideo.seeking) {
-            scrollScrubVideo.currentTime = clamp(scrollDisplayedTime, 0, scrollScrubDuration);
-          }
-          scrollScrubRafId = requestAnimationFrame(updateScrollScrubFrame);
-        } else {
-          scrollDisplayedTime = scrollTargetTime;
-          if (!scrollScrubVideo.seeking) {
-            scrollScrubVideo.currentTime = clamp(scrollDisplayedTime, 0, scrollScrubDuration);
-          }
-          scrollScrubRafId = null;
-        }
-      }
-
-      window.addEventListener('scroll', () => {
-        const rect = scrollScrubSection.getBoundingClientRect();
-        const scrollableDistance = scrollScrubSection.offsetHeight - window.innerHeight;
-        if (scrollableDistance <= 0) return;
-
-        const progress = clamp(-rect.top / scrollableDistance, 0, 1);
-        scrollScrubBar.style.width = `${(progress * 100).toFixed(1)}%`;
-
-        if (scrollScrubDuration > 0) {
-          scrollTargetTime = progress * scrollScrubDuration;
-          if (!scrollScrubRafId) {
-            scrollScrubRafId = requestAnimationFrame(updateScrollScrubFrame);
-          }
-        }
-      }, { passive: true });
-
-      /* -----------------------------------------------------------------------
-       * 4. MODULE 4 (IN FLOW): MOUSE-CONTROLLED VIDEO SCRUB (03-mouse-scrub)
+       * 3. MODULE 3: MOUSE-CONTROLLED VIDEO SCRUB (03-mouse-scrub.prompt.md)
        *    - ratio = clamp(mouseX / window.innerWidth, 0, 1)
        *    - targetTime = ratio * video.duration
        *    - Single rAF loop eases displayedTime toward targetTime; stays paused.
@@ -753,12 +655,11 @@
       });
 
       /* -----------------------------------------------------------------------
-       * 5. FORWARD & REVERSE NAVIGATION WITHOUT DOCUMENT JUMP (05-combined-build)
+       * 4. FORWARD & REVERSE NAVIGATION WITHOUT DOCUMENT JUMP (05-combined-build)
        * --------------------------------------------------------------------- */
       const sectionOrder = [
         '#section-hero',
         '#section-scroll-video',
-        '#section-scroll-scrub',
         '#section-mouse-scrub',
         'finale'
       ];
@@ -808,10 +709,8 @@
       window.addEventListener('scroll', () => {
         const scrollY = window.scrollY;
         if (scrollY >= document.getElementById('section-finale').offsetTop - window.innerHeight * 0.4) {
-          currentSectionIdx = 4;
-        } else if (scrollY >= document.getElementById('section-mouse-scrub').offsetTop - window.innerHeight * 0.4) {
           currentSectionIdx = 3;
-        } else if (scrollY >= document.getElementById('section-scroll-scrub').offsetTop - window.innerHeight * 0.4) {
+        } else if (scrollY >= document.getElementById('section-mouse-scrub').offsetTop - window.innerHeight * 0.4) {
           currentSectionIdx = 2;
         } else if (scrollY >= document.getElementById('section-scroll-video').offsetTop - window.innerHeight * 0.4) {
           currentSectionIdx = 1;
