@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Power Genie × Scroll-World — 3D Solar Energy Flight</title>
-  <meta name="description" content="An interactive real-time 3D camera flight through residential solar generation, battery blackout islanding, Horace Lawrence advisory, and connected brand pavilions." />
+  <title>Power Genie × Scroll-World — 1080p Continuous Flight</title>
+  <meta name="description" content="An interactive scroll-scrubbed 1080p continuous camera flight through residential solar generation, battery blackout islanding, and Horace Lawrence advisory." />
   <meta name="theme-color" content="#060913" />
 
   <!-- Favicon -->
@@ -22,397 +22,93 @@
   <script src="http://localhost:3030/tracker.js" data-site="powergenie-scroll-world" async></script>
 
   <style>
-    :root {
+    :root, .sw-root {
       --sw-bg: #060913;
-      --sw-card-bg: rgba(10, 17, 36, 0.78);
-      --sw-border: rgba(255, 255, 255, 0.12);
       --sw-ink: #f8fafc;
       --sw-ink-soft: #94a3b8;
       --sw-accent: #f6b24a;
-      --sw-electric: #38bdf8;
-      --sw-emerald: #10b981;
       --sw-font-display: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --sw-font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
+    body {
       background-color: var(--sw-bg);
+      margin: 0;
       color: var(--sw-ink);
       font-family: var(--sw-font-body);
       overflow-x: hidden;
-      min-height: 100%;
     }
 
-    /* Fixed WebGL 3D Canvas Background */
-    #world-canvas-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    #world-canvas-container canvas {
-      display: block;
-      width: 100% !important;
-      height: 100% !important;
-    }
-
-    /* Top Compliance & Quick Navigation Bar */
+    /* Fixed Top Compliance Bar */
     .sunrun-banner {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      height: 38px;
-      background: rgba(6, 9, 19, 0.92);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--sw-border);
+      height: 34px;
+      background: rgba(6, 9, 19, 0.94);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       z-index: 100;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 clamp(16px, 4vw, 36px);
-      font-size: 0.78rem;
-      color: var(--sw-ink-soft);
+      font-size: 0.76rem;
+      color: #94a3b8;
     }
 
     .sunrun-banner a {
-      color: var(--sw-electric);
+      color: #38bdf8;
       text-decoration: none;
       font-weight: 600;
       transition: color 0.2s ease;
     }
 
     .sunrun-banner a:hover {
-      color: var(--sw-accent);
+      color: #f6b24a;
       text-decoration: underline;
     }
 
-    /* Progress Fill Bar */
-    .scroll-progress-track {
-      position: fixed;
-      top: 38px;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: rgba(255, 255, 255, 0.05);
-      z-index: 101;
+    /* Offset topbar & scrollbar for banner */
+    .sw-topbar {
+      top: 34px !important;
     }
 
-    #scroll-progress-fill {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, #f6b24a, #38bdf8, #10b981);
-      box-shadow: 0 0 10px rgba(246, 178, 74, 0.6);
-      transition: width 0.05s ease-out;
+    .sw-scrollbar {
+      top: 34px !important;
     }
 
-    /* Virtual Scroll Space (5 Full Viewport Heights for 5 Story Scenes) */
-    .scroll-virtual-height {
-      height: 500vh;
-      position: relative;
-      pointer-events: none;
+    /* Custom button styling */
+    .sw-btn--primary {
+      background: linear-gradient(135deg, #f6b24a 0%, #ea580c 100%) !important;
+      color: #060913 !important;
+      font-weight: 700 !important;
+      border-radius: 12px !important;
+      box-shadow: 0 4px 20px rgba(246, 178, 74, 0.45) !important;
+      text-decoration: none !important;
+      transition: all 0.2s ease !important;
     }
 
-    /* Pinned Overlay UI */
-    .pinned-viewport-ui {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 10;
-      pointer-events: none;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: clamp(20px, 5vw, 60px);
+    .sw-btn--primary:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 26px rgba(246, 178, 74, 0.65) !important;
+      filter: brightness(1.08) !important;
     }
 
-    /* Glassmorphic Story Card Container */
-    #story-cards-wrapper {
-      position: relative;
-      max-width: 520px;
-      pointer-events: auto;
-      z-index: 20;
+    .sw-btn--ghost {
+      border-color: rgba(255, 255, 255, 0.25) !important;
+      color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.06) !important;
+      border-radius: 12px !important;
+      text-decoration: none !important;
+      transition: all 0.2s ease !important;
     }
 
-    .sw-story-card {
-      background: var(--sw-card-bg);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--sw-border);
-      border-radius: 20px;
-      padding: clamp(24px, 4vw, 36px);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      animation: cardFadeIn 0.35s ease-out forwards;
-    }
-
-    @keyframes cardFadeIn {
-      from {
-        opacity: 0.6;
-        transform: translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .sw-card-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .sw-step-indicator {
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(246, 178, 74, 0.18);
-      color: var(--sw-accent);
-      border: 1px solid rgba(246, 178, 74, 0.4);
-    }
-
-    .sw-card-eyebrow {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--sw-ink-soft);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .sw-card-title {
-      font-family: var(--sw-font-display);
-      font-size: clamp(1.6rem, 2.6vw, 2.4rem);
-      font-weight: 800;
-      line-height: 1.15;
-      color: #ffffff;
-      margin-bottom: 14px;
-      letter-spacing: -0.02em;
-    }
-
-    .sw-card-body {
-      font-size: clamp(0.92rem, 1.2vw, 1.05rem);
-      line-height: 1.6;
-      color: #cbd5e1;
-      margin-bottom: 20px;
-    }
-
-    .sw-card-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 24px;
-    }
-
-    .sw-pill {
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 5px 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.06);
-      color: #e2e8f0;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    /* Buttons */
-    .sw-cta-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .sw-btn-primary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #f6b24a 0%, #ea580c 100%);
-      color: #060913;
-      font-weight: 700;
-      font-size: 0.95rem;
-      padding: 12px 24px;
-      border-radius: 12px;
-      text-decoration: none;
-      box-shadow: 0 4px 20px rgba(246, 178, 74, 0.4);
-      transition: all 0.2s ease;
-    }
-
-    .sw-btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 26px rgba(246, 178, 74, 0.6);
-      filter: brightness(1.08);
-    }
-
-    .sw-btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-      font-weight: 600;
-      font-size: 0.95rem;
-      padding: 12px 22px;
-      border-radius: 12px;
-      text-decoration: none;
-      transition: all 0.2s ease;
-    }
-
-    .sw-btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.35);
-      transform: translateY(-2px);
-    }
-
-    /* Brand Hub Links */
-    .sw-brand-links {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .sw-hub-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #ffffff;
-      text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 600;
-      border-radius: 10px;
-      transition: all 0.2s ease;
-    }
-
-    .sw-hub-link:hover {
-      background: rgba(56, 189, 248, 0.15);
-      border-color: var(--sw-electric);
-      color: var(--sw-electric);
-      transform: translateY(-2px);
-    }
-
-    /* Side Scene Navigation Rail */
-    #scene-nav-rail {
-      position: fixed;
-      right: clamp(16px, 3vw, 36px);
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 50;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      pointer-events: auto;
-    }
-
-    .nav-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.25);
-      border: 2px solid transparent;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.25s ease;
-    }
-
-    .nav-dot:hover {
-      background: rgba(255, 255, 255, 0.6);
-      transform: scale(1.3);
-    }
-
-    .nav-dot.active {
-      background: var(--sw-accent);
-      border-color: rgba(246, 178, 74, 0.4);
-      box-shadow: 0 0 16px var(--sw-accent);
-      transform: scale(1.45);
-    }
-
-    .nav-dot::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      right: 24px;
-      top: 50%;
-      transform: translateY(-50%) translateX(10px);
-      background: rgba(6, 9, 19, 0.9);
-      border: 1px solid var(--sw-border);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: #ffffff;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.2s ease;
-    }
-
-    .nav-dot:hover::after {
-      opacity: 1;
-      transform: translateY(-50%) translateX(0);
-    }
-
-    /* Bottom Scroll & Flight Prompt */
-    .scroll-flight-hint {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 50;
-      background: rgba(6, 9, 19, 0.8);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--sw-border);
-      padding: 8px 18px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--sw-ink-soft);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      pointer-events: none;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-    }
-
-    .scroll-indicator-wheel {
-      width: 14px;
-      height: 22px;
-      border: 2px solid var(--sw-ink-soft);
-      border-radius: 8px;
-      position: relative;
-    }
-
-    .scroll-indicator-wheel::after {
-      content: '';
-      position: absolute;
-      top: 4px;
-      left: 50%;
-      width: 2px;
-      height: 4px;
-      background: var(--sw-accent);
-      transform: translateX(-50%);
-      border-radius: 2px;
-      animation: wheelBounce 1.5s infinite;
-    }
-
-    @keyframes wheelBounce {
-      0% { top: 4px; opacity: 1; }
-      100% { top: 12px; opacity: 0; }
+    .sw-btn--ghost:hover {
+      background: rgba(255, 255, 255, 0.15) !important;
+      transform: translateY(-2px) !important;
     }
 
     /* Fixed Exit Button */
@@ -422,8 +118,9 @@
       right: 24px;
       z-index: 90;
       background: rgba(11, 17, 34, 0.9);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--sw-border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       color: #ffffff;
       padding: 10px 18px;
       border-radius: 999px;
@@ -439,36 +136,9 @@
 
     .exit-hub-btn:hover {
       background: rgba(246, 178, 74, 0.15);
-      border-color: var(--sw-accent);
-      color: var(--sw-accent);
+      border-color: #f6b24a;
+      color: #f6b24a;
       transform: translateY(-2px);
-    }
-
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-      .pinned-viewport-ui {
-        padding: 20px 16px 80px 16px;
-        justify-content: flex-end;
-      }
-      #story-cards-wrapper {
-        max-width: 100%;
-      }
-      .sw-story-card {
-        padding: 20px 18px;
-      }
-      .sw-card-title {
-        font-size: 1.45rem;
-      }
-      .sw-card-body {
-        font-size: 0.88rem;
-        margin-bottom: 14px;
-      }
-      #scene-nav-rail {
-        right: 12px;
-      }
-      .scroll-flight-hint {
-        display: none;
-      }
     }
   </style>
 </head>
@@ -487,53 +157,82 @@
     </div>
   </header>
 
-  <!-- Scroll Progress Indicator -->
-  <div class="scroll-progress-track">
-    <div id="scroll-progress-fill"></div>
-  </div>
-
-  <!-- Pinned 3D WebGL Canvas -->
-  <div id="world-canvas-container" aria-hidden="true"></div>
-
-  <!-- Pinned Story Overlay UI -->
-  <main class="pinned-viewport-ui">
-    <div id="story-cards-wrapper">
-      <!-- Story Card dynamically updated by assets/scroll-world-3d.js -->
-    </div>
-  </main>
-
-  <!-- Interactive Navigation Dots -->
-  <nav id="scene-nav-rail" aria-label="Scene navigation">
-    <button class="nav-dot active" data-index="0" data-tooltip="01 · Rooftop Solar" onclick="window.jumpToScene(0)" aria-label="Jump to scene 1"></button>
-    <button class="nav-dot" data-index="1" data-tooltip="02 · Silicon Panels" onclick="window.jumpToScene(1)" aria-label="Jump to scene 2"></button>
-    <button class="nav-dot" data-index="2" data-tooltip="03 · Battery Defense" onclick="window.jumpToScene(2)" aria-label="Jump to scene 3"></button>
-    <button class="nav-dot" data-index="3" data-tooltip="04 · Brand Pavilions" onclick="window.jumpToScene(3)" aria-label="Jump to scene 4"></button>
-    <button class="nav-dot" data-index="4" data-tooltip="05 · Sunrun Consultation" onclick="window.jumpToScene(4)" aria-label="Jump to scene 5"></button>
-  </nav>
-
-  <!-- Bottom Scroll & Flight Prompt -->
-  <div class="scroll-flight-hint" aria-hidden="true">
-    <div class="scroll-indicator-wheel"></div>
-    <span>Scroll to fly through the 3D world · Click dots to jump</span>
-  </div>
+  <div id="top"></div>
+  <div id="world"></div>
 
   <!-- Exit / Return Action -->
   <a href="index.html" class="exit-hub-btn" aria-label="Return to Power Genie homepage">
     <span>⚡</span> Return to Main Hub
   </a>
 
-  <!-- Virtual Scroll Space (Drives the 3D Camera Flight) -->
-  <div class="scroll-virtual-height" aria-hidden="true"></div>
-
-  <!-- 3D Engine Script -->
-  <script src="assets/scroll-world-3d.js"></script>
+  <!-- Scroll-World Scrub Engine -->
+  <script src="assets/scrub-engine.js"></script>
   <script>
-    // Expose jumpToScene for nav dots
-    window.jumpToScene = function(idx) {
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const target = (idx / 4) * maxScroll;
-      window.scrollTo({ top: target, behavior: 'smooth' });
-    };
+    mountScrollWorld(document.getElementById('world'), {
+      brand: { name: 'POWER GENIE', href: 'index.html' },
+      cta: { label: 'Explore Solar Rates', href: 'https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie' },
+      hint: 'scroll to fly through the world',
+      diveScroll: 1.5,
+      connScroll: 1.0,
+      atmosphere: true,
+      nav: true,
+      sections: [
+        // Scene 1: Residential Solar Rooftop (1080p Seedance 2.0 Video Dive)
+        {
+          id: 'generation',
+          label: '01 · Solar Roof',
+          still: 'assets/powergenie-hero.jpg',
+          clip: 'assets/vid/generation.mp4',
+          accent: '#f6b24a',
+          scroll: 1.6,
+          linger: 0.45,
+          eyebrow: '01 · Energy Generation',
+          title: 'The Rooftop Power Plant.',
+          body: 'Tier-1 monocrystalline solar panels capture California sunlight at golden hour, generating clean residential power and shielding your household from monopoly PG&E utility rate inflation.',
+          tags: ['Tier-1 Monocrystalline', 'Zero Rate Hikes', 'Net-Zero Target']
+        },
+
+        // Scene 2: Home Battery & Blackout Defense (1080p Frame-Locked Seam)
+        {
+          id: 'battery',
+          label: '02 · Blackout Defense',
+          still: 'assets/powered-reveal.jpg',
+          clip: 'assets/vid/battery.mp4',
+          accent: '#10b981',
+          scroll: 1.6,
+          linger: 0.45,
+          eyebrow: '02 · Resilience & Storage',
+          title: 'Sub-10ms Islanding Defense.',
+          body: 'Intelligent Sunrun Shift and Tesla Powerwall storage automatically island critical circuits in milliseconds when the utility grid goes down, powering refrigeration, lighting, and communications.',
+          tags: ['Sub-10ms Islanding', 'Whole-Home Backup', 'Storm Watch Mode']
+        },
+
+        // Scene 3: Connected Brand Pavilions & Horace Lawrence Finale (1080p Panoramic Rise)
+        {
+          id: 'consultation',
+          label: '03 · Advisory & Hub',
+          still: 'assets/powergenie-consultation.jpg',
+          clip: 'assets/vid/consultation.mp4',
+          accent: '#38bdf8',
+          scroll: 1.8,
+          linger: 0.5,
+          eyebrow: '03 · Sunrun Advisory & Hub',
+          title: 'Horace Lawrence Advisory.',
+          body: 'Connect directly with Sunrun Team Lead Horace Lawrence for customized roof irradiance modeling, battery sizing, and utility tariff optimization. Explore curated architectural editions or lock in clean power.',
+          tags: ['Horace Lawrence Team Lead', '510-241-7007', 'Bay Area White-Glove'],
+          cta: {
+            primary: {
+              label: 'Lock In Rates on Sunrun →',
+              href: 'https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie'
+            },
+            secondary: {
+              label: 'Call Horace: 510-241-7007',
+              href: 'tel:5102417007'
+            }
+          }
+        }
+      ]
+    });
   </script>
 </body>
 </html>
