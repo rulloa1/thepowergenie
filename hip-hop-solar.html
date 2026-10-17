@@ -88,9 +88,36 @@
           <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-culture btn-sm solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
             Get Started
           </a>
+          <button class="mobile-nav-toggle" aria-label="Toggle navigation menu" type="button">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
         </div>
       </div>
     </header>
+
+    <!-- MOBILE DRAWER -->
+    <div id="mobileDrawer" class="mobile-drawer" aria-hidden="true">
+      <div class="mobile-drawer-header">
+        <span style="font-weight:700; color:#ffb703; letter-spacing:0.05em;">HIP-HOP SOLAR</span>
+        <button id="closeMobileDrawer" class="mobile-drawer-close" aria-label="Close menu">✕</button>
+      </div>
+      <div class="mobile-drawer-body">
+        <a href="index.html" class="mobile-nav-item">⚡ Power Genie Hub</a>
+        <a href="celebrity-solar.html" class="mobile-nav-item">💎 Celebrity Solar</a>
+        <a href="hip-hop-solar.html" class="mobile-nav-item active" style="color:#ffb703;">🎧 Hip-Hop Solar</a>
+        <a href="gas-genie.html" class="mobile-nav-item">🔥 Gas-Genie (Pilot)</a>
+        <a href="atoms-combined.html" class="mobile-nav-item">🎬 Interactive 3D Demo</a>
+        <a href="#studio-portfolio" class="mobile-nav-item">🎧 Studio Portfolio Specs</a>
+        <div style="margin-top:auto; padding-top:20px; display:flex; flex-direction:column; gap:12px; border-top:1px solid var(--border-subtle);">
+          <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-culture solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+            Explore Solar on Sunrun
+          </a>
+          <a href="tel:5102417007" class="btn btn-secondary">
+            Call Horace: 510-241-7007
+          </a>
+        </div>
+      </div>
+    </div>
 
     <main>
       <!-- HERO -->
@@ -162,6 +189,199 @@
             </div>
           </div>
 
+          <!-- INTERACTIVE CULTURE & STUDIO PORTFOLIO SPECS -->
+          <section class="portfolio-section" id="studio-portfolio" style="background: rgba(15, 23, 42, 0.4); border-top: 1px solid rgba(255, 183, 3, 0.18); border-bottom: 1px solid rgba(255, 183, 3, 0.18); border-radius: var(--radius-lg); padding: clamp(32px, 5vw, 60px); margin-top: 48px;">
+            <div style="text-align: center; max-width: 760px; margin: 0 auto;">
+              <span class="section-eyebrow" style="color: #ffb703;">Energy Independence Profiles</span>
+              <h2 class="section-title">Studio & Compound Microgrid Setups</h2>
+              <p class="section-desc">Sample technical configurations engineered to isolate creative spaces, analog recording gear, and residential compounds from utility blackouts and peak rates.</p>
+            </div>
+
+            <!-- TAB CONTROLS -->
+            <div class="portfolio-tab-nav" role="tablist" aria-label="Studio scenarios">
+              <button class="portfolio-tab-btn active culture" data-portfolio-target="spec-atlanta" role="tab" aria-selected="true">
+                🎧 Atlanta Creative Penthouse
+              </button>
+              <button class="portfolio-tab-btn" data-portfolio-target="spec-miami" role="tab" aria-selected="false">
+                🌴 Miami Creative Compound
+              </button>
+              <button class="portfolio-tab-btn" data-portfolio-target="spec-bay-area" role="tab" aria-selected="false">
+                🌉 Bay Area Production Loft
+              </button>
+            </div>
+
+            <!-- SPEC CARD 1: ATLANTA -->
+            <div class="portfolio-spec-card active" id="spec-atlanta" role="tabpanel">
+              <div class="portfolio-spec-header">
+                <div>
+                  <h3 class="portfolio-spec-title">Atlanta Rooftop Creative Penthouse</h3>
+                  <div class="portfolio-spec-location">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Atlanta, GA · Top-Floor Residence & Commercial Tracking Suite
+                  </div>
+                </div>
+                <span style="font-size: 0.8rem; font-weight: 700; padding: 6px 14px; border-radius: 999px; background: rgba(255, 183, 3, 0.15); color: #ffb703; border: 1px solid rgba(255, 183, 3, 0.35);">
+                  Studio-Grade Power
+                </span>
+              </div>
+
+              <div class="portfolio-metrics-grid">
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Solar Array Capacity</div>
+                  <div class="portfolio-metric-value" style="color: #ffb703;">16.5 kW DC</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">42× High-Wattage Commercial Tier-1 Panels</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Storage Capacity</div>
+                  <div class="portfolio-metric-value" style="color: var(--electric-cyan);">27.0 kWh</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">2× Sunrun Shift / Powerwall Microgrid Vault</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Power Purity (THD)</div>
+                  <div class="portfolio-metric-value" style="color: #10b981;">&lt; 1.8%</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Pure sine wave eliminates audio hum & line noise</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Session Continuity</div>
+                  <div class="portfolio-metric-value" style="color: #ffffff;">Zero Drop</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Sub-cycle transfer keeps DAWs & synths live</div>
+                </div>
+              </div>
+
+              <div class="portfolio-details-grid">
+                <div class="portfolio-detail-item culture">
+                  <div class="portfolio-detail-title">Acoustic & Electrical Isolation</div>
+                  <div class="portfolio-detail-text">Dedicated clean electrical sub-panel isolates preamps, outboard vintage gear, converters, and monitors from high-draw residential inductive loads like compressors and elevators.</div>
+                </div>
+                <div class="portfolio-detail-item culture">
+                  <div class="portfolio-detail-title">Monopoly Independence</div>
+                  <div class="portfolio-detail-text">Generates 100% of daytime energy requirements and stores evening power to run late-night tracking and mix sessions completely off solar-stored battery reserves.</div>
+                </div>
+              </div>
+
+              <div style="text-align: center;">
+                <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-culture btn-lg solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+                  Lock In Atlanta Studio Solar on Sunrun
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- SPEC CARD 2: MIAMI -->
+            <div class="portfolio-spec-card" id="spec-miami" role="tabpanel">
+              <div class="portfolio-spec-header">
+                <div>
+                  <h3 class="portfolio-spec-title">Miami Creative Waterfront Compound</h3>
+                  <div class="portfolio-spec-location">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Miami, FL · 8,000 sq.ft. Compound & Event Pavilion
+                  </div>
+                </div>
+                <span style="font-size: 0.8rem; font-weight: 700; padding: 6px 14px; border-radius: 999px; background: rgba(56, 189, 248, 0.15); color: var(--electric-cyan); border: 1px solid rgba(56, 189, 248, 0.35);">
+                  Hurricane Fortified
+                </span>
+              </div>
+
+              <div class="portfolio-metrics-grid">
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Solar Array Capacity</div>
+                  <div class="portfolio-metric-value" style="color: #ffb703;">22.8 kW DC</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">56× High-Efficiency Bifacial Tropical Arrays</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Storage Capacity</div>
+                  <div class="portfolio-metric-value" style="color: var(--electric-cyan);">40.5 kWh</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">3× Flood-Protected Wall-Mounted Batteries</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Wind Resistance</div>
+                  <div class="portfolio-metric-value" style="color: #10b981;">150 mph</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Miami-Dade High-Velocity Hurricane Zone rated</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Storm Autonomy</div>
+                  <div class="portfolio-metric-value" style="color: #ffffff;">5+ Days</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Continual solar recharging during grid collapses</div>
+                </div>
+              </div>
+
+              <div class="portfolio-details-grid">
+                <div class="portfolio-detail-item culture">
+                  <div class="portfolio-detail-title">Extreme Weather Survival Architecture</div>
+                  <div class="portfolio-detail-text">Elevated battery and inverter enclosures exceed FEMA flood requirements. Automatic Storm Watch mode pre-charges all cells to 100% capacity when tropical alerts are issued.</div>
+                </div>
+                <div class="portfolio-detail-item culture">
+                  <div class="portfolio-detail-title">Full Production Support</div>
+                  <div class="portfolio-detail-text">Powers high-output exterior LED lighting arrays, multi-zone sound distribution, and studio editing bays without relying on noisy, polluting fossil fuel generators.</div>
+                </div>
+              </div>
+
+              <div style="text-align: center;">
+                <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-culture btn-lg solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+                  Lock In Miami Compound Solar on Sunrun
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- SPEC CARD 3: BAY AREA -->
+            <div class="portfolio-spec-card" id="spec-bay-area" role="tabpanel">
+              <div class="portfolio-spec-header">
+                <div>
+                  <h3 class="portfolio-spec-title">Oakland / Bay Area Production Loft</h3>
+                  <div class="portfolio-spec-location">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Oakland, CA · Historic Warehouse Conversion Loft
+                  </div>
+                </div>
+                <span style="font-size: 0.8rem; font-weight: 700; padding: 6px 14px; border-radius: 999px; background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.35);">
+                  Rate-Lock Maximizer
+                </span>
+              </div>
+
+              <div class="portfolio-metrics-grid">
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Solar Array Capacity</div>
+                  <div class="portfolio-metric-value" style="color: #ffb703;">14.4 kW DC</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">36× Ballasted Non-Penetrating Flat Roof Panels</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Storage Capacity</div>
+                  <div class="portfolio-metric-value" style="color: var(--electric-cyan);">27.0 kWh</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">2× Smart Battery Cells programmed for NEM 3.0</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Utility Peak Defense</div>
+                  <div class="portfolio-metric-value" style="color: #10b981;">100%</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Zero grid draw during 4 PM – 9 PM $0.58/kWh surge</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">EV Fleet Integration</div>
+                  <div class="portfolio-metric-value" style="color: #ffffff;">Dual 48A</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Powers electric tour van & crew transit directly</div>
+                </div>
+              </div>
+
+              <div class="portfolio-details-grid">
+                <div class="portfolio-detail-item culture">
+                  <div class="portfolio-detail-title">California NEM 3.0 Arbitrage</div>
+                  <div class="portfolio-detail-text">Automatically stores excess solar during sunny midday hours and discharges stored energy during peak utility pricing windows, maximizing financial equity for the property.</div>
+                </div>
+                <div class="portfolio-detail-item culture">
+                  <div class="portfolio-detail-title">Historic Commercial Integration</div>
+                  <div class="portfolio-detail-text">Non-penetrating ballasted racking protects roof membranes. Clean architectural conduit lines preserve the industrial loft brick and steel aesthetics.</div>
+                </div>
+              </div>
+
+              <div style="text-align: center;">
+                <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-culture btn-lg solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+                  Lock In Bay Area Solar on Sunrun
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+            </div>
+          </section>
+
           <!-- BANNER CALLOUT -->
           <div class="culture-banner">
             <div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap; justify-content: space-between;">
@@ -198,6 +418,18 @@
         </div>
       </div>
     </footer>
+
+    <!-- MOBILE STICKY BOTTOM ACTION BAR -->
+    <aside class="mobile-sticky-bar" aria-label="Mobile quick actions">
+      <div class="mobile-sticky-bar-inner">
+        <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-culture solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+          🎧 Explore Solar on Sunrun
+        </a>
+        <a href="tel:5102417007" class="mobile-call-btn" aria-label="Call Horace Lawrence">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </a>
+      </div>
+    </aside>
   </div>
 </body>
 </html>

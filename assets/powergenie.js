@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 6. Solar & Battery Savings Estimator
   initSavingsCalculator();
+
+  // 7. Interactive Portfolio Tabs (Celebrity & Hip-Hop Solar)
+  initPortfolioTabs();
 });
 
 /**
@@ -179,29 +182,97 @@ function initSolarSimulator() {
 
 /**
  * Mobile Navigation Drawer
+ * Seamless slide-in drawer with blur backdrop and keyboard accessibility
  */
 function initMobileMenu() {
-  const toggle = document.querySelector('.mobile-nav-toggle');
+  const toggles = document.querySelectorAll('.mobile-nav-toggle');
   const drawer = document.getElementById('mobileDrawer');
   const closeBtn = document.getElementById('closeMobileDrawer');
 
-  if (!toggle || !drawer) return;
+  if (!drawer || toggles.length === 0) return;
+
+  // Ensure backdrop exists
+  let backdrop = document.getElementById('mobileDrawerBackdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.id = 'mobileDrawerBackdrop';
+    backdrop.className = 'mobile-drawer-backdrop';
+    backdrop.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(backdrop);
+  }
 
   function openDrawer() {
+    drawer.removeAttribute('style');
     drawer.classList.add('open');
+    drawer.setAttribute('aria-hidden', 'false');
+    backdrop.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
 
   function closeDrawer() {
     drawer.classList.remove('open');
+    drawer.setAttribute('aria-hidden', 'true');
+    backdrop.classList.remove('active');
     document.body.style.overflow = '';
   }
 
-  toggle.addEventListener('click', openDrawer);
-  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  toggles.forEach(toggle => {
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openDrawer();
+    });
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeDrawer();
+    });
+  }
+
+  backdrop.addEventListener('click', closeDrawer);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) {
+      closeDrawer();
+    }
+  });
 
   drawer.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', closeDrawer);
+  });
+}
+
+/**
+ * Interactive Portfolio Tabs
+ * Handles dynamic specification toggles for Celebrity Solar & Hip-Hop Solar
+ */
+function initPortfolioTabs() {
+  const sections = document.querySelectorAll('.portfolio-section');
+  sections.forEach(section => {
+    const tabs = section.querySelectorAll('.portfolio-tab-btn');
+    const cards = section.querySelectorAll('.portfolio-spec-card');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = tab.getAttribute('data-portfolio-target');
+        if (!targetId) return;
+
+        // Update tabs active state
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        // Update cards active state
+        cards.forEach(card => {
+          if (card.id === targetId) {
+            card.classList.add('active');
+          } else {
+            card.classList.remove('active');
+          }
+        });
+      });
+    });
   });
 }
 

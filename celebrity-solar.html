@@ -89,9 +89,36 @@
           <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-luxury btn-sm solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
             Check Your Solar Options
           </a>
+          <button class="mobile-nav-toggle" aria-label="Toggle navigation menu" type="button">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
         </div>
       </div>
     </header>
+
+    <!-- MOBILE DRAWER -->
+    <div id="mobileDrawer" class="mobile-drawer" aria-hidden="true">
+      <div class="mobile-drawer-header">
+        <span style="font-weight:700; color:#dfba73; letter-spacing:0.05em;">CELEBRITY SOLAR</span>
+        <button id="closeMobileDrawer" class="mobile-drawer-close" aria-label="Close menu">✕</button>
+      </div>
+      <div class="mobile-drawer-body">
+        <a href="index.html" class="mobile-nav-item">⚡ Power Genie Hub</a>
+        <a href="celebrity-solar.html" class="mobile-nav-item active" style="color:#dfba73;">💎 Celebrity Solar</a>
+        <a href="hip-hop-solar.html" class="mobile-nav-item">🎧 Hip-Hop Solar</a>
+        <a href="gas-genie.html" class="mobile-nav-item">🔥 Gas-Genie (Pilot)</a>
+        <a href="atoms-combined.html" class="mobile-nav-item">🎬 Interactive 3D Demo</a>
+        <a href="#estate-portfolio" class="mobile-nav-item">🏛️ Estate Portfolio Specs</a>
+        <div style="margin-top:auto; padding-top:20px; display:flex; flex-direction:column; gap:12px; border-top:1px solid var(--border-subtle);">
+          <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-luxury solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+            Explore Solar Options
+          </a>
+          <a href="tel:5102417007" class="btn btn-secondary">
+            Estate Concierge: 510-241-7007
+          </a>
+        </div>
+      </div>
+    </div>
 
     <main>
       <!-- HERO -->
@@ -163,6 +190,199 @@
             </div>
           </div>
 
+          <!-- INTERACTIVE ESTATE PORTFOLIO SPECS -->
+          <section class="portfolio-section" id="estate-portfolio" style="background: rgba(5, 8, 17, 0.5); border-top: 1px solid rgba(223, 186, 115, 0.15); border-bottom: 1px solid rgba(223, 186, 115, 0.15); border-radius: var(--radius-lg); padding: clamp(32px, 5vw, 60px); margin-top: 48px;">
+            <div style="text-align: center; max-width: 760px; margin: 0 auto;">
+              <span class="section-eyebrow" style="color: #dfba73;">Architectural Case Studies</span>
+              <h2 class="section-title">Curated Residential Microgrid Scenarios</h2>
+              <p class="section-desc">Explore sample technical engineering and battery autonomy profiles designed for high-consumption architectural estates.</p>
+            </div>
+
+            <!-- TAB CONTROLS -->
+            <div class="portfolio-tab-nav" role="tablist" aria-label="Estate scenarios">
+              <button class="portfolio-tab-btn active luxury" data-portfolio-target="spec-bel-air" role="tab" aria-selected="true">
+                🏛️ Bel Air Modern Villa
+              </button>
+              <button class="portfolio-tab-btn" data-portfolio-target="spec-malibu" role="tab" aria-selected="false">
+                🌊 Malibu Coastal Compound
+              </button>
+              <button class="portfolio-tab-btn" data-portfolio-target="spec-aspen" role="tab" aria-selected="false">
+                🏔️ Aspen Alpine Sanctuary
+              </button>
+            </div>
+
+            <!-- SPEC CARD 1: BEL AIR -->
+            <div class="portfolio-spec-card active" id="spec-bel-air" role="tabpanel">
+              <div class="portfolio-spec-header">
+                <div>
+                  <h3 class="portfolio-spec-title">Bel Air Cantilevered Modern Villa</h3>
+                  <div class="portfolio-spec-location">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Los Angeles, CA · 9,400 sq.ft. Modern Residence
+                  </div>
+                </div>
+                <span style="font-size: 0.8rem; font-weight: 700; padding: 6px 14px; border-radius: 999px; background: rgba(223, 186, 115, 0.15); color: #dfba73; border: 1px solid rgba(223, 186, 115, 0.35);">
+                  Whole-Estate Autonomy
+                </span>
+              </div>
+
+              <div class="portfolio-metrics-grid">
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Solar Array Capacity</div>
+                  <div class="portfolio-metric-value" style="color: #dfba73;">26.4 kW DC</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">66× High-Efficiency Black Monocrystalline</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Storage Capacity</div>
+                  <div class="portfolio-metric-value" style="color: var(--electric-cyan);">40.5 kWh</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">3× Integrated Sunrun Intelligent Battery Vault</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Grid Offset</div>
+                  <div class="portfolio-metric-value" style="color: #10b981;">104%</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Net-Zero Annual Consumption Target</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Blackout Immunity</div>
+                  <div class="portfolio-metric-value" style="color: #ffffff;">Continuous</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Auto-islands in &lt;10ms without flickering</div>
+                </div>
+              </div>
+
+              <div class="portfolio-details-grid">
+                <div class="portfolio-detail-item luxury">
+                  <div class="portfolio-detail-title">Aesthetic Concealment Architecture</div>
+                  <div class="portfolio-detail-text">Internal roof conduit drops with zero surface wiring visible from grounds, infinity pool, or canyon viewpoints. Matte-black flashings match custom dark zinc fascia.</div>
+                </div>
+                <div class="portfolio-detail-item luxury">
+                  <div class="portfolio-detail-title">Critical Loads Protected</div>
+                  <div class="portfolio-detail-text">Dual Central HVAC zones, whole-home automation servers, Sub-Zero wine preservation, motorized security perimeter gates, and dual Level 2 EV charging docks.</div>
+                </div>
+              </div>
+
+              <div style="text-align: center;">
+                <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-luxury btn-lg solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+                  Request Bel Air Style Scoping on Sunrun
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- SPEC CARD 2: MALIBU -->
+            <div class="portfolio-spec-card" id="spec-malibu" role="tabpanel">
+              <div class="portfolio-spec-header">
+                <div>
+                  <h3 class="portfolio-spec-title">Malibu Blufftop Coastal Compound</h3>
+                  <div class="portfolio-spec-location">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Malibu, CA · 7,200 sq.ft. Oceanfront Residence
+                  </div>
+                </div>
+                <span style="font-size: 0.8rem; font-weight: 700; padding: 6px 14px; border-radius: 999px; background: rgba(56, 189, 248, 0.15); color: var(--electric-cyan); border: 1px solid rgba(56, 189, 248, 0.35);">
+                  Salt-Air Certified
+                </span>
+              </div>
+
+              <div class="portfolio-metrics-grid">
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Solar Array Capacity</div>
+                  <div class="portfolio-metric-value" style="color: #dfba73;">19.8 kW DC</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">48× Marine-Grade Corrosion-Treated Panels</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Storage Capacity</div>
+                  <div class="portfolio-metric-value" style="color: var(--electric-cyan);">30.0 kWh</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Dual Sealed Lithium Iron Phosphate Banks</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">PSPS Outage Shield</div>
+                  <div class="portfolio-metric-value" style="color: #10b981;">100%</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Immunity to utility wind-safety shutdowns</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Aesthetic Finish</div>
+                  <div class="portfolio-metric-value" style="color: #ffffff;">Low-Glint</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Anti-reflective glass compliant with coastal regulations</div>
+                </div>
+              </div>
+
+              <div class="portfolio-details-grid">
+                <div class="portfolio-detail-item luxury">
+                  <div class="portfolio-detail-title">Coastal Marine Engineering</div>
+                  <div class="portfolio-detail-text">Type 316 marine stainless hardware with anodic isolation prevents galvanic corrosion from ocean mist and high-salinity air. Rated for 130 mph coastal wind shear.</div>
+                </div>
+                <div class="portfolio-detail-item luxury">
+                  <div class="portfolio-detail-title">Compound Autonomy</div>
+                  <div class="portfolio-detail-text">Main house, guest casita, exterior perimeter landscape illumination, and pool pump heating systems maintain independent operation through regional public safety shutoffs.</div>
+                </div>
+              </div>
+
+              <div style="text-align: center;">
+                <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-luxury btn-lg solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+                  Request Malibu Coastal Scoping on Sunrun
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- SPEC CARD 3: ASPEN -->
+            <div class="portfolio-spec-card" id="spec-aspen" role="tabpanel">
+              <div class="portfolio-spec-header">
+                <div>
+                  <h3 class="portfolio-spec-title">Aspen Mountain Alpine Sanctuary</h3>
+                  <div class="portfolio-spec-location">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Aspen, CO · 11,800 sq.ft. Timber & Glass Estate
+                  </div>
+                </div>
+                <span style="font-size: 0.8rem; font-weight: 700; padding: 6px 14px; border-radius: 999px; background: rgba(246, 178, 74, 0.15); color: var(--solar-gold); border: 1px solid rgba(246, 178, 74, 0.35);">
+                  Sub-Zero Extreme
+                </span>
+              </div>
+
+              <div class="portfolio-metrics-grid">
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Solar Array Capacity</div>
+                  <div class="portfolio-metric-value" style="color: #dfba73;">34.2 kW DC</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">80× High-Snow-Load Heavy Structural Arrays</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Storage Capacity</div>
+                  <div class="portfolio-metric-value" style="color: var(--electric-cyan);">54.0 kWh</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">4× Climatized Indoor Energy Storage Cells</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Snow-Shear Rating</div>
+                  <div class="portfolio-metric-value" style="color: #10b981;">7,200 Pa</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Engineered for heavy alpine snowpacks</div>
+                </div>
+                <div class="portfolio-metric-box">
+                  <div class="portfolio-metric-label">Cold Tolerance</div>
+                  <div class="portfolio-metric-value" style="color: #ffffff;">-20°F</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Thermal managed cells maintain peak output</div>
+                </div>
+              </div>
+
+              <div class="portfolio-details-grid">
+                <div class="portfolio-detail-item luxury">
+                  <div class="portfolio-detail-title">Extreme Winter Resiliency</div>
+                  <div class="portfolio-detail-text">Internal heated battery enclosures prevent cold-induced degradation. Bifacial panel geometry harnesses ground snow albedo (reflection) for enhanced winter generation.</div>
+                </div>
+                <div class="portfolio-detail-item luxury">
+                  <div class="portfolio-detail-title">Life-Safety Heat Preservation</div>
+                  <div class="portfolio-detail-text">Guarantees radiant in-floor heating boilers, pipe freeze-protection tracing, water filtration, and Starlink backup communication remain active through multi-day blizzards.</div>
+                </div>
+              </div>
+
+              <div style="text-align: center;">
+                <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-luxury btn-lg solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+                  Request Alpine Estate Scoping on Sunrun
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+            </div>
+          </section>
+
           <!-- QUOTE CALLOUT -->
           <div class="luxury-quote-card">
             <div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap; justify-content: space-between;">
@@ -199,6 +419,18 @@
         </div>
       </div>
     </footer>
+
+    <!-- MOBILE STICKY BOTTOM ACTION BAR -->
+    <aside class="mobile-sticky-bar" aria-label="Mobile quick actions">
+      <div class="mobile-sticky-bar-inner">
+        <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-luxury solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+          💎 Explore Solar on Sunrun
+        </a>
+        <a href="tel:5102417007" class="mobile-call-btn" aria-label="Call Horace Lawrence">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </a>
+      </div>
+    </aside>
   </div>
 </body>
 </html>
