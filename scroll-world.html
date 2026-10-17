@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Power Genie × Scroll-World — The Solar Energy Journey</title>
+  <meta name="description" content="An interactive scroll-driven journey through residential solar generation, battery blackout islanding, Horace Lawrence advisory, and curated sub-brands." />
+  <meta name="theme-color" content="#060913" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Centralized Power Genie Config -->
+  <script type="module" src="assets/config.js"></script>
+
+  <!-- Horace Lawrence Commission Portal Hit Tracker -->
+  <script src="http://localhost:3030/tracker.js" data-site="powergenie-scroll-world" async></script>
+
+  <style>
+    /* Dark Theme Tokens for Scroll-World */
+    :root, .sw-root {
+      --sw-bg: #060913;
+      --sw-ink: #f8fafc;
+      --sw-ink-soft: #94a3b8;
+      --sw-accent: #f6b24a;
+      --sw-font-display: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --sw-font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--sw-bg);
+      margin: 0;
+      color: var(--sw-ink);
+      font-family: var(--sw-font-body);
+    }
+
+    /* Fixed Compliance & Return Banner */
+    .sunrun-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 32px;
+      background: rgba(11, 17, 34, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(16px, 4vw, 36px);
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+
+    .sunrun-banner a {
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .sunrun-banner a:hover {
+      text-decoration: underline;
+    }
+
+    /* Offset topbar for compliance banner */
+    .sw-topbar {
+      top: 32px !important;
+    }
+
+    .sw-scrollbar {
+      top: 32px !important;
+    }
+
+    /* Custom button overrides for brand glow */
+    .sw-btn--primary {
+      background: linear-gradient(135deg, #f6b24a, #d97706) !important;
+      color: #050811 !important;
+      font-weight: 700 !important;
+      box-shadow: 0 0 24px rgba(246, 178, 74, 0.4) !important;
+    }
+
+    .sw-btn--ghost {
+      border-color: rgba(255, 255, 255, 0.25) !important;
+      color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+    }
+
+    .sw-btn--ghost:hover {
+      background: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* Floating Exit Button */
+    .exit-hub-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 90;
+      background: rgba(11, 17, 34, 0.88);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      transition: all 0.2s ease;
+    }
+
+    .exit-hub-btn:hover {
+      background: rgba(246, 178, 74, 0.15);
+      border-color: #f6b24a;
+      color: #f6b24a;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <!-- Fixed Top Compliance Bar -->
+  <div class="sunrun-banner">
+    <div>
+      <span style="color:#ffffff; font-weight:700;">POWER GENIE</span>
+      <span style="opacity:0.7;"> · Sunrun Representative: Horace Lawrence</span>
+    </div>
+    <div style="display:flex; gap:16px;">
+      <a href="index.html">← Power Genie Hub</a>
+      <a href="celebrity-solar.html">💎 Celebrity</a>
+      <a href="hip-hop-solar.html">🎧 Hip-Hop</a>
+      <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" target="_blank" rel="noopener noreferrer">Sunrun Lead Portal →</a>
+    </div>
+  </div>
+
+  <div id="top"></div>
+  <div id="world"></div>
+
+  <!-- Exit / Navigation Link -->
+  <a href="index.html" class="exit-hub-btn" aria-label="Return to Power Genie homepage">
+    <span>⚡</span> Return to Main Hub
+  </a>
+
+  <!-- Scroll-World Scrub Engine -->
+  <script src="assets/scrub-engine.js"></script>
+  <script>
+    mountScrollWorld(document.getElementById('world'), {
+      brand: { name: 'POWER GENIE', href: 'index.html' },
+      cta: { label: 'Explore Solar', href: 'https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie' },
+      hint: 'scroll to fly through',
+      diveScroll: 1.4,
+      connScroll: 1.0,
+      atmosphere: true,
+      nav: true,
+      sections: [
+        // Scene 1: Residential Solar Rooftop
+        {
+          id: 'generation',
+          label: '01 · Solar Roof',
+          still: 'assets/powergenie-hero.jpg',
+          accent: '#f6b24a',
+          scroll: 1.5,
+          linger: 0.4,
+          eyebrow: '01 · Energy Generation',
+          title: 'The Rooftop Power Plant.',
+          body: 'Tier-1 monocrystalline solar panels capture California sunlight at golden hour, locking in fixed generation costs and shielding your household from PG&E monopoly rate inflation.',
+          tags: ['Tier-1 Monocrystalline', 'Zero Rate Hikes', 'Net-Zero Offset Target'],
+        },
+
+        // Scene 2: Horace Lawrence In-Home Advisory
+        {
+          id: 'advisory',
+          label: '02 · Advisory',
+          still: 'assets/powergenie-consultation.jpg',
+          accent: '#0ea5e9',
+          scroll: 1.5,
+          linger: 0.4,
+          eyebrow: '02 · In-Home Consultation',
+          title: 'Direct With Horace Lawrence.',
+          body: 'Personalized satellite roof irradiance mapping, battery sizing, and utility tariff modeling crafted directly by Sunrun Team Lead Horace Lawrence with complete transparency.',
+          tags: ['White-Glove Design', '510-241-7007', 'San Francisco Bay Area'],
+        },
+
+        // Scene 3: Instant Battery Outage Islanding
+        {
+          id: 'storage',
+          label: '03 · Storage',
+          still: 'assets/powered-reveal.jpg',
+          accent: '#10b981',
+          scroll: 1.5,
+          linger: 0.4,
+          eyebrow: '03 · Resilience & Storage',
+          title: 'Instant Blackout Defense.',
+          body: 'Intelligent Sunrun Shift and Tesla Powerwall storage automatically islands critical home circuits in milliseconds when the utility grid collapses, keeping refrigerators, lights, and Wi-Fi running.',
+          tags: ['Sub-10ms Islanding', 'Whole-Home Backup', 'Storm Watch Mode'],
+        },
+
+        // Scene 4: Celebrity Solar Estate Architecture
+        {
+          id: 'celebrity',
+          label: '04 · Celebrity Solar',
+          still: 'assets/celebrity-solar-hero.jpg',
+          accent: '#dfba73',
+          scroll: 1.5,
+          linger: 0.4,
+          eyebrow: '04 · Curated Architectural Edition',
+          title: 'Celebrity Solar Estates.',
+          body: 'Low-profile all-black hardware and internal conduit concealment engineered to complement luxury contemporary stone, slate, and cantilevered architectural estates without visual disruption.',
+          tags: ['Concealed Conduits', '40+ kWh Storage Vaults', 'VIP Discretion'],
+        },
+
+        // Scene 5: Hip-Hop Solar Creative Studios & Finale
+        {
+          id: 'hiphop',
+          label: '05 · Hip-Hop Solar',
+          still: 'assets/hiphop-solar-hero.jpg',
+          accent: '#ffb703',
+          scroll: 1.6,
+          linger: 0.45,
+          eyebrow: '05 · Culture & Energy Equity',
+          title: 'Power the Culture.',
+          body: 'Clean harmonic power (<1.8% THD) engineered for audio recording studios, production penthouses, and building generational community equity free from monopoly utility bills.',
+          tags: ['Pure Sine Wave (<1.8% THD)', 'Studio Continuity', 'Generational Equity'],
+          cta: {
+            primary: {
+              label: 'Lock In Rates on Sunrun →',
+              href: 'https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie'
+            },
+            secondary: {
+              label: 'Call Horace: 510-241-7007',
+              href: 'tel:5102417007'
+            }
+          }
+        }
+      ]
+    });
+  </script>
+</body>
+</html>

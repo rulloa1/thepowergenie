@@ -174,6 +174,13 @@ function initSolarSimulator() {
       }
       if (simNote) simNote.textContent = 'Sun is down: home battery powers interior lights and refrigerator seamlessly.';
     }
+    // Sync range slider track progress & accessibility attributes
+    const minVal = parseFloat(slider.min) || 6;
+    const maxVal = parseFloat(slider.max) || 20;
+    const progressPct = ((val - minVal) / (maxVal - minVal)) * 100;
+    slider.style.setProperty('--slider-progress', `${progressPct}%`);
+    slider.setAttribute('aria-valuenow', val.toFixed(1));
+    slider.setAttribute('aria-valuetext', `${displayHour}:${displayMin} ${ampm} - ${solarKw} kW Solar Production`);
   }
 
   slider.addEventListener('input', updateSim);
@@ -361,6 +368,14 @@ function initSavingsCalculator() {
         batteryDescEl.textContent = 'Engineered for high-demand residences: supports Central HVAC/AC systems, EV charging, laundry, and whole-house continuous power through multi-day grid failures.';
       }
     }
+
+    // Sync range slider track progress & accessibility attributes
+    const minVal = parseFloat(slider.min) || 100;
+    const maxVal = parseFloat(slider.max) || 1200;
+    const progressPct = ((monthlyBill - minVal) / (maxVal - minVal)) * 100;
+    slider.style.setProperty('--slider-progress', `${progressPct}%`);
+    slider.setAttribute('aria-valuenow', monthlyBill);
+    slider.setAttribute('aria-valuetext', `$${monthlyBill} per month - estimated $${roundedSavings.toLocaleString()} 25-year net savings`);
   }
 
   slider.addEventListener('input', updateSavings);

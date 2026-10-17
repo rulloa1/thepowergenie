@@ -1255,6 +1255,286 @@ button {
 }
 
 /* ==========================================================================
+   3 PILLARS OF SOLAR (WHY HOMEOWNERS CHOOSE SOLAR)
+   ========================================================================== */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.pillar-card {
+  background: linear-gradient(135deg, rgba(17, 26, 51, 0.75) 0%, rgba(11, 17, 34, 0.95) 100%);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: clamp(28px, 4.5vw, 40px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s var(--ease-spring), border-color 0.35s ease, box-shadow 0.35s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.pillar-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--solar-gold), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.pillar-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(246, 178, 74, 0.4);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(246, 178, 74, 0.12);
+}
+
+.pillar-card:hover::before {
+  opacity: 1;
+}
+
+.pillar-icon-box {
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-md);
+  background: rgba(246, 178, 74, 0.12);
+  border: 1px solid rgba(246, 178, 74, 0.28);
+  color: var(--solar-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  transition: transform 0.35s var(--ease-spring), box-shadow 0.35s ease;
+  flex-shrink: 0;
+}
+
+.pillar-icon-box svg {
+  width: 26px;
+  height: 26px;
+}
+
+.pillar-card:hover .pillar-icon-box {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(246, 178, 74, 0.3);
+}
+
+.pillar-card h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2vw, 1.45rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+  line-height: 1.25;
+}
+
+.pillar-card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  margin-top: auto;
+}
+
+/* ==========================================================================
+   SOLAR DAY SIMULATOR
+   ========================================================================== */
+.sim-container {
+  background: radial-gradient(100% 120% at 50% 0%, rgba(14, 165, 233, 0.12) 0%, rgba(11, 17, 34, 0.95) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: var(--radius-lg);
+  padding: clamp(32px, 5vw, 48px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  margin-top: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sim-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--electric-cyan), transparent);
+}
+
+.sim-slider-wrap {
+  margin: 32px 0 28px;
+  background: rgba(5, 8, 17, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+}
+
+.sim-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 28px 0 24px;
+}
+
+.sim-metric-card {
+  background: rgba(17, 26, 51, 0.7);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.sim-metric-card:hover {
+  border-color: rgba(56, 189, 248, 0.35);
+  transform: translateY(-2px);
+}
+
+.sim-metric-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.sim-metric-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 2.8vw, 2.3rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 12px 0 6px;
+}
+
+.sim-metric-sub {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   CROSS-BROWSER ACCESSIBLE RANGE SLIDERS (Modern Web Guidance & Baseline)
+   ========================================================================== */
+.sim-slider,
+.calc-slider {
+  --slider-track-size: 8px;
+  --slider-thumb-size: 26px;
+  --slider-track-radius: 999px;
+  --slider-thumb-radius: 50%;
+  --slider-track-color: rgba(255, 255, 255, 0.12);
+  --slider-fill-color: var(--solar-gold);
+  --slider-thumb-color: var(--solar-gold);
+  --slider-direction: to right;
+  --slider-progress: 50%;
+
+  appearance: none;
+  -webkit-appearance: none;
+  inline-size: 100%;
+  width: 100%;
+  block-size: 2.75rem; /* Generous accessible touch target >= 44px */
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+
+.sim-slider {
+  --slider-fill-color: var(--electric-cyan);
+  --slider-thumb-color: var(--electric-cyan);
+}
+
+/* WebKit / Chromium / Safari Track */
+.sim-slider::-webkit-slider-runnable-track,
+.calc-slider::-webkit-slider-runnable-track {
+  block-size: var(--slider-track-size);
+  height: var(--slider-track-size);
+  border: 0;
+  border-radius: var(--slider-track-radius);
+  background: linear-gradient(
+    var(--slider-direction),
+    var(--slider-fill-color) var(--slider-progress),
+    var(--slider-track-color) var(--slider-progress)
+  );
+}
+
+/* WebKit / Chromium / Safari Thumb (Centered using math per guide) */
+.sim-slider::-webkit-slider-thumb,
+.calc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  inline-size: var(--slider-thumb-size);
+  width: var(--slider-thumb-size);
+  block-size: var(--slider-thumb-size);
+  height: var(--slider-thumb-size);
+  margin-block-start: calc((var(--slider-track-size) - var(--slider-thumb-size)) / 2);
+  border: 3px solid #050811;
+  border-radius: var(--slider-thumb-radius);
+  background: var(--slider-thumb-color);
+  box-shadow: 0 0 16px var(--slider-thumb-color);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sim-slider::-webkit-slider-thumb:hover,
+.calc-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 24px var(--slider-thumb-color);
+}
+
+/* Firefox Track */
+.sim-slider::-moz-range-track,
+.calc-slider::-moz-range-track {
+  block-size: var(--slider-track-size);
+  height: var(--slider-track-size);
+  border: 0;
+  border-radius: var(--slider-track-radius);
+  background: var(--slider-track-color);
+}
+
+/* Firefox Active Fill */
+.sim-slider::-moz-range-progress,
+.calc-slider::-moz-range-progress {
+  block-size: var(--slider-track-size);
+  height: var(--slider-track-size);
+  border-radius: var(--slider-track-radius);
+  background: var(--slider-fill-color);
+}
+
+/* Firefox Thumb */
+.sim-slider::-moz-range-thumb,
+.calc-slider::-moz-range-thumb {
+  inline-size: var(--slider-thumb-size);
+  width: var(--slider-thumb-size);
+  block-size: var(--slider-thumb-size);
+  height: var(--slider-thumb-size);
+  border: 3px solid #050811;
+  border-radius: var(--slider-thumb-radius);
+  background: var(--slider-thumb-color);
+  box-shadow: 0 0 16px var(--slider-thumb-color);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sim-slider::-moz-range-thumb:hover,
+.calc-slider::-moz-range-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 24px var(--slider-thumb-color);
+}
+
+/* Accessible Keyboard Focus Ring */
+.sim-slider:focus-visible,
+.calc-slider:focus-visible {
+  outline: 2px solid var(--slider-fill-color);
+  outline-offset: 4px;
+}
+
+/* ==========================================================================
    SOLAR & BATTERY SAVINGS ESTIMATOR
    ========================================================================== */
 .savings-card {
@@ -1300,35 +1580,6 @@ button {
   font-weight: 800;
   color: var(--solar-gold);
   text-shadow: 0 0 20px rgba(246, 178, 74, 0.3);
-}
-
-.calc-slider {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  outline: none;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.calc-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--solar-gold);
-  border: 3px solid #050811;
-  box-shadow: 0 0 16px var(--solar-gold);
-  cursor: pointer;
-  transition: transform 0.15s ease;
-}
-
-.calc-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
 }
 
 .calc-slider-ticks {
