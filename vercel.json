@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/quote",
+      "destination": "https://sunrun.my.salesforce-sites.com/purl/?srep=powergenie",
+      "permanent": false
+    }
+  ]
+}
