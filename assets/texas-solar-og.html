@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Texas Solar OG Image</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    .og-canvas {
+      width: 1200px;
+      height: 630px;
+      background: linear-gradient(135deg, #050811 0%, #0b1122 50%, #111a33 100%);
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Background glow effects */
+    .og-canvas::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(246, 178, 74, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .og-canvas::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .og-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      padding: 60px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .og-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .og-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      padding: 10px 20px;
+      border-radius: 50px;
+      color: #f87171;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .og-badge .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ef4444;
+      box-shadow: 0 0 12px #ef4444;
+    }
+
+    .og-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .og-logo-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #f6b24a, #e2952a);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(246, 178, 74, 0.4);
+    }
+
+    .og-logo-icon svg {
+      width: 28px;
+      height: 28px;
+      fill: #0b1122;
+    }
+
+    .og-logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+
+    .og-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 900px;
+    }
+
+    .og-headline {
+      font-size: 72px;
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      margin-bottom: 24px;
+    }
+
+    .og-headline .red {
+      color: #ef4444;
+    }
+
+    .og-headline .gold {
+      background: linear-gradient(135deg, #ffffff 30%, #f6b24a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .og-subhead {
+      font-size: 28px;
+      color: #94a3b8;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .og-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .og-stats {
+      display: flex;
+      gap: 40px;
+    }
+
+    .og-stat {
+      text-align: left;
+    }
+
+    .og-stat-value {
+      font-size: 42px;
+      font-weight: 800;
+      color: #f6b24a;
+      line-height: 1;
+    }
+
+    .og-stat-value.red {
+      color: #ef4444;
+    }
+
+    .og-stat-value.cyan {
+      color: #38bdf8;
+    }
+
+    .og-stat-label {
+      font-size: 14px;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 6px;
+    }
+
+    .og-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #f6b24a, #e2952a);
+      color: #0b1122;
+      padding: 18px 36px;
+      border-radius: 50px;
+      font-size: 20px;
+      font-weight: 700;
+      box-shadow: 0 8px 30px rgba(246, 178, 74, 0.4);
+    }
+
+    .og-cta svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      fill: none;
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 40px; background: #1a1a2e;">
+  <div class="og-canvas">
+    <div class="og-content">
+      <div class="og-top">
+        <div class="og-badge">
+          <span class="dot"></span>
+          Texas Residential Solar
+        </div>
+        <div class="og-logo">
+          <div class="og-logo-icon">
+            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <span class="og-logo-text">POWER GENIE</span>
+        </div>
+      </div>
+
+      <div class="og-main">
+        <h1 class="og-headline">
+          Stop Paying <span class="red">ERCOT Prices.</span><br>
+          <span class="gold">Lock In Your Rate.</span>
+        </h1>
+        <p class="og-subhead">
+          Your neighbor locked in $0.04/kWh. You're still paying $0.14+.
+        </p>
+      </div>
+
+      <div class="og-bottom">
+        <div class="og-stats">
+          <div class="og-stat">
+            <div class="og-stat-value red">+47%</div>
+            <div class="og-stat-label">TX Rates Since 2020</div>
+          </div>
+          <div class="og-stat">
+            <div class="og-stat-value cyan">4.5M</div>
+            <div class="og-stat-label">Lost Power in 2021</div>
+          </div>
+          <div class="og-stat">
+            <div class="og-stat-value">$0</div>
+            <div class="og-stat-label">Down Available</div>
+          </div>
+        </div>
+        <div class="og-cta">
+          Get Free Texas Quote
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p style="color: #666; margin-top: 20px; font-family: sans-serif; font-size: 14px;">
+    Open in browser → Screenshot at 1200×630 → Save as <code>texas-solar-og.jpg</code>
+  </p>
+</body>
+</html>
