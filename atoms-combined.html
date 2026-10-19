@@ -13,8 +13,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
   <!-- Centralized Power Genie Config -->
   <script type="module" src="assets/config.js"></script>
-  <!-- Horace Lawrence Commission Portal Hit Tracker -->
-  <script src="http://localhost:3030/tracker.js" data-site="powergenie-sunrun" async></script>
+  <!-- Analytics: Replace with production tracker when ready -->
   <style>
     :root {
       --reveal-x: -9999px;
@@ -33,12 +32,24 @@
       background-color: #f8fafc;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
       -webkit-font-smoothing: antialiased;
+      accent-color: #0047BB;
+      scrollbar-color: #0047BB #e2e8f0;
+      scrollbar-width: thin;
     }
 
     body {
       overflow-x: hidden;
       color: #0f172a;
       background-color: #f8fafc;
+      overflow-wrap: break-word;
+    }
+
+    h1, h2, h3 {
+      text-wrap: balance;
+    }
+
+    p, li {
+      text-wrap: pretty;
     }
 
     /* Lock scroll during Scroll-Triggered Video playback */

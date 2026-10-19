@@ -56,8 +56,17 @@ if (isMain) {
   } else {
     const PORT = process.env.PORT || 3001;
     const server = http.createServer(async (req, res) => {
-      // CORS headers for client-side frontend calls
-      res.setHeader('Access-Control-Allow-Origin', '*');
+      // CORS headers - restrict to known origins in production
+      const allowedOrigins = [
+        'http://localhost:3000',
+        'http://localhost:5173',
+        'https://powergenie.com',
+        'https://www.powergenie.com'
+      ];
+      const origin = req.headers.origin;
+      if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+      }
       res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
       res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 

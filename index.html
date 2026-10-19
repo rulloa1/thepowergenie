@@ -19,8 +19,8 @@
   <script type="module" src="assets/config.js"></script>
   <script type="module" src="assets/powergenie.js"></script>
 
-  <!-- Horace Lawrence Commission Portal Hit Tracker -->
-  <script src="http://localhost:3030/tracker.js" data-site="powergenie-sunrun" async></script>
+  <!-- Analytics: Replace with production tracker (Plausible, Fathom, GA4) when ready -->
+  <!-- <script defer data-domain="powergenie.com" src="https://plausible.io/js/script.js"></script> -->
 </head>
 <body>
   <!-- Atmosphere Background Glow -->
@@ -147,7 +147,7 @@
 
             <!-- 1. Architectural Solar Photo Card -->
             <div class="hero-photo-card" id="photoCard" role="tabpanel" aria-labelledby="tabPhoto">
-              <img src="assets/powergenie-hero.jpg" alt="Modern American home with rooftop solar panels at golden hour with warm interior glow" class="hero-photo-img" loading="eager" width="1280" height="720">
+              <img src="assets/powergenie-hero.jpg" alt="Modern American home with rooftop solar panels at golden hour with warm interior glow" class="hero-photo-img" loading="eager" fetchpriority="high" decoding="async" width="1280" height="720">
               <div class="hero-photo-overlay">
                 <span class="photo-badge">
                   <span class="pulse-dot"></span>
@@ -160,9 +160,9 @@
             <!-- 2. Interactive House Reveal Card -->
             <div class="interactive-reveal-card" id="houseRevealCard" role="tabpanel" aria-labelledby="tabReveal" style="display:none;" aria-label="Interactive house blackout and solar reveal comparison">
               <!-- Solar house (powered underneath) -->
-              <img src="assets/powered-reveal.jpg" alt="Home with rooftop solar panels and brightly lit windows" class="reveal-layer reveal-underneath" loading="lazy">
+              <img src="assets/powered-reveal.jpg" alt="Home with rooftop solar panels and brightly lit windows" class="reveal-layer reveal-underneath" loading="lazy" decoding="async" width="1280" height="720">
               <!-- Storm blackout house (front, masked by pointer) -->
-              <img src="assets/blackout-front.jpg" alt="Dark house during storm blackout" class="reveal-layer reveal-front" loading="lazy">
+              <img src="assets/blackout-front.jpg" alt="Dark house during storm blackout" class="reveal-layer reveal-front" loading="lazy" decoding="async" width="1280" height="720">
               
               <div class="reveal-overlay-ui">
                 <div class="reveal-badges">
