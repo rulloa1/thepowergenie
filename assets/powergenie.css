@@ -149,6 +149,22 @@ button {
   background: none;
 }
 
+/* Focus-visible states for keyboard accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--solar-gold);
+  outline-offset: 2px;
+}
+
+/* Remove default focus ring on mouse click */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 /* Visually Hidden */
 .sr-only {
   position: absolute;
