@@ -165,6 +165,24 @@ textarea:focus-visible,
   outline: none;
 }
 
+/* Dashboard Quick Access Cards */
+.dash-card:hover {
+  transform: translateY(-2px);
+  background: rgba(246, 178, 74, 0.12) !important;
+  border-color: rgba(246, 178, 74, 0.4) !important;
+  box-shadow: 0 4px 12px rgba(246, 178, 74, 0.15);
+}
+
+.dash-card:focus-visible {
+  outline: 2px solid var(--solar-gold);
+  outline-offset: 2px;
+}
+
+.dashboard-nav {
+  background: rgba(5, 8, 17, 0.6);
+  backdrop-filter: blur(8px);
+}
+
 /* Visually Hidden */
 .sr-only {
   position: absolute;
