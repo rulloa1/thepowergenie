@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Power Genie Homeowner App — Tesla Powerwall & Energy Firewall Command Center</title>
+  <meta name="description" content="Official Power Genie Homeowner App. Monitor your Tesla Powerwall battery storage, inspect Tesla Firewall gateway resilience, and refer neighboring homeowners for $1,000 cash rewards.">
+  <meta name="theme-color" content="#060913">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔋</text></svg>">
+
+  <!-- Fonts & Styles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/powergenie.css">
+  <link rel="stylesheet" href="assets/homeowner-app.css">
+
+  <!-- Application Logic Modules -->
+  <script type="module" src="assets/config.js"></script>
+  <script type="module" src="assets/analytics.js"></script>
+  <script type="module" src="assets/homeowner-app.js"></script>
+</head>
+<body class="homeowner-app-body">
+  <!-- Subtle Page Background Glow -->
+  <div class="page-bg-glow" aria-hidden="true" style="background: radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.12) 0%, transparent 60%), radial-gradient(circle at 80% 40%, rgba(246, 178, 74, 0.08) 0%, transparent 50%);"></div>
+
+  <!-- STICKY APP TOPBAR -->
+  <header class="app-topbar">
+    <div class="container app-topbar-inner">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <a href="index.html" class="app-brand" aria-label="Return to Power Genie Hub">
+          <span class="brand-icon" style="background: linear-gradient(135deg, #0ea5e9, #38bdf8); padding: 6px; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" width="20" height="20">
+              <rect x="2" y="7" width="16" height="12" rx="2" ry="2"/>
+              <path d="M18 11h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/>
+              <line x1="6" y1="13" x2="10" y2="13"/>
+              <line x1="8" y1="11" x2="8" y2="15"/>
+            </svg>
+          </span>
+          <span style="font-size:1.1rem;">POWER GENIE</span>
+        </a>
+        <span class="app-brand-badge">Homeowner Portal</span>
+      </div>
+
+      <!-- Live Status Chip -->
+      <div id="systemStatusChip" class="system-status-chip">
+        <span class="status-dot"></span>
+        <span>⚡ System Normal | Grid: Connected (60Hz) | Powerwall: 88%</span>
+      </div>
+
+      <!-- Profile & Navigation Switcher -->
+      <div class="app-user-menu">
+        <label for="profileSelector" class="visually-hidden" style="position:absolute; width:1px; height:1px; overflow:hidden;">Select Residence</label>
+        <select id="profileSelector" class="profile-select" aria-label="Select Residence Profile">
+          <option value="horace">🏠 Horace Lawrence Estate (Oakland Hills)</option>
+          <option value="vance">🏡 Marcus & Elena Vance (Austin, TX)</option>
+        </select>
+        <a href="index.html" class="btn btn-secondary btn-sm" style="font-size:0.8rem; padding:6px 12px;">Ecosystem Hub ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="container" style="padding-top: 24px; padding-bottom: 80px;">
+
+    <!-- SECONDARY ECOSYSTEM BREADCRUMB BAR -->
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+      <nav aria-label="Ecosystem products" style="display:flex; align-items:center; gap:12px; font-size:0.82rem; overflow-x:auto;">
+        <span style="color:var(--text-dim);">Ecosystem Products:</span>
+        <a href="index.html" style="color:var(--solar-gold); text-decoration:none;">⚡ Power Genie</a>
+        <span style="color:var(--border-subtle);">•</span>
+        <a href="texas-solar.html" style="color:#f87171; text-decoration:none;">🤠 Texas Solar</a>
+        <span style="color:var(--border-subtle);">•</span>
+        <a href="celebrity-solar.html" style="color:#dfba73; text-decoration:none;">💎 Celebrity Solar</a>
+        <span style="color:var(--border-subtle);">•</span>
+        <a href="hip-hop-solar.html" style="color:#ffb703; text-decoration:none;">🎧 Hip-Hop Solar</a>
+        <span style="color:var(--border-subtle);">•</span>
+        <a href="gas-genie.html" style="color:#38bdf8; text-decoration:none;">🔥 Gas-Genie (Pilot)</a>
+      </nav>
+
+      <div style="font-size:0.82rem; color:var(--text-muted); display:flex; align-items:center; gap:8px;">
+        <span style="width:8px; height:8px; border-radius:50%; background:#10b981;"></span>
+        <span>Sunrun Monitoring Link: <strong>Active (TLS 1.3)</strong></span>
+      </div>
+    </div>
+
+    <!-- MAIN APP NAVIGATION TABS -->
+    <nav class="app-tabs-nav" aria-label="Homeowner App Tabs">
+      <button class="app-tab-btn active" data-tab="powerwall" aria-selected="true" type="button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="12" rx="2" ry="2"/><path d="M18 11h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/><line x1="6" y1="13" x2="10" y2="13"/><line x1="8" y1="11" x2="8" y2="15"/></svg>
+        <span>🔋 Tesla Powerwall & Energy Firewall</span>
+      </button>
+
+      <button class="app-tab-btn tab-referral" data-tab="referral" aria-selected="false" type="button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>🤝 Refer Homeowners & Earn</span>
+        <span class="tab-badge">$1,000 Reward</span>
+      </button>
+
+      <button class="app-tab-btn" data-tab="analytics" aria-selected="false" type="button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>📊 Bill Savings & Performance</span>
+      </button>
+
+      <button class="app-tab-btn" data-tab="concierge" aria-selected="false" type="button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>👤 Sunrun Rep & Warranty</span>
+      </button>
+    </nav>
+
+    <!-- ====================================================================
+         TAB 1: TESLA POWERWALL & ENERGY FIREWALL MONITOR
+         ==================================================================== -->
+    <div id="tab-powerwall" class="app-tab-panel" style="display:block;">
+
+      <!-- Island Alert Notice (Hidden until Outage is simulated) -->
+      <div id="islandModeAlert" style="display:none; background:linear-gradient(135deg, rgba(239,68,68,0.2) 0%, rgba(185,28,28,0.3) 100%); border:1px solid #ef4444; border-radius:16px; padding:18px 24px; margin-bottom:24px; align-items:center; gap:16px;">
+        <span style="font-size:2rem;">⚠️</span>
+        <div>
+          <div style="font-weight:800; color:#fff; font-size:1.05rem;">MICROGRID ISLAND MODE ENGAGED (TESLA FIREWALL CONTACTORS TRIPPED)</div>
+          <div style="font-size:0.88rem; color:#fca5a5;">Utility grid power has been isolated. Your Tesla Backup Gateway isolated in 8ms to prevent back-feeding the utility line. Your home is now completely self-sustaining via rooftop solar and battery storage.</div>
+        </div>
+      </div>
+
+      <!-- Hero Visualizer Row -->
+      <div class="dash-grid-2">
+        <!-- Battery Gauge Card -->
+        <div class="app-card battery-gauge-card">
+          <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+            <div style="font-weight:700; color:#fff; font-size:0.95rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted);">Tesla Powerwall 3 Battery Bank</div>
+            <span style="background:rgba(56,189,248,0.15); color:#38bdf8; font-size:0.75rem; font-weight:700; padding:3px 10px; border-radius:9999px; border:1px solid rgba(56,189,248,0.3);">Dual Units Active</span>
+          </div>
+
+          <!-- Circular SVG Gauge -->
+          <div class="battery-visual-container">
+            <svg class="battery-ring-svg" viewBox="0 0 200 200">
+              <circle class="battery-ring-bg" cx="100" cy="100" r="90" />
+              <circle id="batteryRingProgress" class="battery-ring-progress" cx="100" cy="100" r="90" />
+            </svg>
+            <div class="battery-center-text">
+              <span id="batteryPctText" class="battery-pct-large">88%</span>
+              <span class="battery-status-sub">Charging (+4.6 kW)</span>
+            </div>
+          </div>
+
+          <div id="batteryKwhText" style="font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:6px;">23.8 / 27.0 kWh Stored</div>
+          <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:18px;">
+            Estimated Outage Runtime: <strong id="backupHoursText" style="color:#38bdf8;">28.5 Hours</strong> on current load
+          </div>
+
+          <!-- Backup Reserve Adjuster -->
+          <div style="width:100%; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:14px; text-align:left;">
+            <div style="display:flex; justify-content:space-between; font-size:0.82rem; margin-bottom:6px;">
+              <span style="color:var(--text-muted);">Backup Reserve Floor</span>
+              <span id="reserveValue" style="color:#38bdf8; font-weight:700;">20%</span>
+            </div>
+            <input type="range" id="reserveSlider" min="0" max="100" value="20" class="slider-range-input" style="margin:0;" aria-label="Backup Reserve Percentage Slider">
+            <div style="font-size:0.75rem; color:var(--text-dim); margin-top:6px;">Powerwall will never discharge below this percentage during normal grid operation.</div>
+          </div>
+        </div>
+
+        <!-- Live Power Flow Diagram Card -->
+        <div class="app-card flow-diagram-container">
+          <div class="app-card-header">
+            <h2 class="app-card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Real-Time Energy Flow
+            </h2>
+            <span style="font-size:0.8rem; color:#34d399; font-weight:600; display:flex; align-items:center; gap:6px;">
+              <span style="width:6px; height:6px; border-radius:50%; background:#34d399; animation:pulseOutage 1.5s infinite;"></span>
+              Live Telemetry
+            </span>
+          </div>
+
+          <!-- 4-Node Grid Visualizer -->
+          <div class="flow-nodes-grid">
+            <!-- Node 1: Solar Generation -->
+            <div class="flow-node active-producing">
+              <div class="flow-node-icon" style="background:rgba(246,178,74,0.15); color:#f6b24a;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2"/></svg>
+              </div>
+              <div class="flow-node-info">
+                <h4>Solar Production</h4>
+                <div id="flowSolarVal" class="flow-node-value" style="color:#f6b24a;">8.4 kW</div>
+              </div>
+            </div>
+
+            <!-- Node 2: Home Consumption -->
+            <div class="flow-node active-consuming">
+              <div class="flow-node-icon" style="background:rgba(168,85,247,0.15); color:#c084fc;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+              <div class="flow-node-info">
+                <h4>Home Load</h4>
+                <div id="flowHomeVal" class="flow-node-value" style="color:#c084fc;">2.6 kW</div>
+              </div>
+            </div>
+
+            <!-- Node 3: Tesla Powerwall Storage -->
+            <div class="flow-node active-storing">
+              <div class="flow-node-icon" style="background:rgba(56,189,248,0.15); color:#38bdf8;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="12" rx="2" ry="2"/><path d="M18 11h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/><line x1="6" y1="13" x2="10" y2="13"/><line x1="8" y1="11" x2="8" y2="15"/></svg>
+              </div>
+              <div class="flow-node-info">
+                <h4>Tesla Powerwall</h4>
+                <div id="flowBatteryVal" class="flow-node-value" style="color:#38bdf8;">+4.6 kW</div>
+              </div>
+            </div>
+
+            <!-- Node 4: Utility Grid -->
+            <div id="flowGridNode" class="flow-node grid-node">
+              <div class="flow-node-icon" style="background:rgba(52,211,153,0.15); color:#34d399;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+              </div>
+              <div class="flow-node-info">
+                <h4>Utility Grid Feed</h4>
+                <div id="flowGridVal" class="flow-node-value" style="color:#34d399;">-1.2 kW</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Outage Simulation Controller -->
+          <div id="outageSimBox" class="outage-sim-box">
+            <div>
+              <div style="font-weight:700; color:#fff; font-size:0.95rem; margin-bottom:2px;">Outage & Island Contactor Test</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Simulate an electrical blackout to verify automatic sub-10ms microgrid transfer.</div>
+            </div>
+            <button id="btnSimulateOutage" class="btn-outage-toggle" type="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Simulate Grid Outage (Blackout Test)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real Installed System Hardware Showcase & Firewall Specs -->
+      <div class="app-card" style="margin-bottom:24px;">
+        <div class="app-card-header">
+          <h2 class="app-card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f6b24a" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+            Tesla Powerwall & Energy Firewall Hardware Telemetry
+          </h2>
+          <span style="font-size:0.8rem; color:var(--text-muted);">Device Serial: <strong>TW3-98841-A2</strong></span>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:24px; align-items:center;">
+          <!-- Architectural Installed Image -->
+          <div style="border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); position:relative; aspect-ratio:16/9;">
+            <img src="assets/tesla-powerwall-home.jpg" alt="Modern Home with Tesla Powerwall 3 and Energy Firewall Gateway" style="width:100%; height:100%; object-fit:cover;">
+            <div style="position:absolute; bottom:12px; left:12px; background:rgba(0,0,0,0.75); backdrop-filter:blur(10px); padding:4px 10px; border-radius:6px; font-size:0.75rem; font-weight:600; color:#38bdf8; border:1px solid rgba(56,189,248,0.3);">
+              Dual Tesla Powerwall 3 + Gateway 2
+            </div>
+          </div>
+
+          <!-- Specs Table -->
+          <div>
+            <table class="telemetry-table">
+              <tbody>
+                <tr>
+                  <td class="telemetry-label">Grid Frequency & Voltage</td>
+                  <td class="telemetry-val">60.02 Hz • 240.4 V (Split Phase)</td>
+                </tr>
+                <tr>
+                  <td class="telemetry-label">Transfer Switch (Tesla Firewall)</td>
+                  <td class="telemetry-val" style="color:#34d399;">200A Contactor Ready (< 10ms)</td>
+                </tr>
+                <tr>
+                  <td class="telemetry-label">Energy Defense & Storm Watch</td>
+                  <td class="telemetry-val" style="color:#38bdf8;">Active (Monitoring NOAA Alerts)</td>
+                </tr>
+                <tr>
+                  <td class="telemetry-label">Network & Telemetry Firewall</td>
+                  <td class="telemetry-val">AES-256 TLS 1.3 Certified</td>
+                </tr>
+                <tr>
+                  <td class="telemetry-label">Liquid Thermal Conditioning</td>
+                  <td class="telemetry-val">71.4°F (Optimal Core Temp)</td>
+                </tr>
+                <tr>
+                  <td class="telemetry-label">Installed Firmware Version</td>
+                  <td class="telemetry-val">v24.36.2 (Sunrun Verified)</td>
+                </tr>
+                <tr>
+                  <td class="telemetry-label">Self-Powered Solar Ratio</td>
+                  <td class="telemetry-val" style="color:#f6b24a;">96.4% Solar Independence</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         TAB 2: REFERRAL SYSTEM & CASH REWARDS ($1,000 PER HOMEOWNER)
+         ==================================================================== -->
+    <div id="tab-referral" class="app-tab-panel" style="display:none;">
+
+      <!-- Hero Referral Banner -->
+      <section class="referral-hero-banner" aria-labelledby="referralBannerTitle">
+        <span class="referral-headline-tag">⚡ Homeowner Referral Rewards Network</span>
+        <h1 id="referralBannerTitle" class="referral-hero-title">
+          Refer Homeowners. <span>Earn $1,000 Cash.</span>
+        </h1>
+        <p class="referral-hero-desc">
+          As a Sunrun solar & Tesla Powerwall homeowner, you have the most powerful blackout protection in your neighborhood. Share your experience with friends, family, and neighbors. When they install clean energy with Horace Lawrence and Sunrun, you receive <strong>$1,000 cash</strong> paid directly via Direct Deposit, Zelle, or Check.
+        </p>
+      </section>
+
+      <!-- Lifetime Referral Earnings Stats -->
+      <div class="dash-grid-3">
+        <div class="app-card" style="text-align:center;">
+          <div style="font-size:0.85rem; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Total Rewards Earned</div>
+          <div id="statTotalEarned" style="font-size:2.4rem; font-weight:800; color:#34d399; font-family:var(--font-display, sans-serif); margin:6px 0;">$3,000</div>
+          <div style="font-size:0.78rem; color:#94a3b8;">Deposited via Zelle & Direct Deposit</div>
+        </div>
+
+        <div class="app-card" style="text-align:center;">
+          <div style="font-size:0.85rem; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Pending Payouts</div>
+          <div id="statPendingEarned" style="font-size:2.4rem; font-weight:800; color:#f6b24a; font-family:var(--font-display, sans-serif); margin:6px 0;">$1,000</div>
+          <div style="font-size:0.78rem; color:#94a3b8;">Permitted / Scheduled Installation</div>
+        </div>
+
+        <div class="app-card" style="text-align:center;">
+          <div style="font-size:0.85rem; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Referrals In Pipeline</div>
+          <div id="statTotalCount" style="font-size:2.4rem; font-weight:800; color:#38bdf8; font-family:var(--font-display, sans-serif); margin:6px 0;">3</div>
+          <div style="font-size:0.78rem; color:#94a3b8;">Neighbors Introduced to Sunrun</div>
+        </div>
+      </div>
+
+      <!-- Referral Price & Reward Tier Selector -->
+      <div class="app-card" style="margin-bottom:28px;">
+        <div class="app-card-header">
+          <h2 class="app-card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f6b24a" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Choose Referral Reward Pricing Tier
+          </h2>
+          <span style="font-size:0.82rem; color:var(--text-muted);">Adjusts reward calculation based on project scope</span>
+        </div>
+
+        <div class="reward-tier-grid">
+          <!-- Tier 1: Standard Solar -->
+          <div class="reward-tier-card" data-reward="500">
+            <div style="font-size:0.8rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Solar Standard</div>
+            <div class="tier-reward-amount">$500 <span style="font-size:0.9rem; color:var(--text-muted); font-weight:500;">/ referral</span></div>
+            <div class="tier-name">Rooftop Solar Array</div>
+            <div class="tier-desc">Awarded when your referred neighbor installs a qualified Sunrun solar system to lock in low utility rates.</div>
+          </div>
+
+          <!-- Tier 2: Solar + Tesla Powerwall (Featured) -->
+          <div class="reward-tier-card selected" data-reward="1000">
+            <span class="tier-featured-badge">Most Popular</span>
+            <div style="font-size:0.8rem; color:#f6b24a; font-weight:700; text-transform:uppercase;">Solar + Battery Resilience</div>
+            <div class="tier-reward-amount">$1,000 <span style="font-size:0.9rem; color:var(--text-muted); font-weight:500;">/ referral</span></div>
+            <div class="tier-name">Solar + Tesla Powerwall</div>
+            <div class="tier-desc">Awarded when your referral installs a rooftop solar array coupled with Tesla Powerwall 3 battery backup storage.</div>
+          </div>
+
+          <!-- Tier 3: Estate Dual Powerwall -->
+          <div class="reward-tier-card" data-reward="1500">
+            <div style="font-size:0.8rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Whole Estate Microgrid</div>
+            <div class="tier-reward-amount">$1,500 <span style="font-size:0.9rem; color:var(--text-muted); font-weight:500;">/ referral</span></div>
+            <div class="tier-name">Dual Powerwall + Estate Backup</div>
+            <div class="tier-desc">Awarded for luxury estates, large residential systems with multi-unit Powerwalls, EV charging, and whole-home blackout isolation.</div>
+          </div>
+        </div>
+
+        <!-- Calculator Slider -->
+        <div class="calc-slider-box">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <label for="referralCountSlider" style="font-weight:700; color:#fff; font-size:1rem; cursor:pointer;">How many homeowners will you refer?</label>
+            <span style="font-size:1.3rem; font-weight:800; color:#f6b24a;"><span id="referralCountText">3</span> Homeowners</span>
+          </div>
+          <input type="range" id="referralCountSlider" min="1" max="10" value="3" class="slider-range-input" aria-label="Referral Count Slider">
+          <div class="calc-result-display">
+            <div>
+              <div style="font-size:0.82rem; color:var(--text-muted);">Estimated Direct Cash Payout:</div>
+              <div style="font-size:0.85rem; color:#38bdf8;">Plus 1 Year Free Sunrun System Protection Monitoring</div>
+            </div>
+            <div id="calcTotalEarned" class="calc-total-earned">$3,000</div>
+          </div>
+        </div>
+
+        <!-- Personalized Referral Link & Share Buttons -->
+        <div style="border-top:1px solid rgba(255,255,255,0.08); padding-top:24px;">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:8px;">Your Private Share Link</h3>
+          <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;">Share this link directly on social media, group chats, or neighborhood forums:</div>
+
+          <div class="referral-link-box">
+            <span id="referralUrlText" class="referral-url-text">https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie&ref=PG-HORACE-7721</span>
+            <button id="btnCopyReferralLink" class="btn-share copy" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy Link
+            </button>
+          </div>
+
+          <div class="share-action-buttons">
+            <a id="btnShareSms" class="btn-share sms" href="#">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Send SMS Text Invite
+            </a>
+            <a id="btnShareWhatsApp" class="btn-share whatsapp" href="#" target="_blank" rel="noopener noreferrer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              Share via WhatsApp
+            </a>
+            <a id="btnShareEmail" class="btn-share" href="#">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Email to Friend
+            </a>
+            <button id="btnShowQrCode" class="btn-share" type="button" style="border-color:rgba(56,189,248,0.3); color:#38bdf8;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              Show Neighbor Scan QR
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Direct Neighbor Referral Form Card -->
+      <div class="dash-grid-2">
+        <div class="app-card">
+          <div class="app-card-header">
+            <h2 class="app-card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+              Submit a Neighbor Directly
+            </h2>
+            <span style="font-size:0.75rem; color:#34d399; font-weight:700; background:rgba(16,185,129,0.15); padding:3px 8px; border-radius:6px;">Instant Lock-In</span>
+          </div>
+
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:18px;">
+            Have a neighbor who complained about their power bill or power outages? Input their contact details below. Horace Lawrence will reach out with a personalized zero-down proposal and credit your account with the referral payout.
+          </p>
+
+          <form id="directReferralForm">
+            <div style="display:flex; flex-direction:column; gap:14px;">
+              <div>
+                <label for="refNeighborName" style="font-size:0.82rem; font-weight:600; color:#fff; display:block; margin-bottom:4px;">Homeowner Full Name *</label>
+                <input type="text" id="refNeighborName" required placeholder="e.g. David & Kimberly Miller" style="width:100%; padding:10px 14px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.12); border-radius:10px; color:#fff; font-size:0.9rem;">
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div>
+                  <label for="refNeighborPhone" style="font-size:0.82rem; font-weight:600; color:#fff; display:block; margin-bottom:4px;">Mobile Phone *</label>
+                  <input type="tel" id="refNeighborPhone" required placeholder="(555) 000-0000" style="width:100%; padding:10px 14px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.12); border-radius:10px; color:#fff; font-size:0.9rem;">
+                </div>
+                <div>
+                  <label for="refNeighborBill" style="font-size:0.82rem; font-weight:600; color:#fff; display:block; margin-bottom:4px;">Approx Electric Bill</label>
+                  <select id="refNeighborBill" style="width:100%; padding:10px 14px; background:#0b1122; border:1px solid rgba(255,255,255,0.12); border-radius:10px; color:#fff; font-size:0.9rem;">
+                    <option value="$150-$250">$150 - $250 / mo</option>
+                    <option value="$250-$400" selected>$250 - $400 / mo</option>
+                    <option value="$400-$600">$400 - $600 / mo</option>
+                    <option value="$600+">$600+ / mo (High usage)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label for="refNeighborAddress" style="font-size:0.82rem; font-weight:600; color:#fff; display:block; margin-bottom:4px;">Street Address / City</label>
+                <input type="text" id="refNeighborAddress" placeholder="e.g. 1420 Skyline Blvd, Oakland" style="width:100%; padding:10px 14px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.12); border-radius:10px; color:#fff; font-size:0.9rem;">
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="margin-top:8px; width:100%; justify-content:center; font-weight:700;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                Submit Referral & Lock In Reward
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Live Referral Pipeline List -->
+        <div class="app-card">
+          <div class="app-card-header">
+            <h2 class="app-card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f6b24a" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              Live Referral Tracking Pipeline
+            </h2>
+            <span style="font-size:0.75rem; color:var(--text-muted);">Real-Time Payout Status</span>
+          </div>
+
+          <div id="referralPipelineList">
+            <!-- Rendered dynamically by homeowner-app.js -->
+          </div>
+
+          <!-- Payout Preferences Selection -->
+          <div style="margin-top:20px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.08); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div style="font-size:0.82rem; color:var(--text-muted);">
+              Payout Preference: <strong style="color:#fff;">Direct Deposit (ACH ending in *4412)</strong>
+            </div>
+            <button class="btn btn-secondary btn-sm" type="button" onclick="alert('Payout preferences saved to Horace Lawrence concierge team.')" style="font-size:0.78rem;">Edit Payout Info</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         TAB 3: ENERGY ANALYTICS & BILL SAVINGS
+         ==================================================================== -->
+    <div id="tab-analytics" class="app-tab-panel" style="display:none;">
+      <div class="dash-grid-3">
+        <div class="app-card">
+          <div style="font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; font-weight:600;">Electric Bill Before Solar</div>
+          <div style="font-size:2.2rem; font-weight:800; color:#ef4444; font-family:var(--font-display, sans-serif); margin:6px 0;">$385.00</div>
+          <div style="font-size:0.78rem; color:#94a3b8;">Average utility peak rate tier</div>
+        </div>
+
+        <div class="app-card">
+          <div style="font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; font-weight:600;">Current Utility Grid Connection</div>
+          <div style="font-size:2.2rem; font-weight:800; color:#34d399; font-family:var(--font-display, sans-serif); margin:6px 0;">$18.24</div>
+          <div style="font-size:0.78rem; color:#94a3b8;">Base grid interconnection fee only</div>
+        </div>
+
+        <div class="app-card">
+          <div style="font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; font-weight:600;">Total Lifetime Savings</div>
+          <div style="font-size:2.2rem; font-weight:800; color:#f6b24a; font-family:var(--font-display, sans-serif); margin:6px 0;">$4,820</div>
+          <div style="font-size:0.78rem; color:#94a3b8;">14 Months since Sunrun PTO</div>
+        </div>
+      </div>
+
+      <div class="app-card" style="margin-bottom:24px;">
+        <h2 class="app-card-title" style="margin-bottom:16px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          Annual Solar Generation vs Home Consumption (kWh)
+        </h2>
+        <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:24px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-end; height:180px; gap:8px; padding-top:20px;">
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; justify-content:flex-end;">
+              <div style="width:100%; max-width:32px; background:#f6b24a; height:65%; border-radius:4px 4px 0 0;" title="Solar: 780 kWh"></div>
+              <span style="font-size:0.75rem; color:#94a3b8;">May</span>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; justify-content:flex-end;">
+              <div style="width:100%; max-width:32px; background:#f6b24a; height:85%; border-radius:4px 4px 0 0;" title="Solar: 1020 kWh"></div>
+              <span style="font-size:0.75rem; color:#94a3b8;">Jun</span>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; justify-content:flex-end;">
+              <div style="width:100%; max-width:32px; background:#f6b24a; height:100%; border-radius:4px 4px 0 0;" title="Solar: 1240 kWh"></div>
+              <span style="font-size:0.75rem; color:#94a3b8;">Jul</span>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; justify-content:flex-end;">
+              <div style="width:100%; max-width:32px; background:#f6b24a; height:92%; border-radius:4px 4px 0 0;" title="Solar: 1100 kWh"></div>
+              <span style="font-size:0.75rem; color:#94a3b8;">Aug</span>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; justify-content:flex-end;">
+              <div style="width:100%; max-width:32px; background:#f6b24a; height:80%; border-radius:4px 4px 0 0;" title="Solar: 960 kWh"></div>
+              <span style="font-size:0.75rem; color:#94a3b8;">Sep</span>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; justify-content:flex-end;">
+              <div style="width:100%; max-width:32px; background:#f6b24a; height:70%; border-radius:4px 4px 0 0;" title="Solar: 840 kWh"></div>
+              <span style="font-size:0.75rem; color:#94a3b8;">Oct</span>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:center; gap:24px; margin-top:20px; font-size:0.85rem;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="width:12px; height:12px; background:#f6b24a; border-radius:2px;"></span>
+              <span>Rooftop Solar Generation</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="width:12px; height:12px; background:#38bdf8; border-radius:2px;"></span>
+              <span>Tesla Powerwall Stored & Discharged</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         TAB 4: SUNRUN CONCIERGE & WARRANTY
+         ==================================================================== -->
+    <div id="tab-concierge" class="app-tab-panel" style="display:none;">
+      <div class="dash-grid-2">
+        <!-- Rep Profile Card -->
+        <div class="app-card">
+          <div class="app-card-header">
+            <h2 class="app-card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f6b24a" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Your Dedicated Sunrun Energy Advisor
+            </h2>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg, #f6b24a, #0ea5e9); display:flex; align-items:center; justify-content:center; font-size:1.6rem; font-weight:800; color:#fff;">
+              HL
+            </div>
+            <div>
+              <div style="font-size:1.3rem; font-weight:800; color:#fff;">Horace Lawrence</div>
+              <div style="font-size:0.88rem; color:var(--solar-gold); font-weight:600;">The Block Sales Expert Team Lead</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Authorized Sunrun Representative</div>
+            </div>
+          </div>
+
+          <p style="font-size:0.9rem; color:#cbd5e1; line-height:1.6; margin-bottom:24px;">
+            Horace manages your energy ecosystem, coordinates warranty maintenance with Sunrun certified field technicians, and personally facilitates fast payout verification for your homeowner referrals.
+          </p>
+
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <a href="tel:5102417007" class="btn btn-primary" style="justify-content:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Call Horace: 510-241-7007
+            </a>
+            <a href="mailto:horace.lawrence@sunrun.com?subject=Power%20Genie%20Homeowner%20Concierge" class="btn btn-secondary" style="justify-content:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Email Horace Lawrence
+            </a>
+          </div>
+        </div>
+
+        <!-- Warranty & Coverage Card -->
+        <div class="app-card">
+          <div class="app-card-header">
+            <h2 class="app-card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Active Warranty & Protection
+            </h2>
+            <span style="font-size:0.78rem; color:#34d399; font-weight:700;">100% Protected</span>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:16px;">
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:16px;">
+              <div style="font-weight:700; color:#fff; font-size:0.95rem;">25-Year Sunrun System Guarantee</div>
+              <div style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">Covers solar panels, inverters, roof penetrations, wiring, and certified energy production monitoring.</div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:16px;">
+              <div style="font-weight:700; color:#fff; font-size:0.95rem;">10-Year Tesla Powerwall Manufacturer Warranty</div>
+              <div style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">Guarantees at least 70% retention of capacity with unlimited cycles under normal home storage operation.</div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:16px;">
+              <div style="font-weight:700; color:#fff; font-size:0.95rem;">Roof Leak & Workmanship Guarantee</div>
+              <div style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">Sunrun warranties all roof mounting points for 10 full years from installation date.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- QR CODE MODAL FOR NEIGHBOR SCAN -->
+  <div id="qrCodeModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle">
+    <div class="modal-content">
+      <button id="btnCloseQrModal" class="modal-close-btn" aria-label="Close QR Modal" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+
+      <span class="referral-headline-tag" style="margin-bottom:12px;">Scan to Earn $1,000</span>
+      <h3 id="qrModalTitle" style="font-size:1.3rem; font-weight:800; color:#fff; margin-bottom:8px;">Have Your Neighbor Scan</h3>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:20px;">
+        Open phone camera and point at this QR code. It takes your neighbor directly to Horace Lawrence's Sunrun portal with your referral code auto-attached.
+      </p>
+
+      <!-- SVG Rendered QR Graphic -->
+      <div style="background:#fff; border-radius:16px; padding:20px; display:inline-block; margin:0 auto 18px; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+        <svg width="180" height="180" viewBox="0 0 100 100" fill="#050811">
+          <!-- Position Detection Squares -->
+          <rect x="5" y="5" width="26" height="26" rx="4" fill="#050811"/>
+          <rect x="9" y="9" width="18" height="18" rx="2" fill="#fff"/>
+          <rect x="13" y="13" width="10" height="10" fill="#050811"/>
+
+          <rect x="69" y="5" width="26" height="26" rx="4" fill="#050811"/>
+          <rect x="73" y="9" width="18" height="18" rx="2" fill="#fff"/>
+          <rect x="77" y="13" width="10" height="10" fill="#050811"/>
+
+          <rect x="5" y="69" width="26" height="26" rx="4" fill="#050811"/>
+          <rect x="9" y="73" width="18" height="18" rx="2" fill="#fff"/>
+          <rect x="13" y="77" width="10" height="10" fill="#050811"/>
+
+          <!-- Stylized Data Matrix Patterns -->
+          <rect x="36" y="8" width="6" height="6" fill="#050811"/>
+          <rect x="46" y="14" width="6" height="6" fill="#050811"/>
+          <rect x="56" y="8" width="6" height="6" fill="#050811"/>
+          <rect x="36" y="24" width="6" height="6" fill="#050811"/>
+          <rect x="46" y="28" width="10" height="6" fill="#050811"/>
+
+          <rect x="8" y="38" width="6" height="6" fill="#050811"/>
+          <rect x="20" y="44" width="6" height="6" fill="#050811"/>
+          <rect x="34" y="40" width="8" height="8" rx="2" fill="#f6b24a"/>
+          <rect x="46" y="44" width="8" height="8" rx="2" fill="#0ea5e9"/>
+          <rect x="58" y="38" width="6" height="6" fill="#050811"/>
+          <rect x="72" y="44" width="8" height="8" fill="#050811"/>
+          <rect x="86" y="38" width="6" height="6" fill="#050811"/>
+
+          <rect x="36" y="60" width="6" height="6" fill="#050811"/>
+          <rect x="48" y="66" width="6" height="6" fill="#050811"/>
+          <rect x="62" y="60" width="6" height="6" fill="#050811"/>
+          <rect x="74" y="66" width="6" height="6" fill="#050811"/>
+          <rect x="86" y="60" width="6" height="6" fill="#050811"/>
+
+          <rect x="36" y="76" width="6" height="6" fill="#050811"/>
+          <rect x="48" y="84" width="6" height="6" fill="#050811"/>
+          <rect x="60" y="76" width="6" height="6" fill="#050811"/>
+          <rect x="72" y="84" width="6" height="6" fill="#050811"/>
+          <rect x="84" y="76" width="10" height="14" fill="#050811"/>
+        </svg>
+      </div>
+
+      <div style="font-family:var(--font-mono, monospace); font-size:0.85rem; color:#f6b24a; font-weight:700;">
+        CODE: PG-HORACE-7721
+      </div>
+      <div style="font-size:0.75rem; color:var(--text-dim); margin-top:4px;">
+        Guaranteed $1,000 Referral Attributed to Your Account
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

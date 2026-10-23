@@ -47,7 +47,16 @@ export const POWERGENIE_CONFIG = {
   
   // Gas-Genie separate status (Strictly isolated from solar referral)
   GAS_GENIE_STATUS: "pilot_evaluation",
-  GAS_GENIE_NOTICE: "Gas-Genie is a separate concept currently under development. It does NOT route inquiries to Sunrun solar lead capture."
+  GAS_GENIE_NOTICE: "Gas-Genie is a separate concept currently under development. It does NOT route inquiries to Sunrun solar lead capture.",
+
+  // Homeowner Referral Program & Rewards Config
+  REFERRAL_REWARD_AMOUNT: 1000, // Standard referral reward ($1,000)
+  REFERRAL_REWARD_TIERS: [
+    { id: "solar_basic", name: "Standard Solar System", reward: 500, description: "Homeowner installs Sunrun residential solar" },
+    { id: "solar_powerwall", name: "Solar + Tesla Powerwall", reward: 1000, description: "Homeowner installs solar + Tesla Powerwall / Battery backup", featured: true },
+    { id: "whole_estate", name: "Estate Dual Powerwall System", reward: 1500, description: "Homeowner installs premium dual/triple Powerwall estate backup" }
+  ],
+  HOMEOWNER_APP_URL: "homeowner-app.html"
 };
 
 // Global browser window attachment for vanilla JS compatibility
