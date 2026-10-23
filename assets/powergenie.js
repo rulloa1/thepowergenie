@@ -38,6 +38,32 @@ function initPowerGenie() {
 
   // 7. Interactive Portfolio Tabs (Celebrity & Hip-Hop Solar)
   initPortfolioTabs();
+
+  // 8. Controlled Smooth Anchor Scrolling
+  initSmoothAnchorLinks();
+}
+
+/**
+ * Controlled Smooth Anchor Navigation
+ * Smoothly scrolls only when clicking anchor links, keeping wheel/trackpad scrolling native
+ */
+function initSmoothAnchorLinks() {
+  document.querySelectorAll('a[href^="#"]:not([href="#"]):not([data-portfolio-target])').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (!href || href === '#') return;
+      try {
+        const targetEl = document.querySelector(href);
+        if (targetEl) {
+          e.preventDefault();
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (history.pushState) {
+            history.pushState(null, '', href);
+          }
+        }
+      } catch (err) {}
+    });
+  });
 }
 
 /**

@@ -15,6 +15,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="assets/powergenie.css">
 
+  <!-- Centralized Configuration & Booking Engine Scripts -->
+  <script type="module" src="assets/config.js"></script>
+  <script type="module" src="assets/analytics.js"></script>
+  <script type="module" src="assets/booking-engine.js"></script>
+
   <style>
     :root {
       --luxury-gold: #dfba73;
@@ -171,10 +176,11 @@
               Designed for luxury residences, private compounds, and design-conscious homeowners who refuse to compromise on visual harmony. Integrated seamless panels and multi-day battery resilience delivered through Sunrun.
             </p>
             <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
-              <!-- Centralized Solar Lead CTA -->
-              <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-luxury btn-lg solar-cta" data-solar-cta data-placement="hero" data-brand="celebrity_solar" target="_blank" rel="noopener noreferrer">
-                Explore Solar
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <button type="button" class="btn btn-luxury btn-lg" data-book-consultation data-consult-type="in_home">
+                📅 Book In-Home Assessment
+              </button>
+              <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-secondary btn-lg solar-cta" data-solar-cta data-placement="hero" data-brand="celebrity_solar" target="_blank" rel="noopener noreferrer">
+                Explore Solar ↗
               </a>
               <a href="tel:5102417007" class="btn btn-secondary btn-lg">
                 Estate Concierge: 510-241-7007
@@ -425,10 +431,12 @@
                 <h3 style="font-family: var(--font-display); font-size: 1.8rem; color: #ffffff; margin-bottom: 10px;">Ready to elevate your residential energy architecture?</h3>
                 <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.6;">Your solar design inquiry routes straight to Horace Lawrence at Sunrun for confidential roof mapping and custom electrical scoping.</p>
               </div>
-              <div>
-                <!-- Centralized Solar Lead CTA -->
-                <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-luxury btn-lg solar-cta" data-solar-cta data-placement="final_cta" data-brand="celebrity_solar" target="_blank" rel="noopener noreferrer">
-                  See Your Solar Options
+              <div style="display:flex; flex-direction:column; gap:10px; min-width:240px;">
+                <button type="button" class="btn btn-luxury btn-lg" data-book-consultation data-consult-type="in_home" style="font-weight:700;">
+                  📅 Book 1-on-1 Roof Assessment
+                </button>
+                <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-secondary btn-sm solar-cta" data-solar-cta data-placement="final_cta" data-brand="celebrity_solar" target="_blank" rel="noopener noreferrer" style="text-align:center;">
+                  Instant Sunrun Portal ↗
                 </a>
               </div>
             </div>

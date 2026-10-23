@@ -776,3 +776,115 @@
   align-items: center;
   justify-content: center;
 }
+
+/* ==========================================================================
+   HOMEOWNER APP MOBILE DECLUTTERING & RESPONSIVE RULES
+   ========================================================================== */
+@media (max-width: 860px) {
+  .app-tabs-nav {
+    display: flex !important;
+    overflow-x: auto !important;
+    gap: 8px !important;
+    padding: 6px !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .app-tabs-nav::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .app-tab-btn {
+    flex: 0 0 auto !important;
+    padding: 10px 14px !important;
+    font-size: 0.82rem !important;
+    white-space: nowrap !important;
+  }
+
+  .dash-grid-3 {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .dash-grid-2 {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .referral-hero-banner {
+    padding: 20px 16px !important;
+    border-radius: 16px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .referral-hero-title {
+    font-size: 1.5rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .referral-hero-desc {
+    font-size: 0.88rem !important;
+    line-height: 1.55 !important;
+  }
+
+  .reward-tier-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .reward-tier-card {
+    padding: 16px !important;
+  }
+
+  .tier-reward-amount {
+    font-size: 1.8rem !important;
+    margin: 8px 0 4px !important;
+  }
+
+  .calc-slider-box {
+    padding: 16px !important;
+  }
+
+  .calc-result-display {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+
+  .calc-total-earned {
+    font-size: 1.7rem !important;
+  }
+
+  .share-action-buttons {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .btn-share {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .pipeline-item {
+    padding: 14px !important;
+  }
+
+  .person-avatar {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 0.85rem !important;
+  }
+
+  .app-card {
+    padding: 18px 16px !important;
+    border-radius: 16px !important;
+  }
+
+  .telemetry-table td {
+    padding: 8px 6px !important;
+    font-size: 0.8rem !important;
+  }
+}
+

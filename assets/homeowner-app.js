@@ -7,8 +7,7 @@
 
 import { POWERGENIE_CONFIG, SOLAR_REFERRAL_URL } from './config.js';
 
-// Pre-loaded realistic sample referrals
-const DEFAULT_REFERRALS = [
+export const DEFAULT_REFERRALS = [
   {
     id: "REF-1092",
     name: "Marcus Sterling",
@@ -43,6 +42,36 @@ const DEFAULT_REFERRALS = [
     payoutMethod: "Pending Contract Execution"
   }
 ];
+
+export function getReferrals() {
+  if (typeof window === 'undefined' || !window.localStorage) return DEFAULT_REFERRALS;
+  try {
+    const raw = window.localStorage.getItem('pg_homeowner_referrals');
+    if (!raw) {
+      window.localStorage.setItem('pg_homeowner_referrals', JSON.stringify(DEFAULT_REFERRALS));
+      return DEFAULT_REFERRALS;
+    }
+    return JSON.parse(raw);
+  } catch (e) {
+    return DEFAULT_REFERRALS;
+  }
+}
+
+export function saveReferrals(referrals) {
+  if (typeof window === 'undefined' || !window.localStorage) return;
+  try {
+    window.localStorage.setItem('pg_homeowner_referrals', JSON.stringify(referrals));
+    window.dispatchEvent(new CustomEvent('powergenie:referrals_updated', { detail: referrals }));
+  } catch (e) {
+    console.error("Failed to save referrals:", e);
+  }
+}
+
+if (typeof window !== 'undefined') {
+  window.getReferrals = getReferrals;
+  window.saveReferrals = saveReferrals;
+}
+
 
 // Profile data configurations
 const PROFILES = {
@@ -81,11 +110,14 @@ let isOutageSimulated = false;
 let selectedRewardPerReferral = 1000;
 
 document.addEventListener('DOMContentLoaded', () => {
-  initTabs();
-  initPowerwallMonitor();
-  initReferralSystem();
-  initProfileSelector();
-  checkUrlHash();
+  // Only initialize full homeowner app UI if app elements are present
+  if (document.querySelector('.homeowner-app-body') || document.getElementById('tab-powerwall') || document.querySelector('.app-tab-btn')) {
+    initTabs();
+    initPowerwallMonitor();
+    initReferralSystem();
+    initProfileSelector();
+    checkUrlHash();
+  }
 });
 
 /**

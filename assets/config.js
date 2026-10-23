@@ -56,7 +56,18 @@ export const POWERGENIE_CONFIG = {
     { id: "solar_powerwall", name: "Solar + Tesla Powerwall", reward: 1000, description: "Homeowner installs solar + Tesla Powerwall / Battery backup", featured: true },
     { id: "whole_estate", name: "Estate Dual Powerwall System", reward: 1500, description: "Homeowner installs premium dual/triple Powerwall estate backup" }
   ],
-  HOMEOWNER_APP_URL: "homeowner-app.html"
+  HOMEOWNER_APP_URL: "homeowner-app.html",
+
+  // Horace Lawrence Advisor Portal & Dashboard Credentials
+  ADVISOR_PORTAL: {
+    DASHBOARD_URL: "attribution.html",
+    LIVE_URL: "https://thepowergenie-kys1.vercel.app/attribution.html",
+    REP_NAME: "Horace Lawrence",
+    REP_EMAIL: "horace.lawrence@sunrun.com",
+    REP_PHONE: "510-241-7007",
+    DEFAULT_PIN: "7007",
+    BACKUP_PIN: "powergenie2026"
+  }
 };
 
 // Global browser window attachment for vanilla JS compatibility

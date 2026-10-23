@@ -57,12 +57,17 @@
 }
 
 html {
-  scroll-behavior: smooth;
   color-scheme: dark;
   background-color: var(--bg-deep);
   accent-color: var(--solar-gold);
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
   scrollbar-width: thin;
+  overflow-x: clip;
+}
+
+/* Section scroll anchor offset for smooth navigation */
+:target {
+  scroll-margin-top: 92px;
 }
 
 /* Legacy scrollbar fallback for WebKit/Blink browsers without standard scrollbar-color */
@@ -92,7 +97,7 @@ body {
   color: var(--text-main);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
   position: relative;
   overflow-wrap: break-word;
 }
@@ -202,6 +207,9 @@ textarea:focus-visible,
   inset: 0;
   pointer-events: none;
   z-index: 0;
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
   background:
     radial-gradient(circle at 50% -10%, rgba(246, 178, 74, 0.12) 0%, transparent 50%),
     radial-gradient(circle at 10% 40%, rgba(14, 165, 233, 0.08) 0%, transparent 45%),
@@ -228,11 +236,12 @@ textarea:focus-visible,
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(5, 8, 17, 0.85);
+  background: rgba(5, 8, 17, 0.9);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-subtle);
-  transition: all 0.3s var(--ease-smooth);
+  transform: translateZ(0);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .header-inner {
@@ -2111,23 +2120,50 @@ textarea:focus-visible,
 }
 
 /* ==========================================================================
-   RESPONSIVE MEDIA QUERIES
+   RESPONSIVE MEDIA QUERIES & MOBILE DECLUTTERING
    ========================================================================== */
+@media (max-width: 980px) {
+  .hero-layout {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .pillars-grid, .ecosystem-grid, .faq-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .rep-grid {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+  }
+  .rep-avatar-wrap {
+    margin: 0 auto;
+  }
+  .rep-quote {
+    margin: 0 auto;
+  }
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .sim-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 860px) {
   .nav-links {
     display: none !important;
   }
 
   .mobile-nav-toggle {
-    display: inline-flex;
+    display: inline-flex !important;
   }
 
   .header-cta-group .btn-sm {
-    display: none;
+    display: none !important;
   }
 
   .mobile-sticky-bar {
-    display: block;
+    display: block !important;
   }
 
   body {
@@ -2141,51 +2177,357 @@ textarea:focus-visible,
 
   .view-tab-btn {
     flex: 1;
-    min-width: 140px;
+    min-width: 120px;
     text-align: center;
-    padding: 9px 12px;
-    font-size: 0.82rem;
+    padding: 8px 10px;
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 640px) {
+  :root {
+    --pad-x: 16px;
+  }
+
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .section, section {
+    padding-top: 36px !important;
+    padding-bottom: 36px !important;
+  }
+
+  .section-header {
+    margin-bottom: 22px !important;
+  }
+
+  .section-eyebrow {
+    font-size: 0.72rem !important;
+    letter-spacing: 0.08em !important;
+    margin-bottom: 6px !important;
+  }
+
+  .section-title {
+    font-size: clamp(1.45rem, 5.6vw, 1.95rem) !important;
+    line-height: 1.22 !important;
+    letter-spacing: -0.015em !important;
+    margin-bottom: 8px !important;
+    text-wrap: balance !important;
+  }
+
+  .section-desc {
+    font-size: 0.88rem !important;
+    line-height: 1.55 !important;
+    color: var(--text-muted) !important;
+  }
+
+  /* Hero Section Decluttering */
+  .hero-section {
+    padding-top: 24px !important;
+    padding-bottom: 32px !important;
+  }
+
+  .hero-title {
+    font-size: clamp(1.7rem, 6.8vw, 2.2rem) !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.02em !important;
+    margin-bottom: 12px !important;
+    text-wrap: balance !important;
+  }
+
+  .hero-subtitle {
+    font-size: 0.94rem !important;
+    line-height: 1.55 !important;
+    margin-bottom: 20px !important;
+    color: #cbd5e1 !important;
+  }
+
+  .hero-tag {
+    font-size: 0.72rem !important;
+    padding: 4px 10px !important;
+    margin-bottom: 12px !important;
+    letter-spacing: 0.06em !important;
+  }
+
+  .hero-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
+    margin-bottom: 22px !important;
+  }
+
+  .hero-actions .btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 13px 20px !important;
+    font-size: 0.92rem !important;
+    white-space: normal !important;
+    text-align: center !important;
+  }
+
+  .hero-trust-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px 12px !important;
+    padding-top: 14px !important;
+  }
+
+  .trust-item {
+    font-size: 0.76rem !important;
+    gap: 6px !important;
+  }
+
+  /* Quick Access Nav Rail on Mobile */
+  .dashboard-nav {
+    padding: 12px 0 6px !important;
+  }
+
+  .dashboard-nav > .container > div:first-child {
+    display: none !important;
+  }
+
+  .dashboard-nav > .container > div:last-child {
+    display: flex !important;
+    overflow-x: auto !important;
+    gap: 8px !important;
+    padding-bottom: 8px !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .dashboard-nav > .container > div:last-child::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .dashboard-nav .dash-card {
+    flex: 0 0 auto !important;
+    flex-direction: row !important;
+    gap: 8px !important;
+    padding: 8px 14px !important;
+    border-radius: 999px !important;
+  }
+
+  .dashboard-nav .dash-card svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .dashboard-nav .dash-card span {
+    font-size: 0.78rem !important;
+    white-space: nowrap !important;
+  }
+
+  /* Cards Padding Decluttering */
+  .pillar-card,
+  .savings-card,
+  .sim-container,
+  .rep-spotlight-card,
+  .luxury-quote-card,
+  .culture-banner,
+  .faq-item,
+  .ecosystem-card {
+    padding: 18px 16px !important;
+    border-radius: 14px !important;
+  }
+
+  .pillar-card h3,
+  .ecosystem-card h3 {
+    font-size: 1.15rem !important;
+    line-height: 1.3 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .pillar-card p,
+  .ecosystem-card p {
+    font-size: 0.88rem !important;
+    line-height: 1.55 !important;
+  }
+
+  .pillar-icon-box {
+    width: 44px !important;
+    height: 44px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .pillar-icon-box svg {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  /* Horace Lawrence Advisor Card Mobile Decluttering */
+  .rep-spotlight-card {
+    padding: 20px 16px !important;
+  }
+
+  .rep-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 14px !important;
+  }
+
+  .rep-avatar-wrap {
+    width: 68px !important;
+    height: 68px !important;
+    margin: 0 auto !important;
+  }
+
+  .rep-avatar-inner {
+    font-size: 1.35rem !important;
+  }
+
+  .rep-info h3 {
+    font-size: 1.3rem !important;
+    margin-bottom: 4px !important;
+  }
+
+  .rep-role {
+    font-size: 0.8rem !important;
+    margin-bottom: 8px !important;
+  }
+
+  .rep-quote {
+    font-size: 0.86rem !important;
+    line-height: 1.55 !important;
+    padding: 12px 14px !important;
+    text-align: left !important;
+    margin: 0 !important;
+  }
+
+  .rep-contact-links {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 8px !important;
+    margin-top: 10px !important;
+  }
+
+  .rep-contact-btn,
+  .rep-contact-links .btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 11px 16px !important;
+    font-size: 0.88rem !important;
+    text-align: center !important;
+  }
+
+  /* Savings Calculator on Mobile */
   .calc-slider-container {
-    padding: 18px 16px;
+    padding: 16px 14px !important;
   }
 
   .calc-slider-ticks {
-    font-size: 0.7rem;
+    font-size: 0.68rem !important;
   }
 
   .calc-results-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
   }
 
-  .savings-card {
-    padding: 24px 16px;
+  .calc-result-box {
+    padding: 14px 16px !important;
   }
 
+  .calc-result-number {
+    font-size: 1.5rem !important;
+  }
+
+  .battery-recommendation-box {
+    padding: 14px 16px !important;
+    gap: 12px !important;
+  }
+
+  /* Simulator on Mobile */
+  .sim-container {
+    padding: 18px 14px !important;
+  }
+
+  .sim-metrics-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .sim-metric-card {
+    padding: 14px !important;
+  }
+
+  /* Footer & Disclaimer */
+  .footer-disclaimer-box {
+    padding: 14px 16px !important;
+    font-size: 0.75rem !important;
+    line-height: 1.55 !important;
+    margin-bottom: 20px !important;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important;
+    margin-bottom: 24px !important;
+  }
+
+  .footer-bottom {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* Interactive Portfolios (Celebrity / Hip-Hop) */
   .portfolio-tab-nav {
-    gap: 6px;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    padding-bottom: 4px !important;
+    scrollbar-width: none !important;
   }
 
   .portfolio-tab-btn {
-    padding: 8px 14px;
-    font-size: 0.82rem;
+    padding: 8px 14px !important;
+    font-size: 0.8rem !important;
+    flex: 0 0 auto !important;
   }
 
   .portfolio-metrics-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
   }
 
   .portfolio-metric-box {
-    padding: 14px;
+    padding: 12px 10px !important;
   }
 
   .portfolio-metric-value {
-    font-size: 1.35rem;
+    font-size: 1.25rem !important;
+  }
+
+  .portfolio-metric-label {
+    font-size: 0.7rem !important;
   }
 }
+
+@media (max-width: 480px) {
+  :root {
+    --pad-x: 14px;
+  }
+
+  .container {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  .hero-trust-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 
 
