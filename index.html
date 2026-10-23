@@ -17,10 +17,8 @@
 
   <!-- Centralized Configuration & Interactive Logic -->
   <script type="module" src="assets/config.js"></script>
+  <script type="module" src="assets/analytics.js"></script>
   <script type="module" src="assets/powergenie.js"></script>
-
-  <!-- Analytics: Replace with production tracker (Plausible, Fathom, GA4) when ready -->
-  <!-- <script defer data-domain="powergenie.com" src="https://plausible.io/js/script.js"></script> -->
 </head>
 <body>
   <!-- Atmosphere Background Glow -->
@@ -49,12 +47,13 @@
           <a href="celebrity-solar.html" class="nav-link">Celebrity Solar</a>
           <a href="hip-hop-solar.html" class="nav-link">Hip-Hop Solar</a>
           <a href="gas-genie.html" class="nav-link">Gas-Genie</a>
+          <a href="attribution.html" class="nav-link" style="color: var(--text-dim); font-size: 0.82rem;">Analytics</a>
         </nav>
 
         <div class="header-cta-group">
           <a href="#advisor" class="btn btn-secondary btn-sm">Contact Rep</a>
           <!-- Centralized Solar CTA pointing to confirmed Sunrun destination -->
-          <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary btn-sm solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+          <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary btn-sm solar-cta" data-solar-cta data-placement="nav" data-brand="power_genie" target="_blank" rel="noopener noreferrer">
             Get Started
           </a>
           <button class="mobile-nav-toggle" aria-label="Toggle navigation menu" type="button">
@@ -78,7 +77,7 @@
         <a href="hip-hop-solar.html" class="mobile-nav-item" style="color:#ffb703;">Hip-Hop Solar</a>
         <a href="gas-genie.html" class="mobile-nav-item" style="color:#38bdf8;">Gas-Genie</a>
         <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--border-subtle); display:flex; flex-direction:column; gap:12px;">
-          <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">Get Free Quote</a>
+          <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary solar-cta" data-solar-cta data-placement="mobile_nav" data-brand="power_genie" target="_blank" rel="noopener noreferrer">Explore Solar</a>
           <a href="tel:5102417007" class="btn btn-secondary">Call 510-241-7007</a>
         </div>
       </div>
@@ -137,8 +136,8 @@
             </p>
             <div class="hero-actions">
               <!-- Confirmed Sunrun Solar Destination CTA -->
-              <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary btn-lg solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
-                Explore Solar Options
+              <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary btn-lg solar-cta" data-solar-cta data-placement="hero" data-brand="power_genie" target="_blank" rel="noopener noreferrer">
+                Explore Solar
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
               <a href="#savings-estimator" class="btn btn-secondary btn-lg">
@@ -306,8 +305,8 @@
             </div>
 
             <div style="text-align:center; padding-top:12px;">
-              <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
-                See If Solar Is Right for You
+              <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary solar-cta" data-solar-cta data-placement="mid_page" data-brand="power_genie" target="_blank" rel="noopener noreferrer">
+                See Your Solar Options
               </a>
             </div>
           </div>
@@ -383,8 +382,8 @@
 
             <!-- CTA Row -->
             <div style="display:flex; justify-content:center; align-items:center; gap:16px; flex-wrap:wrap;">
-              <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary btn-lg solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
-                Lock In Your Rate on Sunrun
+              <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary btn-lg solar-cta" data-solar-cta data-placement="mid_page" data-brand="power_genie" target="_blank" rel="noopener noreferrer">
+                Explore Solar
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
               <a href="tel:5102417007" class="btn btn-secondary btn-lg">
@@ -416,8 +415,8 @@
                 <p>Sophisticated art direction, architectural solar integration, and white-glove energy concierge service designed for luxury residences and creative compounds. No compromises on aesthetic excellence.</p>
                 <div class="ecosystem-actions">
                   <!-- Centralized solar CTA -->
-                  <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-luxury solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
-                    Check Your Solar Options
+                  <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-luxury solar-cta" data-solar-cta data-placement="mid_page" data-brand="celebrity_solar" target="_blank" rel="noopener noreferrer">
+                    See Your Solar Options
                   </a>
                   <a href="celebrity-solar.html" class="nav-link" style="justify-content:center; font-size:0.85rem; color:#dfba73;">
                     Explore Celebrity Solar Experience →
@@ -438,7 +437,7 @@
                 <p>Bold, high-energy clean power for the culture. Keep the studio monitors and beat machines running through blackout season, build real generational equity, and take back local control of your power.</p>
                 <div class="ecosystem-actions">
                   <!-- Centralized solar CTA -->
-                  <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-culture solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
+                  <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-culture solar-cta" data-solar-cta data-placement="mid_page" data-brand="hip_hop_solar" target="_blank" rel="noopener noreferrer">
                     Get Started
                   </a>
                   <a href="hip-hop-solar.html" class="nav-link" style="justify-content:center; font-size:0.85rem; color:#ffb703;">
@@ -499,8 +498,8 @@
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
                   horace.lawrence@sunrun.com
                 </a>
-                <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary btn-sm solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer" style="margin-top:6px; width:100%;">
-                  Refer Someone for Solar
+                <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary btn-sm solar-cta" data-solar-cta data-placement="advisor" data-brand="power_genie" target="_blank" rel="noopener noreferrer" style="margin-top:6px; width:100%;">
+                  See Your Solar Options
                 </a>
               </div>
             </div>
@@ -561,8 +560,8 @@
               Takes under two minutes on Sunrun's official quote form. Horace Lawrence and the Sunrun team will personally analyze your roof and current utility bill.
             </p>
             <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
-              <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary btn-lg solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
-                Explore Solar Options
+              <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary btn-lg solar-cta" data-solar-cta data-placement="final_cta" data-brand="power_genie" target="_blank" rel="noopener noreferrer">
+                Explore Solar
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
               <a href="tel:5102417007" class="btn btn-secondary btn-lg">
@@ -603,10 +602,10 @@
           <div class="footer-col">
             <h4>Solar Lead Flow</h4>
             <ul>
-              <li><a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">Explore Solar Options</a></li>
-              <li><a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">Check Your Solar Options</a></li>
-              <li><a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">Refer Someone for Solar</a></li>
-              <li><a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">Official Sunrun Form</a></li>
+              <li><a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="solar-cta" data-solar-cta data-placement="footer" data-brand="power_genie" target="_blank" rel="noopener noreferrer">Explore Solar</a></li>
+              <li><a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="solar-cta" data-solar-cta data-placement="footer" data-brand="power_genie" target="_blank" rel="noopener noreferrer">Get Started</a></li>
+              <li><a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="solar-cta" data-solar-cta data-placement="footer" data-brand="power_genie" target="_blank" rel="noopener noreferrer">See Your Solar Options</a></li>
+              <li><a href="attribution.html" style="color:var(--electric-cyan); font-weight:600;">Attribution Dashboard ↗</a></li>
             </ul>
           </div>
 
@@ -639,8 +638,8 @@
     <!-- MOBILE STICKY BOTTOM ACTION BAR -->
     <aside class="mobile-sticky-bar" aria-label="Mobile quick actions">
       <div class="mobile-sticky-bar-inner">
-        <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary solar-cta" data-solar-cta target="_blank" rel="noopener noreferrer">
-          ⚡ Explore Solar on Sunrun
+        <a href="https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie" class="btn btn-primary solar-cta" data-solar-cta data-placement="mobile_sticky" data-brand="power_genie" target="_blank" rel="noopener noreferrer">
+          ⚡ Explore Solar
         </a>
         <a href="tel:5102417007" class="mobile-call-btn" aria-label="Call Horace Lawrence">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>

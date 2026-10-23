@@ -4,13 +4,21 @@
  * Directs all solar inquiries directly to the confirmed Sunrun portal.
  */
 (() => {
-  const SUNRUN_URL = "https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie";
+  const getReferralUrl = () => {
+    if (typeof window !== 'undefined' && window.SOLAR_REFERRAL_URL) {
+      return window.SOLAR_REFERRAL_URL;
+    }
+    if (typeof window !== 'undefined' && window.POWERGENIE_CONFIG?.SOLAR_REFERRAL_URL) {
+      return window.POWERGENIE_CONFIG.SOLAR_REFERRAL_URL;
+    }
+    return "https://sunrun.my.salesforce-sites.com/purl/?srep=/powergenie";
+  };
 
   const form = document.getElementById('lead');
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      window.open(SUNRUN_URL, '_blank', 'noopener,noreferrer');
+      window.open(getReferralUrl(), '_blank', 'noopener,noreferrer');
     });
   }
 

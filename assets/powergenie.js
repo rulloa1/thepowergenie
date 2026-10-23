@@ -6,7 +6,15 @@
 
 import { POWERGENIE_CONFIG, initSolarLeadButtons } from './config.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPowerGenie);
+  } else {
+    initPowerGenie();
+  }
+}
+
+function initPowerGenie() {
   // 1. Centralized Solar CTA Initialization
   initSolarLeadButtons();
 
@@ -30,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 7. Interactive Portfolio Tabs (Celebrity & Hip-Hop Solar)
   initPortfolioTabs();
-});
+}
 
 /**
  * Hero View Mode Switcher
@@ -300,12 +308,17 @@ function initGasGenieHandlers() {
       form.style.display = 'none';
       if (successBox) {
         successBox.style.display = 'block';
-        successBox.innerHTML = `
-          <div style="padding: 16px; border-radius: 12px; background: rgba(14, 165, 233, 0.15); border: 1px solid rgba(14, 165, 233, 0.3); color: #e0f2fe; font-size: 0.9rem;">
-            <strong>Thank you.</strong> We will notify <em>${email}</em> once the Gas-Genie pilot program is officially open for beta enrollment.<br>
-            <small style="color: #94a3b8; display: block; margin-top: 6px;">Note: Gas-Genie is strictly independent from Sunrun solar lead capture.</small>
-          </div>
-        `;
+        successBox.replaceChildren();
+        const note = document.createElement('div');
+        note.style.cssText = 'padding:16px;border-radius:12px;background:rgba(14,165,233,0.15);border:1px solid rgba(14,165,233,0.3);color:#e0f2fe;font-size:0.9rem;';
+        const title = document.createElement('strong');
+        title.textContent = 'Thank you.';
+        const detail = document.createElement('small');
+        detail.style.cssText = 'color:#94a3b8;display:block;margin-top:6px;';
+        detail.textContent = 'Gas-Genie is strictly independent from Sunrun solar lead capture.';
+        note.append(title, ' We will notify you once the Gas-Genie pilot program is officially open for beta enrollment.');
+        note.appendChild(detail);
+        successBox.appendChild(note);
       }
     });
   });
