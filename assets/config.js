@@ -58,10 +58,12 @@ export const POWERGENIE_CONFIG = {
   ],
   HOMEOWNER_APP_URL: "homeowner-app.html",
 
+  SITE_URL: "https://thepowergenie.theroyeffect.com",
+
   // Horace Lawrence Advisor Portal & Dashboard Credentials
   ADVISOR_PORTAL: {
     DASHBOARD_URL: "attribution.html",
-    LIVE_URL: "https://thepowergenie-kys1.vercel.app/attribution.html",
+    LIVE_URL: "https://thepowergenie.theroyeffect.com/attribution.html",
     REP_NAME: "Horace Lawrence",
     REP_EMAIL: "horace.lawrence@sunrun.com",
     REP_PHONE: "510-241-7007",
